@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a192f" />
+  <meta name="description" content="NavPath – Complete NEA Exam Prep app for Indian Navy aspirants. Syllabus tracker, MCQ practice, formulas and more." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="NavPath" />
+
+  <title>NavPath – NEA Exam Prep</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/icons/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Firebase SDK (v9 compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Razorpay -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- TOAST CONTAINER                                              -->
+<!-- ============================================================ -->
+<div id="toast-container" class="toast-container"></div>
+
+<!-- ============================================================ -->
+<!-- PWA INSTALL BANNER                                           -->
+<!-- ============================================================ -->
+<div id="install-banner" class="hidden"
+     style="position:fixed;bottom:5rem;left:1rem;right:1rem;z-index:150;
+            background:var(--navy-mid);border:1px solid var(--gold);
+            border-radius:var(--radius);padding:0.875rem 1.25rem;
+            display:flex;align-items:center;justify-content:space-between;
+            box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+  <div>
+    <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">📱 Install NavPath</div>
+    <div style="font-size:0.72rem;color:var(--text-muted);">Add to home screen for offline access</div>
+  </div>
+  <div style="display:flex;gap:0.5rem;">
+    <button class="btn btn-outline btn-sm" onclick="document.getElementById('install-banner').classList.add('hidden')">Later</button>
+    <button class="btn btn-gold btn-sm" onclick="installApp()">Install</button>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- APP WRAPPER                                                  -->
+<!-- ============================================================ -->
+<div id="app">
+
+  <!-- ======================================================== -->
+  <!-- SCREEN 1: AUTH (Login / Signup)                          -->
+  <!-- ======================================================== -->
+  <div id="auth-screen" class="screen active">
+    <!-- Background Stars Effect -->
+    <div style="position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0;">
+      <div style="position:absolute;width:2px;height:2px;background:#c9a84c;border-radius:50%;top:15%;left:20%;opacity:0.4;animation:pulse 3s infinite;"></div>
+      <div style="position:absolute;width:1px;height:1px;background:#7a9cc0;border-radius:50%;top:30%;left:70%;opacity:0.6;animation:pulse 2.5s infinite 0.5s;"></div>
+      <div style="position:absolute;width:2px;height:2px;background:#c9a84c;border-radius:50%;top:60%;left:10%;opacity:0.3;animation:pulse 4s infinite 1s;"></div>
+      <div style="position:absolute;width:1px;height:1px;background:#7a9cc0;border-radius:50%;top:80%;left:85%;opacity:0.5;animation:pulse 3.5s infinite 0.8s;"></div>
+      <div style="position:absolute;width:1px;height:1px;background:#c9a84c;border-radius:50%;top:45%;left:90%;opacity:0.4;animation:pulse 2.8s infinite 1.5s;"></div>
+    </div>
+
+    <!-- Logo -->
+    <div class="auth-logo" style="position:relative;z-index:1;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 55" fill="none" width="220" height="68">
+        <circle cx="28" cy="27" r="22" stroke="#c9a84c" stroke-width="2.5" fill="none"/>
+        <circle cx="28" cy="27" r="14" stroke="#1e3a5f" stroke-width="1.5" fill="none"/>
+        <text x="28" y="13" text-anchor="middle" fill="#c9a84c" font-size="7" font-family="serif" font-weight="bold">N</text>
+        <text x="28" y="45" text-anchor="middle" fill="#3a5f90" font-size="6" font-family="serif">S</text>
+        <text x="46" y="30" text-anchor="middle" fill="#3a5f90" font-size="6" font-family="serif">E</text>
+        <text x="10" y="30" text-anchor="middle" fill="#3a5f90" font-size="6" font-family="serif">W</text>
+        <polygon points="28,13 25.5,27 28,25 30.5,27" fill="#c9a84c"/>
+        <polygon points="28,41 25.5,27 28,29 30.5,27" fill="#3a5f90"/>
+        <circle cx="28" cy="27" r="2.5" fill="#c9a84c"/>
+        <text x="60" y="23" fill="white" font-size="20" font-family="'Georgia', serif" font-weight="bold" letter-spacing="-0.5">Nav</text>
+        <text x="91" y="23" fill="#c9a84c" font-size="20" font-family="'Georgia', serif" font-weight="bold" letter-spacing="-0.5">Path</text>
+        <text x="60" y="38" fill="#4a6fa5" font-size="8.5" font-family="sans-serif" letter-spacing="2.5">NEA EXAM PREP</text>
+      </svg>
+      <div class="auth-logo-tagline">Indian Navy Aspirant Platform</div>
+    </div>
+
+    <!-- Auth Card -->
+    <div class="auth-card" style="position:relative;z-index:1;">
+      <!-- Tab switcher -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Sign In</button>
+        <button class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Create Account</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="login-form">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="login-email" placeholder="your@email.com" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <button class="btn btn-primary btn-block btn-lg" id="login-btn" onclick="handleLogin()">
+          Sign In →
+        </button>
+        <p style="text-align:center;margin-top:1rem;font-size:0.78rem;color:var(--text-muted);">
+          Don't have an account?
+          <a href="#" onclick="switchAuthTab('signup');return false;" style="color:var(--gold);">Create one free</a>
+        </p>
+      </div>
+
+      <!-- SIGNUP FORM -->
+      <div id="signup-form" class="hidden">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="signup-name" placeholder="Rajesh Kumar" autocomplete="name" />
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="signup-email" placeholder="your@email.com" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="signup-password" placeholder="Min. 6 characters" autocomplete="new-password" />
+        </div>
+        <button class="btn btn-gold btn-block btn-lg" id="signup-btn" onclick="handleSignup()">
+          Start Free Trial 🚀
+        </button>
+        <p style="text-align:center;margin-top:0.75rem;font-size:0.72rem;color:var(--text-muted);">
+          3-day free trial • No credit card required
+        </p>
+        <p style="text-align:center;margin-top:0.5rem;font-size:0.72rem;color:var(--text-muted);">
+          Already have an account?
+          <a href="#" onclick="switchAuthTab('login');return false;" style="color:var(--gold);">Sign in</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Trial Info -->
+    <div style="position:relative;z-index:1;text-align:center;margin-top:1.5rem;padding:0 1.5rem;">
+      <p style="font-size:0.75rem;color:var(--text-muted);line-height:1.7;">
+        🔓 3-day free trial includes full syllabus access<br>
+        ⭐ Premium from <strong style="color:var(--gold);">₹99</strong> only<br>
+        📱 Installable PWA • Works offline
+      </p>
+    </div>
+  </div>
+  <!-- END AUTH SCREEN -->
+
+
+  <!-- ======================================================== -->
+  <!-- SCREEN 2: MAIN APP (Tabs)                                -->
+  <!-- ======================================================== -->
+  <div id="main-screen" class="screen">
+
+    <!-- TOP NAVIGATION -->
+    <nav class="top-nav">
+      <div class="nav-logo">
+        <div class="nav-logo-icon">🧭</div>
+        Nav<span>Path</span>
+      </div>
+      <div class="nav-actions">
+        <div id="premium-badge" class="hidden"
+             style="background:linear-gradient(135deg,var(--gold-dim),var(--gold));
+                    color:var(--navy-deepest);border-radius:100px;padding:0.25rem 0.75rem;
+                    font-size:0.72rem;font-weight:700;">
+          ⭐ PREMIUM
+        </div>
+        <button class="nav-icon-btn" onclick="openPremiumModal()" title="Upgrade">💎</button>
+        <button class="nav-icon-btn" onclick="switchTab('profile')" title="Profile">👤</button>
+      </div>
+    </nav>
+
+    <!-- TAB CONTENTS -->
+
+    <!-- ─── DASHBOARD TAB ─── -->
+    <div id="tab-dashboard" class="tab-content active-tab">
+      <div class="main-content">
+
+        <!-- Welcome -->
+        <div class="welcome-section">
+          <div class="welcome-greeting">GOOD DAY, SAILOR</div>
+          <h1 class="welcome-name" id="welcome-name">Welcome back</h1>
+        </div>
+
+        <!-- Trial Banner -->
+        <div class="trial-banner" id="trial-banner">
+          <div class="trial-info">
+            <h4>🕐 Free Trial Active</h4>
+            <p id="trial-message">Days left in your free trial</p>
+            <button class="btn btn-gold btn-sm" style="margin-top:0.5rem;" onclick="openPremiumModal()">
+              Upgrade Now →
+            </button>
+          </div>
+          <div class="trial-countdown">
+            <div class="days" id="trial-days">3</div>
+            <div class="days-label">DAYS<br>LEFT</div>
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card gold">
+            <div class="stat-value" id="stat-total">0</div>
+            <div class="stat-label">Total Topics</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-value" id="stat-completed">0</div>
+            <div class="stat-label">Completed</div>
+          </div>
+          <div class="stat-card red">
+            <div class="stat-value" id="stat-remaining">0</div>
+            <div class="stat-label">Remaining</div>
+          </div>
+          <div class="stat-card blue">
+            <div class="stat-value" id="stat-pct">0%</div>
+            <div class="stat-label">Progress</div>
+          </div>
+        </div>
+
+        <!-- Overall Progress Bar -->
+        <div class="card mb-2">
+          <div class="card-body">
+            <div class="flex items-center justify-between mb-1">
+              <span style="font-size:0.85rem;font-weight:600;">Overall Progress</span>
+              <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--gold);" id="main-progress-pct">0%</span>
+            </div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar" id="main-progress-bar" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Streak -->
+        <div class="flex items-center gap-1 mb-2">
+          <div class="streak-badge">🔥 <span id="streak-count">0</span> Day Streak</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);">Keep it going!</div>
+        </div>
+
+        <!-- Progress Chart -->
+        <div class="card mb-2">
+          <div class="card-header">
+            <span style="font-size:0.9rem;font-weight:600;">Paper-wise Progress</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-container">
+              <canvas id="progress-chart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="section-header mb-1">
+          <h2 class="section-title">Quick Actions</h2>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.5rem;">
+          <button class="card" style="padding:1.25rem;text-align:center;cursor:pointer;border:none;background:var(--card-bg);" onclick="switchTab('syllabus')">
+            <div style="font-size:1.75rem;margin-bottom:0.5rem;">📚</div>
+            <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">Study Syllabus</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);">Track topics</div>
+          </button>
+          <button class="card" style="padding:1.25rem;text-align:center;cursor:pointer;border:none;background:var(--card-bg);" onclick="switchTab('quiz')">
+            <div style="font-size:1.75rem;margin-bottom:0.5rem;">🧠</div>
+            <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">Practice Quiz</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);">Test yourself</div>
+          </button>
+          <button class="card" style="padding:1.25rem;text-align:center;cursor:pointer;border:none;background:var(--card-bg);" onclick="switchTab('formulas')">
+            <div style="font-size:1.75rem;margin-bottom:0.5rem;">📐</div>
+            <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">Formulas</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);">Quick reference</div>
+          </button>
+          <button class="card" style="padding:1.25rem;text-align:center;cursor:pointer;border:none;background:var(--card-bg);" onclick="openPremiumModal()">
+            <div style="font-size:1.75rem;margin-bottom:0.5rem;">⭐</div>
+            <div style="font-size:0.85rem;font-weight:600;color:var(--gold);">Go Premium</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);">From ₹99</div>
+          </button>
+        </div>
+
+        <!-- Exam Info -->
+        <div class="card" style="background:linear-gradient(135deg,rgba(42,82,152,0.2),rgba(5,15,28,0.8));">
+          <div class="card-body">
+            <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
+              <span style="font-size:1.5rem;">⚓</span>
+              <h3 style="font-family:var(--font-body);font-size:0.95rem;">NEA Exam Pattern</h3>
+            </div>
+            <div style="display:grid;gap:0.4rem;font-size:0.8rem;">
+              <div style="display:flex;justify-content:space-between;padding:0.4rem 0;border-bottom:1px solid var(--card-border);">
+                <span style="color:var(--text-muted);">Paper I</span>
+                <span>English & GK – 100 marks</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:0.4rem 0;border-bottom:1px solid var(--card-border);">
+                <span style="color:var(--text-muted);">Paper II</span>
+                <span>Mathematics – 100 marks</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:0.4rem 0;">
+                <span style="color:var(--text-muted);">Paper III</span>
+                <span>General Science – 100 marks</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- END DASHBOARD TAB -->
+
+
+    <!-- ─── SYLLABUS TAB ─── -->
+    <div id="tab-syllabus" class="tab-content" style="display:none;">
+      <div class="main-content">
+        <div class="section-header mb-2">
+          <h2 class="section-title">📚 NEA Syllabus</h2>
+          <span style="font-size:0.75rem;color:var(--text-muted);">Tap topics to mark done ✓</span>
+        </div>
+        <div id="syllabus-container">
+          <!-- Rendered by JS -->
+          <div class="shimmer" style="height:80px;margin-bottom:1rem;"></div>
+          <div class="shimmer" style="height:80px;margin-bottom:1rem;"></div>
+          <div class="shimmer" style="height:80px;"></div>
+        </div>
+      </div>
+    </div>
+    <!-- END SYLLABUS TAB -->
+
+
+    <!-- ─── QUIZ TAB ─── -->
+    <div id="tab-quiz" class="tab-content" style="display:none;">
+      <div class="main-content">
+        <div class="section-header mb-2">
+          <h2 class="section-title">🧠 Practice Quiz</h2>
+        </div>
+
+        <!-- Quiz question area -->
+        <div id="quiz-question-area" class="quiz-container">
+          <div class="empty-state">
+            <div class="empty-icon">🎯</div>
+            <h3>Start Practicing</h3>
+            <p>Go to Syllabus → tap "Quiz" on any chapter to begin.</p>
+            <button class="btn btn-primary mt-2" onclick="switchTab('syllabus')">Go to Syllabus</button>
+          </div>
+        </div>
+
+        <!-- Quiz result area -->
+        <div id="quiz-result-area" class="hidden quiz-container"></div>
+      </div>
+    </div>
+    <!-- END QUIZ TAB -->
+
+
+    <!-- ─── FORMULAS TAB ─── -->
+    <div id="tab-formulas" class="tab-content" style="display:none;">
+      <div class="main-content" id="formulas-container">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+    <!-- END FORMULAS TAB -->
+
+
+    <!-- ─── PROFILE TAB ─── -->
+    <div id="tab-profile" class="tab-content" style="display:none;">
+      <!-- Rendered by JS -->
+    </div>
+    <!-- END PROFILE TAB -->
+
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" id="nav-dashboard" onclick="switchTab('dashboard')">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-item" id="nav-syllabus" onclick="switchTab('syllabus')">
+        <span class="nav-icon">📚</span>
+        <span class="nav-label">Syllabus</span>
+      </button>
+      <button class="nav-item" id="nav-quiz" onclick="switchTab('quiz')">
+        <span class="nav-icon">🧠</span>
+        <span class="nav-label">Quiz</span>
+      </button>
+      <button class="nav-item" id="nav-formulas" onclick="switchTab('formulas')">
+        <span class="nav-icon">📐</span>
+        <span class="nav-label">Formulas</span>
+      </button>
+      <button class="nav-item" id="nav-profile" onclick="switchTab('profile')">
+        <span class="nav-icon">👤</span>
+        <span class="nav-label">Profile</span>
+      </button>
+    </nav>
+
+  </div>
+  <!-- END MAIN SCREEN -->
+
+</div>
+<!-- END APP -->
+
+
+<!-- ============================================================ -->
+<!-- PREMIUM MODAL (Paywall)                                      -->
+<!-- ============================================================ -->
+<div id="premium-modal" class="modal-overlay" onclick="if(event.target===this)closePremiumModal()">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-body">
+
+      <!-- Header -->
+      <div class="premium-icon">⭐</div>
+      <h2 style="text-align:center;font-size:1.4rem;margin-bottom:0.4rem;">Unlock Full Access</h2>
+      <p style="text-align:center;font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">
+        Complete NEA preparation – all topics, quizzes, formulas & more
+      </p>
+
+      <!-- Benefits -->
+      <div style="background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius);padding:1rem;margin-bottom:1.25rem;">
+        <div style="display:grid;gap:0.6rem;">
+          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;">
+            <span style="color:var(--success);font-size:1rem;">✓</span> Full NEA syllabus access
+          </div>
+          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;">
+            <span style="color:var(--success);font-size:1rem;">✓</span> 500+ MCQ practice questions
+          </div>
+          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;">
+            <span style="color:var(--success);font-size:1rem;">✓</span> Topic-wise formulas & shortcuts
+          </div>
+          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;">
+            <span style="color:var(--success);font-size:1rem;">✓</span> Progress tracking & daily streak
+          </div>
+          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;">
+            <span style="color:var(--success);font-size:1rem;">✓</span> Works offline (PWA)
+          </div>
+        </div>
+      </div>
+
+      <!-- Plan Cards -->
+      <div class="plan-cards">
+        <div class="plan-card" id="plan-monthly" onclick="selectPlan('monthly')">
+          <div class="plan-left">
+            <h4>3-Month Plan</h4>
+            <p>Perfect for focused preparation</p>
+          </div>
+          <div class="plan-price">
+            <div class="amount">₹99</div>
+            <span class="per">per 3 months</span>
+          </div>
+        </div>
+
+        <div class="plan-card best-value selected" id="plan-yearly" onclick="selectPlan('yearly')">
+          <div class="plan-left">
+            <h4>1-Year Plan</h4>
+            <p>Best for thorough preparation</p>
+          </div>
+          <div class="plan-price">
+            <div class="amount">₹199</div>
+            <span class="per">per year</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA Button -->
+      <button class="btn btn-gold btn-block btn-lg" onclick="initiatePurchase()" style="margin-bottom:0.75rem;">
+        🔓 Unlock Premium Now
+      </button>
+
+      <button class="btn btn-outline btn-block" onclick="closePremiumModal()">
+        Maybe Later
+      </button>
+
+      <p style="text-align:center;font-size:0.7rem;color:var(--text-muted);margin-top:0.75rem;">
+        🔒 Secure payment via Razorpay • Instant activation
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- INLINE STYLES FOR ACTIVE TAB VISIBILITY                      -->
+<!-- ============================================================ -->
+<style>
+  .tab-content { display: none; }
+  .tab-content.active-tab { display: block !important; animation: fadeInUp 0.35s ease; }
+
+  /* Quiz live layout override when inside tab */
+  #tab-quiz.active-tab .quiz-container { max-width: none; }
+
+  /* Scrollable quiz options */
+  #quiz-options { max-height: 50vh; overflow-y: auto; }
+</style>
+
+
+<!-- ============================================================ -->
+<!-- SCRIPTS                                                      -->
+<!-- ============================================================ -->
+<script src="firebase.js"></script>
+<script src="script.js"></script>
+
+<!-- Quiz Live Layout Enhancement Script -->
+<script>
+  // Enhance quiz screen with live bottom bar
+  function renderLiveQuiz() {
+    const area = document.getElementById('quiz-question-area');
+    if (!area || !window.App?.currentQuiz?.questions?.length) return;
+
+    area.innerHTML = `
+      <div class="quiz-container">
+        <div class="quiz-header">
+          <div class="quiz-progress-text" id="quiz-progress-text">1/1</div>
+          <div class="streak-badge">🎯 Score: <span id="quiz-score-live">0</span></div>
+        </div>
+        <!-- Progress bar -->
+        <div class="progress-bar-wrap mb-2" style="height:4px;">
+          <div class="progress-bar" id="quiz-prog-bar" style="width:0%;transition:width 0.4s ease;"></div>
+        </div>
+        <!-- Question Card -->
+        <div class="quiz-question-card">
+          <div class="quiz-q-number" id="quiz-q-number">Question 1</div>
+          <div class="quiz-q-text" id="quiz-q-text">Loading...</div>
+        </div>
+        <!-- Options -->
+        <div class="quiz-options" id="quiz-options"></div>
+        <!-- Explanation -->
+        <div class="quiz-explanation" id="quiz-explanation"></div>
+        <!-- Next Button -->
+        <button class="btn btn-primary btn-block" id="quiz-next-btn"
+                onclick="nextQuestion()" style="margin-top:0.5rem;">
+          Next Question
+        </button>
+      </div>
+    `;
+  }
+
+  // Override startQuiz to use live layout
+  const _origStart = window.startQuiz;
+  window.startQuiz = function(chapterId) {
+    window.switchTab('quiz');
+    _origStart?.(chapterId);
+    // Small delay to let tab render
+    setTimeout(() => {
+      const area = document.getElementById('quiz-question-area');
+      if (area && window.App?.currentQuiz?.questions?.length) {
+        renderLiveQuiz();
+        window.renderQuestion();
+      }
+    }, 100);
+  };
+
+  // Override renderQuestion to update progress bar
+  const _origRender = window.renderQuestion;
+  window.renderQuestion = function() {
+    _origRender?.();
+    const q = window.App?.currentQuiz;
+    if (q) {
+      const pct = ((q.idx) / q.questions.length) * 100;
+      const bar = document.getElementById('quiz-prog-bar');
+      if (bar) bar.style.width = pct + '%';
+      const scoreEl = document.getElementById('quiz-score-live');
+      if (scoreEl) scoreEl.textContent = q.score;
+    }
+  };
+</script>
+
+</body>
+</html>
