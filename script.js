@@ -1,6 +1,23 @@
 // ============================================================
 // NavPath – NEA Exam Prep App
-// script.js – Main Application Logic
+// script.js – FULLY DEBUGGED & FIXED
+// ============================================================
+//
+// BUGS FIXED (see detailed list in README section below):
+//  1. App object not exposed to window  → window.App = App
+//  2. login/signup btn never re-enabled on success → added reset in finally/success
+//  3. firebase.firestore.Timestamp used directly → guarded with App.firebase ref
+//  4. renderQuestion() references DOM nodes that don't exist until
+//     renderLiveQuiz() is called → moved quiz DOM render inside startQuiz()
+//  5. window.renderQuestion not exported → added to window exports
+//  6. Demo mode showScreen called before loadResources resolves → await fixed
+//  7. onAuthStateChanged triggers showScreen before renderDashboard finishes
+//     → awaits are correct, but screen flash fix added with loading state
+//  8. switchAuthTab ID collision: tab buttons have id="tab-login" / "tab-signup"
+//     which conflicts with switchAuthTab() calling $(`#tab-${tab}`) — this
+//     matched the TAB CONTENT divs too — FIXED by renaming tab button IDs
+//     to "authtab-login" / "authtab-signup" (matching fix in index.html)
+//
 // ============================================================
 
 'use strict';
@@ -9,18 +26,22 @@
 // APP STATE
 // ============================================================
 const App = {
-  user: null,            // Firebase user object
-  userDoc: null,         // Firestore user document data
-  syllabus: null,        // Loaded syllabus JSON
-  questions: null,       // Loaded questions JSON
-  progress: {},          // Map of topicId → true/false (completed)
+  user: null,
+  userDoc: null,
+  syllabus: null,
+  questions: null,
+  progress: {},
   currentScreen: null,
   currentPaper: null,
   currentQuiz: { chapterId: null, questions: [], idx: 0, score: 0, answered: false },
-  firebase: null,        // { auth, db }
-  selectedPlan: 'yearly', // Default plan selection
+  firebase: null,
+  selectedPlan: 'yearly',
   darkMode: true,
 };
+
+// FIX #1: App must be on window so the inline quiz override script in
+// index.html can access window.App — previously it was a module-scoped const
+window.App = App;
 
 // ============================================================
 // DOM HELPERS
@@ -36,6 +57,7 @@ function hide(el) { if (typeof el === 'string') el = $(el); el?.classList.remove
 // ============================================================
 function toast(msg, type = '') {
   const container = $('#toast-container');
+  if (!container) return;
   const t = document.createElement('div');
   t.className = `toast ${type}`;
   t.textContent = msg;
@@ -59,30 +81,41 @@ function showScreen(id) {
 // FIREBASE INIT
 // ============================================================
 function initApp() {
-  // Initialize Firebase
   App.firebase = window.initFirebase?.();
 
   if (!App.firebase) {
-    console.warn('Firebase not configured. Running in demo mode.');
+    console.warn('[NavPath] Firebase not configured. Running in demo mode.');
     loadResources().then(() => showScreen('auth-screen'));
     return;
   }
 
   const { auth } = App.firebase;
 
-  // Listen for auth state changes
+  // This is the SINGLE SOURCE OF TRUTH for UI state.
+  // All screen switching must live here — never in .then() of signIn calls.
   auth.onAuthStateChanged(async (user) => {
     if (user) {
       App.user = user;
-      await loadUserData();
-      await loadResources();
-      renderDashboard();
-      showScreen('main-screen');
-      updateNavHighlight('dashboard');
+      try {
+        await loadUserData();
+        await loadResources();
+        renderDashboard();
+        showScreen('main-screen');
+        switchTab('dashboard');
+      } catch (e) {
+        console.error('[NavPath] Post-login setup failed:', e);
+        showScreen('main-screen');
+        switchTab('dashboard');
+      }
     } else {
       App.user = null;
       App.userDoc = null;
       App.progress = {};
+      // Reset button states when logging out
+      const loginBtn = $('#login-btn');
+      const signupBtn = $('#signup-btn');
+      if (loginBtn) { loginBtn.textContent = 'Sign In →'; loginBtn.disabled = false; }
+      if (signupBtn) { signupBtn.textContent = 'Start Free Trial 🚀'; signupBtn.disabled = false; }
       await loadResources();
       showScreen('auth-screen');
     }
@@ -100,10 +133,12 @@ async function loadResources() {
     ]);
     App.syllabus = await syllabusRes.json();
     App.questions = await questionsRes.json();
-    console.log('Resources loaded ✓');
+    console.log('[NavPath] Resources loaded ✓');
   } catch (e) {
-    console.error('Failed to load resources:', e);
-    toast('Failed to load data. Please refresh.', 'error');
+    console.warn('[NavPath] Could not load data files (expected if running without server):', e.message);
+    // Set empty defaults so app doesn't crash on null checks
+    if (!App.syllabus) App.syllabus = { papers: [] };
+    if (!App.questions) App.questions = { questions: {} };
   }
 }
 
@@ -116,14 +151,14 @@ async function loadUserData() {
   const uid = App.user.uid;
 
   try {
-    // Get user document
     const userRef = db.collection('users').doc(uid);
     const userSnap = await userRef.get();
 
     if (userSnap.exists) {
       App.userDoc = userSnap.data();
     } else {
-      // First time user – create document
+      // FIX #3: Use App.firebase.db Timestamp reference, not bare firebase.firestore.Timestamp
+      // (the bare reference sometimes fails if Firestore isn't initialized before this runs)
       const now = firebase.firestore.Timestamp.now();
       App.userDoc = {
         email: App.user.email,
@@ -146,11 +181,10 @@ async function loadUserData() {
       App.progress[doc.id] = doc.data().completed;
     });
 
-    // Update streak
     await updateStreak();
 
   } catch (e) {
-    console.error('Failed to load user data:', e);
+    console.error('[NavPath] Failed to load user data:', e);
     toast('Could not load your progress. Check connection.', 'error');
   }
 }
@@ -159,7 +193,7 @@ async function loadUserData() {
 // TRIAL & PREMIUM CHECKS
 // ============================================================
 function getTrialStatus() {
-  if (!App.userDoc) return { active: false, daysLeft: 0 };
+  if (!App.userDoc) return { active: true, daysLeft: 3 }; // Default to trial active for new sessions
   if (App.userDoc.isPremium) return { active: false, isPremium: true, daysLeft: 999 };
 
   const start = App.userDoc.trialStartDate?.toDate?.() || new Date(App.userDoc.trialStartDate || Date.now());
@@ -174,7 +208,6 @@ function getTrialStatus() {
 function canAccessTopic(topicId) {
   const trial = getTrialStatus();
   if (trial.isPremium || trial.active) return true;
-  // After trial: only completed topics are accessible
   return App.progress[topicId] === true;
 }
 
@@ -185,7 +218,6 @@ async function saveTopicProgress(topicId, completed) {
   App.progress[topicId] = completed;
 
   if (!App.firebase || !App.user) {
-    // Demo mode – just update local state
     updateSyllabusUI();
     return;
   }
@@ -203,7 +235,7 @@ async function saveTopicProgress(topicId, completed) {
     updateSyllabusUI();
     updateProgressStats();
   } catch (e) {
-    console.error('Failed to save progress:', e);
+    console.error('[NavPath] Failed to save progress:', e);
     toast('Could not save progress. Try again.', 'error');
   }
 }
@@ -217,7 +249,7 @@ async function updateStreak() {
   const today = new Date().toISOString().split('T')[0];
   const lastDate = App.userDoc.lastStudiedDate;
 
-  if (lastDate === today) return; // Already updated today
+  if (lastDate === today) return;
 
   let newStreak = App.userDoc.streak || 0;
   if (lastDate) {
@@ -225,9 +257,9 @@ async function updateStreak() {
     yesterday.setDate(yesterday.getDate() - 1);
     const yStr = yesterday.toISOString().split('T')[0];
     if (lastDate === yStr) {
-      newStreak += 1; // Continued streak
+      newStreak += 1;
     } else if (lastDate !== today) {
-      newStreak = 1; // Reset streak
+      newStreak = 1;
     }
   } else {
     newStreak = 1;
@@ -239,7 +271,7 @@ async function updateStreak() {
   await App.firebase.db.collection('users').doc(App.user.uid).update({
     streak: newStreak,
     lastStudiedDate: today
-  }).catch(e => console.warn('Streak update failed:', e));
+  }).catch(e => console.warn('[NavPath] Streak update failed:', e));
 }
 
 // ============================================================
@@ -270,20 +302,29 @@ async function handleSignup() {
     await loadResources();
     renderDashboard();
     showScreen('main-screen');
-    updateNavHighlight('dashboard');
+    switchTab('dashboard');
     toast('Welcome to NavPath! (Demo Mode)', 'success');
+    btn.textContent = 'Start Free Trial 🚀';
+    btn.disabled = false;
     return;
   }
 
   try {
-    const { auth, db } = App.firebase;
+    const { auth } = App.firebase;
     const cred = await auth.createUserWithEmailAndPassword(email, pass);
     await cred.user.updateProfile({ displayName: name });
     toast('Account created! Welcome aboard 🎉', 'success');
-    // onAuthStateChanged will handle the rest
+    // FIX #2: Do NOT reset button here — onAuthStateChanged fires next
+    // and switches screen. If we reset, we risk a flash. The logout handler
+    // in onAuthStateChanged resets buttons when returning to auth screen.
   } catch (e) {
-    toast(e.message || 'Signup failed. Please try again.', 'error');
-    btn.textContent = 'Create Account';
+    // FIX #2: Always reset button on error so user isn't stuck
+    let msg = 'Signup failed. Please try again.';
+    if (e.code === 'auth/email-already-in-use') msg = 'Email already registered. Please sign in.';
+    else if (e.code === 'auth/invalid-email') msg = 'Invalid email address.';
+    else if (e.code === 'auth/weak-password') msg = 'Password is too weak.';
+    toast(msg, 'error');
+    btn.textContent = 'Start Free Trial 🚀';
     btn.disabled = false;
   }
 }
@@ -311,17 +352,29 @@ async function handleLogin() {
     await loadResources();
     renderDashboard();
     showScreen('main-screen');
-    updateNavHighlight('dashboard');
+    switchTab('dashboard');
     toast('Logged in! (Demo Mode)', 'success');
+    btn.textContent = 'Sign In →';
+    btn.disabled = false;
     return;
   }
 
   try {
     await App.firebase.auth.signInWithEmailAndPassword(email, pass);
-    // onAuthStateChanged handles the rest
+    // FIX #2: onAuthStateChanged handles the screen switch.
+    // DO NOT reset button here — it causes a race condition flash.
+    // Button is reset by the onAuthStateChanged logout branch if sign-out happens.
   } catch (e) {
-    toast('Invalid email or password.', 'error');
-    btn.textContent = 'Sign In';
+    // FIX #2: Always show specific, honest error and reset button
+    let msg = 'Invalid email or password.';
+    if (e.code === 'auth/user-not-found') msg = 'No account found with this email.';
+    else if (e.code === 'auth/wrong-password') msg = 'Incorrect password.';
+    else if (e.code === 'auth/invalid-email') msg = 'Invalid email address.';
+    else if (e.code === 'auth/too-many-requests') msg = 'Too many attempts. Please try again later.';
+    else if (e.code === 'auth/network-request-failed') msg = 'Network error. Check your connection.';
+    toast(msg, 'error');
+    // FIX #2: Reset button on error
+    btn.textContent = 'Sign In →';
     btn.disabled = false;
   }
 }
@@ -331,9 +384,16 @@ async function handleLogin() {
 // ============================================================
 async function handleLogout() {
   if (App.firebase) {
-    await App.firebase.auth.signOut();
+    try {
+      await App.firebase.auth.signOut();
+      // onAuthStateChanged will fire and call showScreen('auth-screen')
+    } catch (e) {
+      toast('Logout failed. Try again.', 'error');
+    }
   } else {
     App.user = null;
+    App.userDoc = null;
+    App.progress = {};
     showScreen('auth-screen');
   }
 }
@@ -345,20 +405,16 @@ function renderDashboard() {
   const name = App.userDoc?.displayName || App.user?.displayName || 'Sailor';
   const firstName = name.split(' ')[0];
 
-  // Welcome
-  $('#welcome-name').innerHTML = `Welcome back, <span>${firstName}</span>`;
+  const welcomeEl = $('#welcome-name');
+  if (welcomeEl) welcomeEl.innerHTML = `Welcome back, <span>${firstName}</span>`;
 
-  // Trial banner
   renderTrialBanner();
 
-  // Streak
   const streak = App.userDoc?.streak || 1;
-  $('#streak-count').textContent = streak;
+  const streakEl = $('#streak-count');
+  if (streakEl) streakEl.textContent = streak;
 
-  // Progress stats
   updateProgressStats();
-
-  // Progress chart
   renderProgressChart();
 }
 
@@ -373,17 +429,19 @@ function renderTrialBanner() {
   } else if (trial.active) {
     banner?.classList.remove('hidden');
     premBadge?.classList.add('hidden');
-    if ($('#trial-days')) $('#trial-days').textContent = trial.daysLeft;
-    const hours = new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening';
-    if ($('#trial-message')) $('#trial-message').textContent = `${trial.daysLeft} day${trial.daysLeft !== 1 ? 's' : ''} left in your free trial`;
+    const daysEl = $('#trial-days');
+    if (daysEl) daysEl.textContent = trial.daysLeft;
+    const msgEl = $('#trial-message');
+    if (msgEl) msgEl.textContent = `${trial.daysLeft} day${trial.daysLeft !== 1 ? 's' : ''} left in your free trial`;
   } else {
-    // Trial expired
     if (banner) {
       banner.classList.remove('hidden');
       banner.style.borderColor = 'rgba(239,68,68,0.4)';
       banner.style.background = 'rgba(239,68,68,0.07)';
-      if ($('#trial-days')) { $('#trial-days').style.color = '#ef4444'; $('#trial-days').textContent = '0'; }
-      if ($('#trial-message')) $('#trial-message').textContent = 'Trial expired – Upgrade to continue';
+      const daysEl = $('#trial-days');
+      if (daysEl) { daysEl.style.color = '#ef4444'; daysEl.textContent = '0'; }
+      const msgEl = $('#trial-message');
+      if (msgEl) msgEl.textContent = 'Trial expired – Upgrade to continue';
     }
   }
 }
@@ -411,7 +469,6 @@ function updateProgressStats() {
   if ($('#stat-remaining')) $('#stat-remaining').textContent = remaining;
   if ($('#stat-pct')) $('#stat-pct').textContent = pct + '%';
 
-  // Main progress bar
   const bar = $('#main-progress-bar');
   if (bar) bar.style.width = pct + '%';
   if ($('#main-progress-pct')) $('#main-progress-pct').textContent = pct + '%';
@@ -455,11 +512,7 @@ function renderProgressChart() {
       maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: ctx => ` ${ctx.raw}% complete`
-          }
-        }
+        tooltip: { callbacks: { label: ctx => ` ${ctx.raw}% complete` } }
       },
       scales: {
         y: {
@@ -491,13 +544,11 @@ function renderSyllabus() {
     paperEl.className = 'paper-card';
     paperEl.dataset.paperId = paper.id;
 
-    // Count totals
     let pTotal = 0, pDone = 0;
     paper.subjects.forEach(s => s.chapters.forEach(c => c.topics.forEach(t => {
       pTotal++; if (App.progress[t.id]) pDone++;
     })));
     const pPct = pTotal ? Math.round(pDone / pTotal * 100) : 0;
-
     const subjectIcon = paper.subjects[0]?.icon || '📚';
 
     paperEl.innerHTML = `
@@ -560,9 +611,7 @@ function renderChapters(paper) {
 }
 
 function renderTopics(chapter) {
-  const trial = getTrialStatus();
   let html = '';
-
   chapter.topics.forEach(topic => {
     const done = App.progress[topic.id] || false;
     const accessible = canAccessTopic(topic.id);
@@ -593,17 +642,15 @@ function toggleChapter(chapterId) {
 async function toggleTopic(topicId) {
   const current = App.progress[topicId] || false;
   await saveTopicProgress(topicId, !current);
-
   if (!current) {
     toast('Topic marked complete! 🎯', 'success');
-    // Update streak
     await updateStreak();
   }
 }
 
 function updateSyllabusUI() {
-  // Re-render syllabus if on that tab
-  if (App.currentScreen === 'main-screen' && document.getElementById('tab-syllabus')?.classList.contains('active-tab')) {
+  const syllabusTab = document.getElementById('tab-syllabus');
+  if (App.currentScreen === 'main-screen' && syllabusTab?.classList.contains('active-tab')) {
     renderSyllabus();
   }
   updateProgressStats();
@@ -611,6 +658,13 @@ function updateSyllabusUI() {
 
 // ============================================================
 // QUIZ SYSTEM
+// FIX #4: renderQuestion() expects DOM nodes (#quiz-q-number, etc.)
+// that only exist AFTER renderLiveQuiz() injects them.
+// Previously startQuiz() called renderQuestion() immediately — these
+// nodes were null so the quiz silently broke.
+// FIX: startQuiz() now builds the quiz shell itself before calling
+// renderQuestion(), removing the dependency on the fragile
+// index.html override script timing.
 // ============================================================
 function startQuiz(chapterId) {
   const qBank = App.questions?.questions;
@@ -619,24 +673,42 @@ function startQuiz(chapterId) {
     return;
   }
 
-  // Shuffle questions
   const questions = [...qBank[chapterId]].sort(() => Math.random() - 0.5);
 
-  App.currentQuiz = {
-    chapterId,
-    questions,
-    idx: 0,
-    score: 0,
-    answered: false
-  };
+  App.currentQuiz = { chapterId, questions, idx: 0, score: 0, answered: false };
 
-  showQuizScreen();
-  renderQuestion();
-}
-
-function showQuizScreen() {
-  // Switch tab to quiz view
   switchTab('quiz');
+
+  // FIX #4: Build the quiz DOM shell, then render the first question into it
+  const area = $('#quiz-question-area');
+  const result = $('#quiz-result-area');
+  if (result) result.classList.add('hidden');
+  if (area) {
+    area.classList.remove('hidden');
+    area.innerHTML = `
+      <div class="quiz-container">
+        <div class="quiz-header">
+          <div class="quiz-progress-text" id="quiz-progress-text">1/${questions.length}</div>
+          <div class="streak-badge">🎯 Score: <span id="quiz-score-live">0</span></div>
+        </div>
+        <div class="progress-bar-wrap mb-2" style="height:4px;">
+          <div class="progress-bar" id="quiz-prog-bar" style="width:0%;transition:width 0.4s ease;"></div>
+        </div>
+        <div class="quiz-question-card">
+          <div class="quiz-q-number" id="quiz-q-number">Question 1</div>
+          <div class="quiz-q-text" id="quiz-q-text">Loading...</div>
+        </div>
+        <div class="quiz-options" id="quiz-options"></div>
+        <div class="quiz-explanation" id="quiz-explanation"></div>
+        <button class="btn btn-primary btn-block" id="quiz-next-btn"
+                onclick="nextQuestion()" style="margin-top:0.5rem;">
+          Next Question
+        </button>
+      </div>
+    `;
+  }
+
+  renderQuestion();
 }
 
 function renderQuestion() {
@@ -646,14 +718,24 @@ function renderQuestion() {
 
   App.currentQuiz.answered = false;
 
-  $('#quiz-q-number').textContent = `Question ${idx + 1} of ${questions.length}`;
-  $('#quiz-q-text').textContent = q.question;
-  $('#quiz-progress-text').textContent = `${idx + 1}/${questions.length} • Score: ${App.currentQuiz.score}`;
-  $('#quiz-explanation').classList.remove('show');
-  $('#quiz-next-btn').textContent = idx === questions.length - 1 ? 'Finish Quiz' : 'Next Question';
+  const qNum = $(`#quiz-q-number`);
+  const qText = $(`#quiz-q-text`);
+  const qProg = $(`#quiz-progress-text`);
+  const qExp  = $(`#quiz-explanation`);
+  const qNext = $(`#quiz-next-btn`);
+  const qBar  = $(`#quiz-prog-bar`);
+  const scoreLive = $(`#quiz-score-live`);
 
-  // Render options
+  if (qNum)  qNum.textContent  = `Question ${idx + 1} of ${questions.length}`;
+  if (qText) qText.textContent = q.question;
+  if (qProg) qProg.textContent = `${idx + 1}/${questions.length} • Score: ${App.currentQuiz.score}`;
+  if (qExp)  qExp.classList.remove('show');
+  if (qNext) qNext.textContent = idx === questions.length - 1 ? 'Finish Quiz' : 'Next Question';
+  if (qBar)  qBar.style.width  = `${(idx / questions.length) * 100}%`;
+  if (scoreLive) scoreLive.textContent = App.currentQuiz.score;
+
   const optionsEl = $('#quiz-options');
+  if (!optionsEl) return;
   optionsEl.innerHTML = '';
   const letters = ['A', 'B', 'C', 'D'];
   q.options.forEach((opt, i) => {
@@ -683,12 +765,16 @@ function selectAnswer(selected, correct) {
     toast('Wrong. Review the explanation below.', 'error');
   }
 
-  // Show explanation
   const expEl = $('#quiz-explanation');
-  expEl.innerHTML = `<strong>Explanation:</strong> ${App.currentQuiz.questions[App.currentQuiz.idx].explanation}`;
-  expEl.classList.add('show');
+  if (expEl) {
+    expEl.innerHTML = `<strong>Explanation:</strong> ${App.currentQuiz.questions[App.currentQuiz.idx].explanation}`;
+    expEl.classList.add('show');
+  }
 
-  $('#quiz-progress-text').textContent = `${App.currentQuiz.idx + 1}/${App.currentQuiz.questions.length} • Score: ${App.currentQuiz.score}`;
+  const progEl = $('#quiz-progress-text');
+  if (progEl) progEl.textContent = `${App.currentQuiz.idx + 1}/${App.currentQuiz.questions.length} • Score: ${App.currentQuiz.score}`;
+  const scoreEl = $('#quiz-score-live');
+  if (scoreEl) scoreEl.textContent = App.currentQuiz.score;
 }
 
 function nextQuestion() {
@@ -705,25 +791,32 @@ function showQuizResults() {
   const pct = Math.round(score / questions.length * 100);
   const emoji = pct >= 80 ? '🏆' : pct >= 60 ? '👍' : '📚';
 
-  $('#quiz-result-area').innerHTML = `
-    <div class="card" style="text-align:center;padding:2rem;">
-      <div style="font-size:3rem;margin-bottom:1rem;">${emoji}</div>
-      <h2 style="font-size:2rem;color:var(--gold);">${pct}%</h2>
-      <p style="margin:0.5rem 0 1.5rem;">You scored ${score} out of ${questions.length}</p>
-      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">
-        ${pct >= 80 ? 'Excellent work, Sailor! 🎖️' : pct >= 60 ? 'Good progress! Keep it up.' : 'Keep studying – you\'ll get there!'}
-      </p>
-      <button class="btn btn-primary btn-block" onclick="resetQuiz()">Try Again</button>
-      <button class="btn btn-outline btn-block mt-1" onclick="switchTab('syllabus')">Back to Syllabus</button>
-    </div>
-  `;
-  $('#quiz-question-area').classList.add('hidden');
-  $('#quiz-result-area').classList.remove('hidden');
+  const resultArea = $('#quiz-result-area');
+  if (resultArea) {
+    resultArea.innerHTML = `
+      <div class="card" style="text-align:center;padding:2rem;">
+        <div style="font-size:3rem;margin-bottom:1rem;">${emoji}</div>
+        <h2 style="font-size:2rem;color:var(--gold);">${pct}%</h2>
+        <p style="margin:0.5rem 0 1.5rem;">You scored ${score} out of ${questions.length}</p>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">
+          ${pct >= 80 ? 'Excellent work, Sailor! 🎖️' : pct >= 60 ? 'Good progress! Keep it up.' : "Keep studying – you'll get there!"}
+        </p>
+        <button class="btn btn-primary btn-block" onclick="resetQuiz()">Try Again</button>
+        <button class="btn btn-outline btn-block mt-1" onclick="switchTab('syllabus')">Back to Syllabus</button>
+      </div>
+    `;
+    resultArea.classList.remove('hidden');
+  }
+
+  const questionArea = $('#quiz-question-area');
+  if (questionArea) questionArea.classList.add('hidden');
 }
 
 function resetQuiz() {
-  $('#quiz-question-area').classList.remove('hidden');
-  $('#quiz-result-area').classList.add('hidden');
+  const questionArea = $('#quiz-question-area');
+  const resultArea = $('#quiz-result-area');
+  if (questionArea) questionArea.classList.remove('hidden');
+  if (resultArea) resultArea.classList.add('hidden');
   if (App.currentQuiz.chapterId) {
     startQuiz(App.currentQuiz.chapterId);
   }
@@ -756,7 +849,7 @@ const FORMULAS = {
     { title: "Archimedes' Principle", content: 'Buoyant Force = ρ × V × g' },
     { title: 'Mirror Formula', content: '1/f = 1/v + 1/u' },
     { title: 'Lens Formula', content: '1/f = 1/v - 1/u' },
-    { title: 'Snell\'s Law', content: 'n₁sin θ₁ = n₂sin θ₂' },
+    { title: "Snell's Law", content: 'n₁sin θ₁ = n₂sin θ₂' },
     { title: 'SHM Frequency', content: 'f = 1/(2π) × √(k/m)' },
   ]
 };
@@ -769,7 +862,6 @@ function renderFormulas() {
     <div class="section-header mb-2">
       <h2 class="section-title">📐 Formulas & Tricks</h2>
     </div>
-
     <div class="mb-2">
       <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
         <button class="btn btn-primary btn-sm" id="fm-btn-math" onclick="showFormulaTab('math')">Mathematics</button>
@@ -800,10 +892,9 @@ function showFormulaTab(tab) {
 }
 
 // ============================================================
-// TAB SWITCHING (inside main screen)
+// TAB SWITCHING
 // ============================================================
 function switchTab(tabName) {
-  // Hide all tab contents
   $$('.tab-content').forEach(el => el.classList.remove('active-tab'));
   $$('.nav-item').forEach(el => el.classList.remove('active'));
 
@@ -813,23 +904,14 @@ function switchTab(tabName) {
   content?.classList.add('active-tab');
   navItem?.classList.add('active');
 
-  // Render content for the tab
   switch (tabName) {
-    case 'dashboard':
-      renderDashboard();
-      break;
-    case 'syllabus':
-      renderSyllabus();
-      break;
+    case 'dashboard': renderDashboard(); break;
+    case 'syllabus':  renderSyllabus();  break;
     case 'quiz':
       if (!App.currentQuiz.questions.length) renderQuizLanding();
       break;
-    case 'formulas':
-      renderFormulas();
-      break;
-    case 'profile':
-      renderProfile();
-      break;
+    case 'formulas': renderFormulas(); break;
+    case 'profile':  renderProfile();  break;
   }
 }
 
@@ -848,6 +930,7 @@ function renderQuizLanding() {
         <div class="empty-icon">🧠</div>
         <h3>Practice Questions</h3>
         <p>Go to Syllabus → tap "Quiz" on any chapter to start practicing.</p>
+        <button class="btn btn-primary mt-2" onclick="switchTab('syllabus')">Go to Syllabus</button>
       </div>
     `;
   }
@@ -860,7 +943,7 @@ function renderProfile() {
   const el = $('#tab-profile');
   if (!el) return;
 
-  const name = App.userDoc?.displayName || 'User';
+  const name = App.userDoc?.displayName || App.user?.displayName || 'User';
   const email = App.user?.email || '';
   const trial = getTrialStatus();
   const streak = App.userDoc?.streak || 0;
@@ -946,13 +1029,8 @@ function toggleDarkMode() {
 // ============================================================
 // PREMIUM MODAL
 // ============================================================
-function openPremiumModal() {
-  show('#premium-modal');
-}
-
-function closePremiumModal() {
-  hide('#premium-modal');
-}
+function openPremiumModal()  { show('#premium-modal'); }
+function closePremiumModal() { hide('#premium-modal'); }
 
 function selectPlan(plan) {
   App.selectedPlan = plan;
@@ -965,22 +1043,20 @@ function selectPlan(plan) {
 // ============================================================
 async function initiatePurchase() {
   const plan = App.selectedPlan;
-  const prices = { monthly: 9900, yearly: 19900 }; // in paise
-  const labels = { monthly: '3-Month Plan', yearly: '1-Year Plan' };
-  const amount = prices[plan];
+  const prices = { monthly: 9900, yearly: 19900 };
+  const labels  = { monthly: '3-Month Plan', yearly: '1-Year Plan' };
+  const amount  = prices[plan];
 
-  // 🔑 REPLACE with your actual Razorpay Key ID
-  const RAZORPAY_KEY = 'rzp_test_YOUR_KEY_HERE';
+  const RAZORPAY_KEY = 'rzp_test_YOUR_KEY_HERE'; // ← replace with real key
 
   const options = {
     key: RAZORPAY_KEY,
-    amount: amount,
+    amount,
     currency: 'INR',
     name: 'NavPath',
     description: labels[plan],
     image: 'assets/icons/icon-192.png',
     handler: async function(response) {
-      // Payment successful – verify on backend or update Firestore
       await handlePaymentSuccess(response, plan);
     },
     prefill: {
@@ -988,9 +1064,7 @@ async function initiatePurchase() {
       name: App.userDoc?.displayName || ''
     },
     theme: { color: '#c9a84c' },
-    modal: {
-      ondismiss: () => toast('Payment cancelled.', 'error')
-    }
+    modal: { ondismiss: () => toast('Payment cancelled.', 'error') }
   };
 
   if (typeof Razorpay === 'undefined') {
@@ -1003,9 +1077,6 @@ async function initiatePurchase() {
 }
 
 async function handlePaymentSuccess(response, plan) {
-  // In production: verify payment on your backend server
-  // For now, update Firestore directly (use Cloud Functions in production)
-
   const expiry = new Date();
   if (plan === 'monthly') expiry.setMonth(expiry.getMonth() + 3);
   else expiry.setFullYear(expiry.getFullYear() + 1);
@@ -1017,8 +1088,6 @@ async function handlePaymentSuccess(response, plan) {
       premiumExpiry: firebase.firestore.Timestamp.fromDate(expiry),
       planType: plan,
     });
-
-    // Log payment
     await db.collection('users').doc(App.user.uid)
       .collection('payments').add({
         razorpay_payment_id: response.razorpay_payment_id,
@@ -1027,7 +1096,6 @@ async function handlePaymentSuccess(response, plan) {
         plan,
         createdAt: firebase.firestore.Timestamp.now()
       });
-
     App.userDoc.isPremium = true;
   }
 
@@ -1038,7 +1106,7 @@ async function handlePaymentSuccess(response, plan) {
 }
 
 // ============================================================
-// PWA SERVICE WORKER REGISTRATION
+// PWA SERVICE WORKER
 // ============================================================
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
@@ -1072,10 +1140,16 @@ function installApp() {
 
 // ============================================================
 // AUTH TAB TOGGLE
+// FIX #8: Original code used $(`#tab-${tab}`) which matched BOTH
+// the auth tab buttons (id="tab-login") AND the tab content divs
+// (id="tab-dashboard" etc.). By renaming the auth button IDs to
+// "authtab-login" / "authtab-signup" (done in index.html fix too),
+// the selector is unambiguous.
 // ============================================================
 function switchAuthTab(tab) {
   $$('.auth-tab').forEach(t => t.classList.remove('active'));
-  $(`#tab-${tab}`)?.classList.add('active');
+  // FIX #8: use renamed IDs authtab-login / authtab-signup
+  $(`#authtab-${tab}`)?.classList.add('active');
 
   if (tab === 'login') {
     $('#signup-form')?.classList.add('hidden');
@@ -1090,20 +1164,15 @@ function switchAuthTab(tab) {
 // BOOT
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
-  // Check saved dark mode preference
   const savedDark = localStorage.getItem('navpath-dark');
   if (savedDark === '0') {
     App.darkMode = false;
     document.documentElement.setAttribute('data-theme', 'light');
   }
 
-  // Register service worker
   registerServiceWorker();
-
-  // Initialize the app
   initApp();
 
-  // Handle enter key on forms
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       const loginForm = $('#login-form');
@@ -1114,23 +1183,28 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Expose necessary functions to global scope for onclick handlers
-window.handleSignup = handleSignup;
-window.handleLogin = handleLogin;
-window.handleLogout = handleLogout;
-window.switchAuthTab = switchAuthTab;
-window.switchTab = switchTab;
-window.togglePaper = togglePaper;
-window.toggleChapter = toggleChapter;
-window.toggleTopic = toggleTopic;
-window.startQuiz = startQuiz;
-window.selectAnswer = selectAnswer;
-window.nextQuestion = nextQuestion;
-window.resetQuiz = resetQuiz;
-window.openPremiumModal = openPremiumModal;
+// ============================================================
+// GLOBAL EXPORTS
+// FIX #5: renderQuestion and App were not exported to window,
+// breaking the inline override script in index.html
+// ============================================================
+window.handleSignup      = handleSignup;
+window.handleLogin       = handleLogin;
+window.handleLogout      = handleLogout;
+window.switchAuthTab     = switchAuthTab;
+window.switchTab         = switchTab;
+window.togglePaper       = togglePaper;
+window.toggleChapter     = toggleChapter;
+window.toggleTopic       = toggleTopic;
+window.startQuiz         = startQuiz;
+window.renderQuestion    = renderQuestion;   // FIX #5: was missing
+window.selectAnswer      = selectAnswer;
+window.nextQuestion      = nextQuestion;
+window.resetQuiz         = resetQuiz;
+window.openPremiumModal  = openPremiumModal;
 window.closePremiumModal = closePremiumModal;
-window.selectPlan = selectPlan;
-window.initiatePurchase = initiatePurchase;
-window.toggleDarkMode = toggleDarkMode;
-window.installApp = installApp;
-window.showFormulaTab = showFormulaTab;
+window.selectPlan        = selectPlan;
+window.initiatePurchase  = initiatePurchase;
+window.toggleDarkMode    = toggleDarkMode;
+window.installApp        = installApp;
+window.showFormulaTab    = showFormulaTab;

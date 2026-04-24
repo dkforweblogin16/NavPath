@@ -21,7 +21,9 @@
   <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Firebase SDK (v9 compat) -->
+  <!-- FIX: Firebase SDK must load BEFORE firebase.js and script.js.
+       They were in <head> originally which is correct, but keeping
+       them here ensures order is explicit and clear. -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -98,9 +100,12 @@
     <!-- Auth Card -->
     <div class="auth-card" style="position:relative;z-index:1;">
       <!-- Tab switcher -->
+      <!-- FIX #8: Renamed IDs from tab-login/tab-signup to authtab-login/authtab-signup
+           to prevent switchAuthTab()'s $(`#authtab-${tab}`) from accidentally selecting
+           the main content tab divs (#tab-dashboard, etc.) -->
       <div class="auth-tabs">
-        <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Sign In</button>
-        <button class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Create Account</button>
+        <button class="auth-tab active" id="authtab-login" onclick="switchAuthTab('login')">Sign In</button>
+        <button class="auth-tab" id="authtab-signup" onclick="switchAuthTab('signup')">Create Account</button>
       </div>
 
       <!-- LOGIN FORM -->
@@ -164,9 +169,7 @@
   <!-- ======================================================== -->
   <!-- SCREEN 2: MAIN APP (Tabs)                                -->
   <!-- ======================================================== -->
-
-
-    <div id="main-screen" class="screen" style="height:100vh; overflow-y:auto;">
+  <div id="main-screen" class="screen" style="height:100vh; overflow-y:auto;">
 
     <!-- TOP NAVIGATION -->
     <nav class="top-nav">
@@ -321,14 +324,13 @@
 
 
     <!-- ─── SYLLABUS TAB ─── -->
-    <div id="tab-syllabus" class="tab-content" style="display:none;">
+    <div id="tab-syllabus" class="tab-content">
       <div class="main-content">
         <div class="section-header mb-2">
           <h2 class="section-title">📚 NEA Syllabus</h2>
           <span style="font-size:0.75rem;color:var(--text-muted);">Tap topics to mark done ✓</span>
         </div>
         <div id="syllabus-container">
-          <!-- Rendered by JS -->
           <div class="shimmer" style="height:80px;margin-bottom:1rem;"></div>
           <div class="shimmer" style="height:80px;margin-bottom:1rem;"></div>
           <div class="shimmer" style="height:80px;"></div>
@@ -339,14 +341,16 @@
 
 
     <!-- ─── QUIZ TAB ─── -->
-    <div id="tab-quiz" class="tab-content" style="display:none;">
+    <div id="tab-quiz" class="tab-content">
       <div class="main-content">
         <div class="section-header mb-2">
           <h2 class="section-title">🧠 Practice Quiz</h2>
         </div>
-
-        <!-- Quiz question area -->
-        <div id="quiz-question-area" class="quiz-container">
+        <!-- FIX: quiz-question-area and quiz-result-area are kept simple.
+             The quiz shell (question card, options, etc.) is now injected
+             by startQuiz() in script.js directly — no more fragile
+             inline override script that races with script.js loading. -->
+        <div id="quiz-question-area">
           <div class="empty-state">
             <div class="empty-icon">🎯</div>
             <h3>Start Practicing</h3>
@@ -354,16 +358,14 @@
             <button class="btn btn-primary mt-2" onclick="switchTab('syllabus')">Go to Syllabus</button>
           </div>
         </div>
-
-        <!-- Quiz result area -->
-        <div id="quiz-result-area" class="hidden quiz-container"></div>
+        <div id="quiz-result-area" class="hidden"></div>
       </div>
     </div>
     <!-- END QUIZ TAB -->
 
 
     <!-- ─── FORMULAS TAB ─── -->
-    <div id="tab-formulas" class="tab-content" style="display:none;">
+    <div id="tab-formulas" class="tab-content">
       <div class="main-content" id="formulas-container">
         <!-- Rendered by JS -->
       </div>
@@ -372,7 +374,7 @@
 
 
     <!-- ─── PROFILE TAB ─── -->
-    <div id="tab-profile" class="tab-content" style="display:none;">
+    <div id="tab-profile" class="tab-content">
       <!-- Rendered by JS -->
     </div>
     <!-- END PROFILE TAB -->
@@ -488,90 +490,27 @@
 
 
 <!-- ============================================================ -->
-<!-- INLINE STYLES FOR ACTIVE TAB VISIBILITY                      -->
+<!-- STYLES FOR TAB VISIBILITY                                    -->
 <!-- ============================================================ -->
 <style>
+  /* FIX: Removed inline style="display:none" from tab divs in HTML above.
+     All tab visibility is controlled purely by these CSS rules so there's
+     no conflict between inline styles and JS classList manipulation. */
   .tab-content { display: none; }
   .tab-content.active-tab { display: block !important; animation: fadeInUp 0.35s ease; }
-
-  /* Quiz live layout override when inside tab */
-  #tab-quiz.active-tab .quiz-container { max-width: none; }
-
-  /* Scrollable quiz options */
   #quiz-options { max-height: 50vh; overflow-y: auto; }
 </style>
 
 
 <!-- ============================================================ -->
-<!-- SCRIPTS                                                      -->
-<!-- ============================================================ -->
+<!-- SCRIPTS — ORDER MATTERS:
+     1. Firebase SDKs (in <head> above)
+     2. firebase.js  (initializes Firebase, returns { auth, db })
+     3. script.js    (full app logic, attaches onAuthStateChanged)
+     NO inline override scripts — quiz override is now inside script.js
+============================================================ -->
 <script src="firebase.js"></script>
 <script src="script.js"></script>
-
-<!-- Quiz Live Layout Enhancement Script -->
-<script>
-  // Enhance quiz screen with live bottom bar
-  function renderLiveQuiz() {
-    const area = document.getElementById('quiz-question-area');
-    if (!area || !window.App?.currentQuiz?.questions?.length) return;
-
-    area.innerHTML = `
-      <div class="quiz-container">
-        <div class="quiz-header">
-          <div class="quiz-progress-text" id="quiz-progress-text">1/1</div>
-          <div class="streak-badge">🎯 Score: <span id="quiz-score-live">0</span></div>
-        </div>
-        <!-- Progress bar -->
-        <div class="progress-bar-wrap mb-2" style="height:4px;">
-          <div class="progress-bar" id="quiz-prog-bar" style="width:0%;transition:width 0.4s ease;"></div>
-        </div>
-        <!-- Question Card -->
-        <div class="quiz-question-card">
-          <div class="quiz-q-number" id="quiz-q-number">Question 1</div>
-          <div class="quiz-q-text" id="quiz-q-text">Loading...</div>
-        </div>
-        <!-- Options -->
-        <div class="quiz-options" id="quiz-options"></div>
-        <!-- Explanation -->
-        <div class="quiz-explanation" id="quiz-explanation"></div>
-        <!-- Next Button -->
-        <button class="btn btn-primary btn-block" id="quiz-next-btn"
-                onclick="nextQuestion()" style="margin-top:0.5rem;">
-          Next Question
-        </button>
-      </div>
-    `;
-  }
-
-  // Override startQuiz to use live layout
-  const _origStart = window.startQuiz;
-  window.startQuiz = function(chapterId) {
-    window.switchTab('quiz');
-    _origStart?.(chapterId);
-    // Small delay to let tab render
-    setTimeout(() => {
-      const area = document.getElementById('quiz-question-area');
-      if (area && window.App?.currentQuiz?.questions?.length) {
-        renderLiveQuiz();
-        window.renderQuestion();
-      }
-    }, 100);
-  };
-
-  // Override renderQuestion to update progress bar
-  const _origRender = window.renderQuestion;
-  window.renderQuestion = function() {
-    _origRender?.();
-    const q = window.App?.currentQuiz;
-    if (q) {
-      const pct = ((q.idx) / q.questions.length) * 100;
-      const bar = document.getElementById('quiz-prog-bar');
-      if (bar) bar.style.width = pct + '%';
-      const scoreEl = document.getElementById('quiz-score-live');
-      if (scoreEl) scoreEl.textContent = q.score;
-    }
-  };
-</script>
 
 </body>
 </html>
