@@ -1,0 +1,420 @@
+{
+  "papers": [
+    {
+      "id": "paper1",
+      "name": "Paper I – English & GK",
+      "totalMarks": 100,
+      "subjects": [
+        {
+          "id": "english",
+          "name": "English",
+          "marks": 70,
+          "icon": "📝",
+          "chapters": [
+            {
+              "id": "eng_comp",
+              "name": "Comprehension",
+              "marks": 5,
+              "topics": [
+                { "id": "e1t1", "name": "Short question answers testing interpretation" },
+                { "id": "e1t2", "name": "Drawing inferences from passages" }
+              ]
+            },
+            {
+              "id": "eng_tenses",
+              "name": "Tenses and Voices",
+              "marks": 30,
+              "topics": [
+                { "id": "e2t1", "name": "Degree of Comparison" },
+                { "id": "e2t2", "name": "Tenses – All forms" },
+                { "id": "e2t3", "name": "Direct and Indirect Speech" },
+                { "id": "e2t4", "name": "Active and Passive Voice" },
+                { "id": "e2t5", "name": "Correct usage of prepositions" },
+                { "id": "e2t6", "name": "Conjunctions, words and their usage" },
+                { "id": "e2t7", "name": "Punctuation and correction of sentences" },
+                { "id": "e2t8", "name": "Use of idioms and phrases" },
+                { "id": "e2t9", "name": "Transformation of sentences" }
+              ]
+            },
+            {
+              "id": "eng_grammar",
+              "name": "Applied Grammar",
+              "marks": 25,
+              "topics": [
+                { "id": "e3t1", "name": "Gap filling in meaningful contexts" },
+                { "id": "e3t2", "name": "Dialogue completion" },
+                { "id": "e3t3", "name": "Sentence transformation" },
+                { "id": "e3t4", "name": "Changing narration of given input" },
+                { "id": "e3t5", "name": "Reordering of words and sentences" },
+                { "id": "e3t6", "name": "Editing and error correction" },
+                { "id": "e3t7", "name": "Synonyms and antonyms" }
+              ]
+            },
+            {
+              "id": "eng_idioms",
+              "name": "Idioms and Phrases",
+              "marks": 5,
+              "topics": [
+                { "id": "e4t1", "name": "Common idioms and their meanings" },
+                { "id": "e4t2", "name": "Phrasal verbs and their usage" }
+              ]
+            },
+            {
+              "id": "eng_vocab",
+              "name": "Vocabulary",
+              "marks": 5,
+              "topics": [
+                { "id": "e5t1", "name": "Word meanings in context" },
+                { "id": "e5t2", "name": "One word substitutions" },
+                { "id": "e5t3", "name": "Spelling and usage" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "gk",
+          "name": "General Knowledge",
+          "marks": 30,
+          "icon": "🌐",
+          "chapters": [
+            {
+              "id": "gk_const",
+              "name": "Indian Constitution & Administration",
+              "marks": 5,
+              "topics": [
+                { "id": "g1t1", "name": "Constitution basics and Preamble" },
+                { "id": "g1t2", "name": "Fundamental Rights and Duties" },
+                { "id": "g1t3", "name": "Election and Representation" },
+                { "id": "g1t4", "name": "Executive, Legislature, Judiciary" },
+                { "id": "g1t5", "name": "Federalism and Local Governments" }
+              ]
+            },
+            {
+              "id": "gk_military",
+              "name": "Basic Military History",
+              "marks": 5,
+              "topics": [
+                { "id": "g2t1", "name": "World War I – causes and outcome" },
+                { "id": "g2t2", "name": "World War II – key battles" },
+                { "id": "g2t3", "name": "Indo-Pak War 1947" },
+                { "id": "g2t4", "name": "Indo-Pak War 1965" },
+                { "id": "g2t5", "name": "Indo-Pak War 1971" },
+                { "id": "g2t6", "name": "Kargil War 1999" }
+              ]
+            },
+            {
+              "id": "gk_current",
+              "name": "Topics of Current Interest",
+              "marks": 5,
+              "topics": [
+                { "id": "g3t1", "name": "National current affairs" },
+                { "id": "g3t2", "name": "International current affairs" },
+                { "id": "g3t3", "name": "Sports and awards" }
+              ]
+            },
+            {
+              "id": "gk_abbrev",
+              "name": "Common Abbreviations",
+              "marks": 5,
+              "topics": [
+                { "id": "g4t1", "name": "Military abbreviations (INS, MARCOS, etc.)" },
+                { "id": "g4t2", "name": "Government & science abbreviations" },
+                { "id": "g4t3", "name": "Technology abbreviations" }
+              ]
+            },
+            {
+              "id": "gk_scitech",
+              "name": "Recent Developments in Science & Tech",
+              "marks": 5,
+              "topics": [
+                { "id": "g5t1", "name": "Space technology – ISRO missions" },
+                { "id": "g5t2", "name": "Defence technology advancements" },
+                { "id": "g5t3", "name": "AI, Robotics basics" }
+              ]
+            },
+            {
+              "id": "gk_navy",
+              "name": "Indian Navy Awareness",
+              "marks": 5,
+              "topics": [
+                { "id": "g6t1", "name": "Structure of Indian Navy" },
+                { "id": "g6t2", "name": "Naval ships, submarines and aircraft" },
+                { "id": "g6t3", "name": "Naval bases and commands" },
+                { "id": "g6t4", "name": "Naval operations and exercises" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paper2",
+      "name": "Paper II – Mathematics",
+      "totalMarks": 100,
+      "subjects": [
+        {
+          "id": "maths",
+          "name": "Mathematics",
+          "marks": 100,
+          "icon": "📐",
+          "chapters": [
+            {
+              "id": "math_trig",
+              "name": "Trigonometry",
+              "marks": 15,
+              "topics": [
+                { "id": "m1t1", "name": "Trigonometric ratios of angles" },
+                { "id": "m1t2", "name": "Values of standard angles (0°,30°,45°,60°,90°)" },
+                { "id": "m1t3", "name": "Conversion between degree and radian" },
+                { "id": "m1t4", "name": "Domains and range of trig functions" },
+                { "id": "m1t5", "name": "Heights and distances problems" },
+                { "id": "m1t6", "name": "Positive and negative angles" }
+              ]
+            },
+            {
+              "id": "math_algebra",
+              "name": "Algebra",
+              "marks": 17,
+              "topics": [
+                { "id": "m2t1", "name": "Principle of Mathematical Induction" },
+                { "id": "m2t2", "name": "Least inductive subset of real numbers" },
+                { "id": "m2t3", "name": "Linear Inequalities in one variable" },
+                { "id": "m2t4", "name": "Graphical solution of linear inequalities" },
+                { "id": "m2t5", "name": "Permutations – fundamental principle of counting" },
+                { "id": "m2t6", "name": "Combinations and factorial n" },
+                { "id": "m2t7", "name": "Binomial Theorem – Pascal's triangle" },
+                { "id": "m2t8", "name": "General and middle term in binomial expansion" },
+                { "id": "m2t9", "name": "Arithmetic Progression (AP)" },
+                { "id": "m2t10", "name": "Geometric Progression (GP)" },
+                { "id": "m2t11", "name": "Arithmetic Mean (AM) and Geometric Mean (GM)" },
+                { "id": "m2t12", "name": "Relation between AM and GM" }
+              ]
+            },
+            {
+              "id": "math_coord",
+              "name": "Coordinate Geometry",
+              "marks": 15,
+              "topics": [
+                { "id": "m3t1", "name": "Straight Lines – slope of a line" },
+                { "id": "m3t2", "name": "Equations of a line (various forms)" },
+                { "id": "m3t3", "name": "Angle between two lines" },
+                { "id": "m3t4", "name": "Distance of a point from a line" },
+                { "id": "m3t5", "name": "Conic Sections – circle, ellipse" },
+                { "id": "m3t6", "name": "Parabola and Hyperbola" },
+                { "id": "m3t7", "name": "Standard equations and simple properties" }
+              ]
+            },
+            {
+              "id": "math_calculus",
+              "name": "Calculus",
+              "marks": 20,
+              "topics": [
+                { "id": "m4t1", "name": "Limits of functions" },
+                { "id": "m4t2", "name": "Derivatives – rate of change of distance" },
+                { "id": "m4t3", "name": "Derivatives of polynomial and trig functions" },
+                { "id": "m4t4", "name": "Fundamental theorem of Calculus" },
+                { "id": "m4t5", "name": "Continuity and differentiability" },
+                { "id": "m4t6", "name": "Derivative of composite functions – chain rule" },
+                { "id": "m4t7", "name": "Derivatives of inverse trig functions" },
+                { "id": "m4t8", "name": "Logarithmic differentiation" },
+                { "id": "m4t9", "name": "Integration as inverse of differentiation" },
+                { "id": "m4t10", "name": "Integration by substitution, partial fractions, by parts" },
+                { "id": "m4t11", "name": "Definite integrals as limit of sum" }
+              ]
+            },
+            {
+              "id": "math_stats",
+              "name": "Statistics & Probability",
+              "marks": 15,
+              "topics": [
+                { "id": "m5t1", "name": "Mean deviation, Variance, Standard deviation" },
+                { "id": "m5t2", "name": "Analysis of frequency distributions" },
+                { "id": "m5t3", "name": "Outcomes of random experiments" },
+                { "id": "m5t4", "name": "Exhaustive and mutually exclusive events" },
+                { "id": "m5t5", "name": "Conditional probability" },
+                { "id": "m5t6", "name": "Independent events" }
+              ]
+            },
+            {
+              "id": "math_matrix",
+              "name": "Matrices & Determinants",
+              "marks": 10,
+              "topics": [
+                { "id": "m6t1", "name": "Types of matrices – zero, transpose, symmetric" },
+                { "id": "m6t2", "name": "Matrix addition, multiplication, scalar multiplication" },
+                { "id": "m6t3", "name": "Elementary row and column operations" },
+                { "id": "m6t4", "name": "Determinant of square matrix (up to 3×3)" },
+                { "id": "m6t5", "name": "Minors, cofactors and applications" },
+                { "id": "m6t6", "name": "Adjoint and inverse of a square matrix" }
+              ]
+            },
+            {
+              "id": "math_numsys",
+              "name": "Number System",
+              "marks": 8,
+              "topics": [
+                { "id": "m7t1", "name": "Decimal number system" },
+                { "id": "m7t2", "name": "Binary number system" },
+                { "id": "m7t3", "name": "Binary to Decimal conversion" },
+                { "id": "m7t4", "name": "Decimal to Binary conversion" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paper3",
+      "name": "Paper III – General Science",
+      "totalMarks": 100,
+      "subjects": [
+        {
+          "id": "science",
+          "name": "General Science",
+          "marks": 100,
+          "icon": "⚗️",
+          "chapters": [
+            {
+              "id": "sci_meas",
+              "name": "Physical World & Measurement",
+              "marks": 8,
+              "topics": [
+                { "id": "s1t1", "name": "Units of measurement – SI units" },
+                { "id": "s1t2", "name": "Fundamental and derived units" },
+                { "id": "s1t3", "name": "Length, mass and time measurements" },
+                { "id": "s1t4", "name": "Accuracy and precision of measuring instruments" },
+                { "id": "s1t5", "name": "Errors in measurement, significant figures" }
+              ]
+            },
+            {
+              "id": "sci_kine",
+              "name": "Kinematics",
+              "marks": 10,
+              "topics": [
+                { "id": "s2t1", "name": "Frame of reference, motion in straight line" },
+                { "id": "s2t2", "name": "Position-time graph, speed and velocity" },
+                { "id": "s2t3", "name": "Uniform and non-uniform motion" },
+                { "id": "s2t4", "name": "Uniformly accelerated motion" },
+                { "id": "s2t5", "name": "Scalar and vector quantities" },
+                { "id": "s2t6", "name": "Vector addition, subtraction, relative velocity" },
+                { "id": "s2t7", "name": "Projectile motion, uniform circular motion" }
+              ]
+            },
+            {
+              "id": "sci_motion",
+              "name": "Motion, Force and Work",
+              "marks": 10,
+              "topics": [
+                { "id": "s3t1", "name": "Thrust and pressure" },
+                { "id": "s3t2", "name": "Archimedes' principle and buoyancy" },
+                { "id": "s3t3", "name": "Relative density" },
+                { "id": "s3t4", "name": "Work done by a force" },
+                { "id": "s3t5", "name": "Energy – kinetic and potential" },
+                { "id": "s3t6", "name": "Power, law of conservation of energy" }
+              ]
+            },
+            {
+              "id": "sci_gravit",
+              "name": "Gravitation",
+              "marks": 8,
+              "topics": [
+                { "id": "s4t1", "name": "Kepler's laws of planetary motion" },
+                { "id": "s4t2", "name": "Universal law of gravitation" },
+                { "id": "s4t3", "name": "Acceleration due to gravity and its variation" },
+                { "id": "s4t4", "name": "Gravitational potential energy, escape velocity" },
+                { "id": "s4t5", "name": "Orbital velocity, geo-stationary satellites" }
+              ]
+            },
+            {
+              "id": "sci_waves",
+              "name": "Oscillations and Waves",
+              "marks": 12,
+              "topics": [
+                { "id": "s5t1", "name": "Periodic motion – period, frequency, displacement" },
+                { "id": "s5t2", "name": "Simple Harmonic Motion (SHM) equation" },
+                { "id": "s5t3", "name": "Oscillations of a spring, simple pendulum" },
+                { "id": "s5t4", "name": "Energy in SHM" },
+                { "id": "s5t5", "name": "Free, forced, damped oscillations – resonance" },
+                { "id": "s5t6", "name": "Transverse and longitudinal wave motion" },
+                { "id": "s5t7", "name": "Speed of wave, reflection, superposition" },
+                { "id": "s5t8", "name": "Standing waves, Beats, Doppler effect" },
+                { "id": "s5t9", "name": "Nature of sound, ultrasound, SONAR" }
+              ]
+            },
+            {
+              "id": "sci_optics",
+              "name": "Optics (Natural Phenomena)",
+              "marks": 12,
+              "topics": [
+                { "id": "s6t1", "name": "Reflection – laws, mirror formula, magnification" },
+                { "id": "s6t2", "name": "Refraction, Snell's law, refractive index" },
+                { "id": "s6t3", "name": "Images by spherical mirrors and lenses" },
+                { "id": "s6t4", "name": "Lens formula, power of a lens" },
+                { "id": "s6t5", "name": "Human eye, defects and corrections" },
+                { "id": "s6t6", "name": "Dispersion of light, prism" },
+                { "id": "s6t7", "name": "Scattering of light – daily life applications" }
+              ]
+            },
+            {
+              "id": "sci_elect",
+              "name": "Current Electricity",
+              "marks": 15,
+              "topics": [
+                { "id": "s7t1", "name": "Electric current, Ohm's law, V-I characteristics" },
+                { "id": "s7t2", "name": "Electrical resistance, resistivity, conductivity" },
+                { "id": "s7t3", "name": "Carbon resistors, colour code" },
+                { "id": "s7t4", "name": "Series and parallel combinations" },
+                { "id": "s7t5", "name": "Temperature dependence of resistance" },
+                { "id": "s7t6", "name": "EMF of cell, internal resistance" },
+                { "id": "s7t7", "name": "Kirchhoff's laws" },
+                { "id": "s7t8", "name": "Wheatstone bridge, metre bridge" },
+                { "id": "s7t9", "name": "Potentiometer, ammeter, voltmeter" },
+                { "id": "s7t10", "name": "Coulomb's law, electric field, lines of force" },
+                { "id": "s7t11", "name": "Heating effect of electric current" }
+              ]
+            },
+            {
+              "id": "sci_heat",
+              "name": "Heat",
+              "marks": 5,
+              "topics": [
+                { "id": "s8t1", "name": "Hot and cold bodies, temperature measurement" },
+                { "id": "s8t2", "name": "Units of heat, thermal expansion of solids" },
+                { "id": "s8t3", "name": "Thermal expansion of fluids" }
+              ]
+            },
+            {
+              "id": "sci_mag",
+              "name": "Magnetic Effects of Current",
+              "marks": 12,
+              "topics": [
+                { "id": "s9t1", "name": "Biot-Savart law, Ampere's law" },
+                { "id": "s9t2", "name": "Straight and toroidal solenoids" },
+                { "id": "s9t3", "name": "Force on moving charge in magnetic field" },
+                { "id": "s9t4", "name": "Cyclotron, force on current-carrying conductor" },
+                { "id": "s9t5", "name": "Earth's magnetic field – para, dia, ferro magnetism" },
+                { "id": "s9t6", "name": "Electromagnets, permanent magnets" },
+                { "id": "s9t7", "name": "Electromagnetic induction – Faraday's laws" },
+                { "id": "s9t8", "name": "Alternating current, AC generators" },
+                { "id": "s9t9", "name": "LC & R in series, transformers" }
+              ]
+            },
+            {
+              "id": "sci_comm",
+              "name": "Communication Systems",
+              "marks": 8,
+              "topics": [
+                { "id": "s10t1", "name": "Types of communication systems" },
+                { "id": "s10t2", "name": "Modulation – digital communication" },
+                { "id": "s10t3", "name": "Data and document transmission" },
+                { "id": "s10t4", "name": "Communication channels" },
+                { "id": "s10t5", "name": "Space and satellite communication" },
+                { "id": "s10t6", "name": "Line and optical communication" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
