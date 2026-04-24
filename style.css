@@ -1297,13 +1297,3 @@ a { text-decoration: none; color: var(--gold); }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
 
-/* FIX: screen visibility issue */
-.screen {
-  display: none;
-  height: 100vh;
-  overflow-y: auto;
-}
-
-.screen.active {
-  display: block;
-}
