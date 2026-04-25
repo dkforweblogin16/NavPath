@@ -76,16 +76,23 @@ html {
   font-size: 16px;
   scroll-behavior: smooth;
   -webkit-tap-highlight-color: transparent;
+  /* FIX: Lock html to exact viewport. Without this, both screens
+     stack vertically and the page scrolls between them. */
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
   font-family: var(--font-body);
   background-color: var(--navy-deepest);
   color: var(--text-primary);
-  min-height: 100vh;
-  overflow-x: hidden;
   line-height: 1.6;
   transition: background-color 0.4s ease, color 0.4s ease;
+  /* FIX: Body must be exactly the viewport — no taller, no scrollable.
+     Scrolling is delegated to individual screens. */
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
 }
 
 /* Ocean gradient background */
@@ -115,20 +122,42 @@ a { text-decoration: none; color: var(--gold); }
    App Shell
    ============================================================ */
 #app {
-  position: relative;
+  /* FIX: #app is the viewport container. It must be exactly the
+     screen size and clip anything outside it. Both .screen children
+     are inside here; only .screen.active is shown. Without
+     position:fixed and overflow:hidden, both screens render
+     in normal flow and the page is twice as tall, causing the
+     overlap/scroll-bleed visible in the screenshots. */
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   z-index: 1;
-  min-height: 100vh;
 }
 
 /* ============================================================
    Screens / Views
    ============================================================ */
 .screen {
+  /* FIX: Each screen is an absolute layer filling #app exactly.
+     Inactive screens are display:none so they take no space and
+     cannot bleed through. Active screen is the only visible layer.
+     overflow-y:auto makes the screen itself scroll, NOT the page. */
   display: none;
-  min-height: 100vh;
-  animation: fadeInUp 0.4s ease;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
-.screen.active { display: block; }
+.screen.active {
+  display: flex;
+  flex-direction: column;
+  animation: fadeInUp 0.35s ease;
+}
 
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(24px); }
@@ -136,17 +165,42 @@ a { text-decoration: none; color: var(--gold); }
 }
 
 /* ============================================================
-   Auth Screens (Login / Signup)
+   Auth Screen (Login / Signup)
    ============================================================ */
 #auth-screen {
-  display: flex;
-  flex-direction: column;
+  /* FIX: No longer needs display:flex override — .screen.active
+     already sets it. Just set alignment and background. */
   align-items: center;
-  justify-content: center;
-  padding: 2rem 1.5rem;
-  min-height: 100vh;
+  justify-content: flex-start;
+  padding: 2rem 1.5rem 3rem;
   background: radial-gradient(ellipse at center top, #112240 0%, #050f1c 70%);
 }
+
+/* ============================================================
+   Main App Screen
+   ============================================================ */
+#main-screen {
+  /* FIX: main-screen is a flex column. top-nav is fixed height,
+     the active tab content grows to fill the rest and scrolls.
+     The bottom-nav is position:fixed so it always stays at bottom. */
+  flex-direction: column;
+  overflow: hidden; /* no outer scroll — inner tab content scrolls */
+}
+
+/* ============================================================
+   Tab Content Areas
+   ============================================================ */
+.tab-content {
+  display: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.tab-content.active-tab {
+  display: block !important;
+  animation: fadeInUp 0.35s ease;
+}
+#quiz-options { max-height: 50vh; overflow-y: auto; }
 
 .auth-logo {
   margin-bottom: 2rem;

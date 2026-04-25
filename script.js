@@ -69,10 +69,15 @@ function toast(msg, type = '') {
 // SCREEN NAVIGATION
 // ============================================================
 function showScreen(id) {
-  $$('.screen').forEach(s => s.classList.remove('active'));
-  const s = $(`#${id}`);
+  // Deactivate all screens — position:absolute layers, only one shown at a time
+  $$('.screen').forEach(s => {
+    s.classList.remove('active');
+    s.scrollTop = 0; // reset scroll position of hidden screens
+  });
+  const s = document.getElementById(id);
   if (s) {
     s.classList.add('active');
+    s.scrollTop = 0; // always start at top when switching screens
     App.currentScreen = id;
   }
 }

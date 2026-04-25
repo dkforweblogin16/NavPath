@@ -169,7 +169,7 @@
   <!-- ======================================================== -->
   <!-- SCREEN 2: MAIN APP (Tabs)                                -->
   <!-- ======================================================== -->
-  <div id="main-screen" class="screen" style="height:100vh; overflow-y:auto;">
+  <div id="main-screen" class="screen">
 
     <!-- TOP NAVIGATION -->
     <nav class="top-nav">
@@ -489,17 +489,7 @@
 </div>
 
 
-<!-- ============================================================ -->
-<!-- STYLES FOR TAB VISIBILITY                                    -->
-<!-- ============================================================ -->
-<style>
-  /* FIX: Removed inline style="display:none" from tab divs in HTML above.
-     All tab visibility is controlled purely by these CSS rules so there's
-     no conflict between inline styles and JS classList manipulation. */
-  .tab-content { display: none; }
-  .tab-content.active-tab { display: block !important; animation: fadeInUp 0.35s ease; }
-  #quiz-options { max-height: 50vh; overflow-y: auto; }
-</style>
+<!-- Tab visibility is controlled by style.css (.tab-content / .tab-content.active-tab) -->
 
 
 <!-- ============================================================ -->
