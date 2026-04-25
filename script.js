@@ -307,7 +307,7 @@ const NEA_SYLLABUS = {
                 { id: 'alg-1', name: 'Principle of Mathematical Induction' },
                 { id: 'alg-2', name: 'Linear Inequalities in one and two variables' },
                 { id: 'alg-3', name: 'Permutations and Combinations – nPr and nCr' },
-                { id: 'alg-4', name: 'Binomial Theorem – Pascal's triangle, general and middle term' },
+                { id: 'alg-4', name: "Binomial Theorem – Pascal's triangle, general and middle term" },
                 { id: 'alg-5', name: 'Sequence and Series – AP, GP, AM, GM' },
                 { id: 'alg-6', name: 'Relation between AM and GM' }
               ]
@@ -419,7 +419,7 @@ const NEA_SYLLABUS = {
               name: 'Motion, Force & Work',
               marks: 10,
               topics: [
-                { id: 'mfw-1', name: 'Floatation – thrust, pressure, Archimedes' principle, buoyancy' },
+                { id: 'mfw-1', name: "Floatation – thrust, pressure, Archimedes' principle, buoyancy" },
                 { id: 'mfw-2', name: 'Relative density' },
                 { id: 'mfw-3', name: 'Work, energy and power' },
                 { id: 'mfw-4', name: 'Kinetic and potential energy, law of conservation of energy' }
@@ -430,7 +430,7 @@ const NEA_SYLLABUS = {
               name: 'Gravitation',
               marks: 8,
               topics: [
-                { id: 'grav-1', name: 'Kepler's laws of planetary motion' },
+                { id: 'grav-1', name: "Kepler's laws of planetary motion" },
                 { id: 'grav-2', name: 'Universal law of gravitation' },
                 { id: 'grav-3', name: 'Acceleration due to gravity and its variation' },
                 { id: 'grav-4', name: 'Escape velocity, orbital velocity of a satellite' },
@@ -468,12 +468,12 @@ const NEA_SYLLABUS = {
               name: 'Current Electricity',
               marks: 15,
               topics: [
-                { id: 'ce-1', name: 'Electric current, Ohm's law, electrical resistance' },
+                { id: 'ce-1', name: "Electric current, Ohm's law, electrical resistance" },
                 { id: 'ce-2', name: 'Resistivity and conductivity, V-I characteristics' },
                 { id: 'ce-3', name: 'Carbon resistors, colour code, series and parallel combinations' },
                 { id: 'ce-4', name: 'Internal resistance, EMF, cells in series and parallel' },
-                { id: 'ce-5', name: 'Kirchhoff's laws, Wheatstone bridge, Metre bridge' },
-                { id: 'ce-6', name: 'Potentiometer, Coulomb's law, Electric field and lines of force' }
+                { id: 'ce-5', name: "Kirchhoff's laws, Wheatstone bridge, Metre bridge" },
+                { id: 'ce-6', name: "Potentiometer, Coulomb's law, Electric field and lines of force" }
               ]
             },
             {
@@ -490,10 +490,10 @@ const NEA_SYLLABUS = {
               name: 'Magnetic Effects of Current & Magnetism',
               marks: 12,
               topics: [
-                { id: 'mag-1', name: 'Biot-Savart law, Ampere's law, straight and toroidal solenoids' },
+                { id: 'mag-1', name: "Biot-Savart law, Ampere's law, straight and toroidal solenoids" },
                 { id: 'mag-2', name: 'Force on moving charge in magnetic and electric fields' },
                 { id: 'mag-3', name: 'Cyclotron, force on current-carrying conductor' },
-                { id: 'mag-4', name: 'Earth's magnetic field and magnetic elements' },
+                { id: 'mag-4', name: "Earth's magnetic field and magnetic elements" },
                 { id: 'mag-5', name: 'Para, dia and ferro magnetic substances' },
                 { id: 'mag-6', name: 'Electromagnets, principle of AC generators, transformers' }
               ]
@@ -555,7 +555,7 @@ const NEA_QUESTIONS = {
     ],
     'current-affairs': [
       { question: 'Which organisation conducts the Navy Entry Artificer (NEA) examination?', options: ['UPSC', 'Indian Navy', 'SSB', 'DRDO'], answer: 1, explanation: 'The Indian Navy conducts the NEA examination to recruit artificers into the technical branches of the Indian Navy.' },
-      { question: 'India's first indigenously built aircraft carrier is:', options: ['INS Vikrant', 'INS Viraat', 'INS Vikramaditya', 'INS Vishal'], answer: 0, explanation: 'INS Vikrant (IAC-1) is India's first indigenously built aircraft carrier, commissioned in September 2022.' }
+      { question: "India's first indigenously built aircraft carrier is:", options: ['INS Vikrant', 'INS Viraat', 'INS Vikramaditya', 'INS Vishal'], answer: 0, explanation: "INS Vikrant (IAC-1) is India's first indigenously built aircraft carrier, commissioned in September 2022." }
     ],
     'abbreviations': [
       { question: 'What does "SONAR" stand for?', options: ['Sound Navigation and Ranging', 'Solar Navigational Array', 'Sound Observation and Navigation Array', 'Submarine Ocean Navigational Radar'], answer: 0, explanation: 'SONAR stands for Sound Navigation and Ranging. It uses sound waves to detect and locate underwater objects.' },
@@ -563,8 +563,8 @@ const NEA_QUESTIONS = {
       { question: 'INS stands for:', options: ['Indian Navigation Ship', 'Indian Naval Ship', 'Integrated Naval System', 'Indian Navy Squadron'], answer: 1, explanation: 'INS stands for Indian Naval Ship — the prefix used for commissioned vessels of the Indian Navy.' }
     ],
     'science-tech': [
-      { question: 'ISRO stands for:', options: ['Indian Space Research Organisation', 'Indian Scientific Research Organisation', 'International Space Research Organisation', 'Indian Satellite and Rocket Organisation'], answer: 0, explanation: 'ISRO — Indian Space Research Organisation — is India's national space agency, headquartered in Bengaluru.' },
-      { question: 'Chandrayaan-3 successfully landed on the Moon's south pole in:', options: ['2021', '2022', '2023', '2024'], answer: 2, explanation: 'Chandrayaan-3's Vikram lander successfully touched down near the Moon's south pole on 23 August 2023.' }
+      { question: 'ISRO stands for:', options: ['Indian Space Research Organisation', 'Indian Scientific Research Organisation', 'International Space Research Organisation', 'Indian Satellite and Rocket Organisation'], answer: 0, explanation: "ISRO — Indian Space Research Organisation — is India's national space agency, headquartered in Bengaluru." },
+      { question: "Chandrayaan-3 successfully landed on the Moon's south pole in:", options: ['2021', '2022', '2023', '2024'], answer: 2, explanation: "Chandrayaan-3's Vikram lander successfully touched down near the Moon's south pole on 23 August 2023." }
     ],
     'indian-navy-gk': [
       { question: 'The motto of the Indian Navy is:', options: ['Jai Hind', 'Sam No Varuna', 'Satyameva Jayate', 'Sarvatra Vijay'], answer: 1, explanation: '"Sam No Varuna" (शं नो वरुण) is the motto of the Indian Navy, meaning "May the Lord of the Waters be auspicious unto us".' },
@@ -579,7 +579,7 @@ const NEA_QUESTIONS = {
       { question: 'If the angle of elevation of the top of a tower is 45° from a point 50m away, what is the height?', options: ['25 m', '50 m', '100 m', '50√2 m'], answer: 1, explanation: 'tan 45° = height/distance → 1 = height/50 → height = 50 m.' }
     ],
     'algebra': [
-      { question: 'How many ways can 3 students be selected from a group of 8?', options: ['24', '56', '336', '512'], answer: 1, explanation: 'C(8,3) = 8!/(3!×5!) = (8×7×6)/(3×2×1) = 56. This is a combination problem since order doesn't matter.' },
+      { question: 'How many ways can 3 students be selected from a group of 8?', options: ['24', '56', '336', '512'], answer: 1, explanation: "C(8,3) = 8!/(3!×5!) = (8×7×6)/(3×2×1) = 56. This is a combination problem since order doesn't matter." },
       { question: 'The sum of first n terms of an AP with first term a and common difference d is:', options: ['n/2 × (a + l)', 'n/2 × (2a + (n-1)d)', 'Both A and B', 'n × a'], answer: 2, explanation: 'Both formulas are correct: Sn = n/2(a + l) where l is last term, or Sn = n/2[2a + (n-1)d].' },
       { question: 'In Binomial expansion of (x+y)ⁿ, the number of terms is:', options: ['n', 'n-1', 'n+1', '2n'], answer: 2, explanation: 'The binomial expansion of (x+y)ⁿ has (n+1) terms, with powers of x decreasing from n to 0.' },
       { question: 'The middle term of (x+y)⁶ is the:', options: ['3rd term', '4th term', '5th term', '6th term'], answer: 1, explanation: 'For even n, middle term = (n/2 + 1)th term = (6/2 + 1) = 4th term.' }
@@ -622,14 +622,14 @@ const NEA_QUESTIONS = {
       { question: 'Projectile motion is an example of:', options: ['Uniform motion', 'Uniformly decelerated motion', 'Motion in two dimensions', 'Circular motion'], answer: 2, explanation: 'Projectile motion is a classic example of two-dimensional motion under constant gravitational acceleration.' }
     ],
     'motion-force-work': [
-      { question: 'Archimedes' Principle states that the buoyant force equals:', options: ['Weight of the object', 'Mass of liquid displaced', 'Weight of fluid displaced by the object', 'Volume of the object'], answer: 2, explanation: 'Archimedes' Principle: the upward buoyant force on a submerged object equals the weight of the fluid it displaces.' },
+      { question: "Archimedes' Principle states that the buoyant force equals:", options: ["Weight of the object", "Mass of liquid displaced", "Weight of fluid displaced by the object", "Volume of the object"], answer: 2, explanation: "Archimedes' Principle: the upward buoyant force on a submerged object equals the weight of the fluid it displaces." },
       { question: 'The unit of work is:', options: ['Newton', 'Watt', 'Joule', 'Pascal'], answer: 2, explanation: 'Work = Force × Displacement. The SI unit of work is Joule (J) = Newton × Metre.' },
-      { question: 'A body moving with constant velocity has:', options: ['Non-zero acceleration', 'Zero net force acting on it', 'Increasing kinetic energy', 'Decreasing momentum'], answer: 1, explanation: 'By Newton's first law, if net force = 0, velocity is constant. So constant velocity → zero net force.' }
+      { question: 'A body moving with constant velocity has:', options: ['Non-zero acceleration', 'Zero net force acting on it', 'Increasing kinetic energy', 'Decreasing momentum'], answer: 1, explanation: "By Newton's first law, if net force = 0, velocity is constant. So constant velocity → zero net force." }
     ],
     'gravitation': [
-      { question: 'The escape velocity from Earth's surface is approximately:', options: ['7.9 km/s', '11.2 km/s', '3 km/s', '15.6 km/s'], answer: 1, explanation: 'Escape velocity from Earth = √(2gR) ≈ 11.2 km/s. This is the minimum speed needed to escape Earth's gravity.' },
-      { question: 'A geostationary satellite completes one orbit in:', options: ['12 hours', '24 hours', '48 hours', '1 hour'], answer: 1, explanation: 'A geostationary satellite has a period of exactly 24 hours (matching Earth's rotation), so it appears stationary.' },
-      { question: 'Kepler's second law states that a planet sweeps:', options: ['Equal distances in equal times', 'Equal areas in equal times', 'Equal speeds in equal times', 'Equal orbits in equal times'], answer: 1, explanation: 'Kepler's second law (Law of Areas) states that the line joining a planet to the sun sweeps equal areas in equal time intervals.' }
+      { question: "The escape velocity from Earth's surface is approximately:", options: ['7.9 km/s', '11.2 km/s', '3 km/s', '15.6 km/s'], answer: 1, explanation: "Escape velocity from Earth = √(2gR) ≈ 11.2 km/s. This is the minimum speed needed to escape Earth's gravity." },
+      { question: 'A geostationary satellite completes one orbit in:', options: ['12 hours', '24 hours', '48 hours', '1 hour'], answer: 1, explanation: "A geostationary satellite has a period of exactly 24 hours (matching Earth's rotation), so it appears stationary." },
+      { question: "Kepler's second law states that a planet sweeps:", options: ['Equal distances in equal times', 'Equal areas in equal times', 'Equal speeds in equal times', 'Equal orbits in equal times'], answer: 1, explanation: "Kepler's second law (Law of Areas) states that the line joining a planet to the sun sweeps equal areas in equal time intervals." }
     ],
     'oscillations-waves': [
       { question: 'In Simple Harmonic Motion, the restoring force is proportional to:', options: ['Velocity of the particle', 'Square of displacement', 'Displacement from mean position', 'Time period'], answer: 2, explanation: 'SHM is defined by F = -kx, where force is proportional to displacement from the mean position, directed towards it.' },
@@ -639,12 +639,12 @@ const NEA_QUESTIONS = {
     'optics': [
       { question: 'The Mirror Formula is:', options: ['1/f = 1/v × 1/u', '1/f = 1/v + 1/u', '1/f = v + u', 'f = v - u'], answer: 1, explanation: '1/f = 1/v + 1/u is the mirror formula, where f = focal length, v = image distance, u = object distance.' },
       { question: 'A convex lens is used to correct which eye defect?', options: ['Myopia (short-sightedness)', 'Hypermetropia (long-sightedness)', 'Astigmatism', 'Colour blindness'], answer: 1, explanation: 'Convex (converging) lens corrects Hypermetropia (far-sightedness). Concave lens corrects Myopia.' },
-      { question: 'Snell's Law of refraction is expressed as:', options: ['n₁/n₂ = sin θ₂/sin θ₁', 'n₁ sin θ₁ = n₂ sin θ₂', 'n₁ cos θ₁ = n₂ cos θ₂', 'n₁ + n₂ = sin θ₁ + sin θ₂'], answer: 1, explanation: 'Snell's Law: n₁ sin θ₁ = n₂ sin θ₂, where n is refractive index and θ is the angle with the normal.' }
+      { question: "Snell's Law of refraction is expressed as:", options: ['n₁/n₂ = sin θ₂/sin θ₁', 'n₁ sin θ₁ = n₂ sin θ₂', 'n₁ cos θ₁ = n₂ cos θ₂', 'n₁ + n₂ = sin θ₁ + sin θ₂'], answer: 1, explanation: "Snell's Law: n₁ sin θ₁ = n₂ sin θ₂, where n is refractive index and θ is the angle with the normal." }
     ],
     'current-electricity': [
-      { question: 'Ohm's Law states that (at constant temperature):', options: ['V is inversely proportional to I', 'V is proportional to I²', 'V is directly proportional to I', 'V is proportional to R²'], answer: 2, explanation: 'Ohm's Law: V = IR. Voltage is directly proportional to current when resistance is constant.' },
+      { question: "Ohm's Law states that (at constant temperature):", options: ['V is inversely proportional to I', 'V is proportional to I²', 'V is directly proportional to I', 'V is proportional to R²'], answer: 2, explanation: "Ohm's Law: V = IR. Voltage is directly proportional to current when resistance is constant." },
       { question: 'The colour code for a carbon resistor with bands: Brown, Black, Red means:', options: ['1000 Ω', '100 Ω', '102 Ω', '1002 Ω'], answer: 0, explanation: 'Brown=1, Black=0, Red=×100. So 10 × 100 = 1000 Ω = 1 kΩ. Use the mnemonic BBROY of Great Britain.' },
-      { question: 'Kirchhoff's Current Law (KCL) states that:', options: ['Sum of voltages in a loop is zero', 'Sum of currents entering a junction equals sum leaving it', 'Resistance is constant at all temperatures', 'Power is always conserved'], answer: 1, explanation: 'KCL: The algebraic sum of currents at a junction is zero — currents in = currents out. Based on conservation of charge.' }
+      { question: "Kirchhoff's Current Law (KCL) states that:", options: ['Sum of voltages in a loop is zero', 'Sum of currents entering a junction equals sum leaving it', 'Resistance is constant at all temperatures', 'Power is always conserved'], answer: 1, explanation: 'KCL: The algebraic sum of currents at a junction is zero — currents in = currents out. Based on conservation of charge.' }
     ],
     'heat': [
       { question: 'The SI unit of temperature is:', options: ['Celsius', 'Fahrenheit', 'Kelvin', 'Rankine'], answer: 2, explanation: 'The SI unit of temperature is Kelvin (K). Zero Kelvin (0 K) is absolute zero, the lowest possible temperature.' },
