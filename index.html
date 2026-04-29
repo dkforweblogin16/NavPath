@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0a192f" />
-  <meta name="description" content="NavPath – Complete NEA Exam Prep app for Indian Navy aspirants. Syllabus tracker, MCQ practice, formulas and more." />
+  <meta name="description" content="NavPath – Complete NEA Exam Prep app for Indian Navy aspirants. Syllabus tracker, Study notes, MCQ Practice and more." />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="NavPath" />
@@ -277,15 +277,15 @@
             <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">Study Syllabus</div>
             <div style="font-size:0.7rem;color:var(--text-muted);">Track topics</div>
           </button>
-          <button class="card" style="padding:1.25rem;text-align:center;cursor:pointer;border:none;background:var(--card-bg);" onclick="switchTab('quiz')">
-            <div style="font-size:1.75rem;margin-bottom:0.5rem;">🧠</div>
-            <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">Practice Quiz</div>
+          <button class="card" style="padding:1.25rem;text-align:center;cursor:pointer;border:none;background:var(--card-bg);" onclick="switchTab('practice')">
+            <div style="font-size:1.75rem;margin-bottom:0.5rem;">📝</div>
+            <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">Practice MCQs</div>
             <div style="font-size:0.7rem;color:var(--text-muted);">Test yourself</div>
           </button>
-          <button class="card" style="padding:1.25rem;text-align:center;cursor:pointer;border:none;background:var(--card-bg);" onclick="switchTab('formulas')">
-            <div style="font-size:1.75rem;margin-bottom:0.5rem;">📐</div>
-            <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">Formulas</div>
-            <div style="font-size:0.7rem;color:var(--text-muted);">Quick reference</div>
+          <button class="card" style="padding:1.25rem;text-align:center;cursor:pointer;border:none;background:var(--card-bg);" onclick="switchTab('study')">
+            <div style="font-size:1.75rem;margin-bottom:0.5rem;">📖</div>
+            <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">Study Notes</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);">Read & learn</div>
           </button>
           <button class="card" style="padding:1.25rem;text-align:center;cursor:pointer;border:none;background:var(--card-bg);" onclick="openPremiumModal()">
             <div style="font-size:1.75rem;margin-bottom:0.5rem;">⭐</div>
@@ -340,37 +340,41 @@
     <!-- END SYLLABUS TAB -->
 
 
-    <!-- ─── QUIZ TAB ─── -->
-    <div id="tab-quiz" class="tab-content">
+    <!-- ─── PRACTICE TAB (renamed from Quiz) ─── -->
+    <div id="tab-practice" class="tab-content">
       <div class="main-content">
         <div class="section-header mb-2">
-          <h2 class="section-title">🧠 Practice Quiz</h2>
+          <h2 class="section-title">📝 Practice</h2>
+          <span style="font-size:0.75rem;color:var(--text-muted);">Select a topic from Syllabus</span>
         </div>
-        <!-- FIX: quiz-question-area and quiz-result-area are kept simple.
-             The quiz shell (question card, options, etc.) is now injected
-             by startQuiz() in script.js directly — no more fragile
-             inline override script that races with script.js loading. -->
         <div id="quiz-question-area">
           <div class="empty-state">
             <div class="empty-icon">🎯</div>
             <h3>Start Practicing</h3>
-            <p>Go to Syllabus → tap "Quiz" on any chapter to begin.</p>
+            <p>Go to Syllabus → tap a topic → choose 📝 Practice to begin.</p>
             <button class="btn btn-primary mt-2" onclick="switchTab('syllabus')">Go to Syllabus</button>
           </div>
         </div>
         <div id="quiz-result-area" class="hidden"></div>
       </div>
     </div>
-    <!-- END QUIZ TAB -->
+    <!-- END PRACTICE TAB -->
 
 
-    <!-- ─── FORMULAS TAB ─── -->
-    <div id="tab-formulas" class="tab-content">
-      <div class="main-content" id="formulas-container">
-        <!-- Rendered by JS -->
+    <!-- ─── STUDY TAB (NEW) ─── -->
+    <div id="tab-study" class="tab-content">
+      <div class="main-content">
+        <div id="study-content-area">
+          <div class="empty-state">
+            <div class="empty-icon">📖</div>
+            <h3>Study a Topic</h3>
+            <p>Go to Syllabus → tap a topic → choose 📖 Study to read notes.</p>
+            <button class="btn btn-primary mt-2" onclick="switchTab('syllabus')">Go to Syllabus</button>
+          </div>
+        </div>
       </div>
     </div>
-    <!-- END FORMULAS TAB -->
+    <!-- END STUDY TAB -->
 
 
     <!-- ─── PROFILE TAB ─── -->
@@ -390,13 +394,13 @@
         <span class="nav-icon">📚</span>
         <span class="nav-label">Syllabus</span>
       </button>
-      <button class="nav-item" id="nav-quiz" onclick="switchTab('quiz')">
-        <span class="nav-icon">🧠</span>
-        <span class="nav-label">Quiz</span>
+      <button class="nav-item" id="nav-practice" onclick="switchTab('practice')">
+        <span class="nav-icon">📝</span>
+        <span class="nav-label">Practice</span>
       </button>
-      <button class="nav-item" id="nav-formulas" onclick="switchTab('formulas')">
-        <span class="nav-icon">📐</span>
-        <span class="nav-label">Formulas</span>
+      <button class="nav-item" id="nav-study" onclick="switchTab('study')">
+        <span class="nav-icon">📖</span>
+        <span class="nav-label">Study</span>
       </button>
       <button class="nav-item" id="nav-profile" onclick="switchTab('profile')">
         <span class="nav-icon">👤</span>
@@ -436,7 +440,7 @@
             <span style="color:var(--success);font-size:1rem;">✓</span> 500+ MCQ practice questions
           </div>
           <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;">
-            <span style="color:var(--success);font-size:1rem;">✓</span> Topic-wise formulas & shortcuts
+            <span style="color:var(--success);font-size:1rem;">✓</span> Full study notes per topic
           </div>
           <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;">
             <span style="color:var(--success);font-size:1rem;">✓</span> Progress tracking & daily streak
@@ -499,6 +503,40 @@
      3. script.js    (full app logic, attaches onAuthStateChanged)
      NO inline override scripts — quiz override is now inside script.js
 ============================================================ -->
+
+<!-- ============================================================ -->
+<!-- TOPIC ACTION MODAL — Study or Practice                       -->
+<!-- ============================================================ -->
+<div id="topic-action-modal" class="modal-overlay hidden" onclick="if(event.target===this)closeTopicModal()">
+  <div class="modal-sheet topic-action-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-body" style="padding:1.5rem;">
+      <div id="topic-modal-name" style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.25rem;text-align:center;"></div>
+      <div id="topic-modal-chapter" style="font-size:0.75rem;color:var(--text-muted);text-align:center;margin-bottom:1.5rem;"></div>
+
+      <button id="topic-study-btn" class="topic-action-btn study-btn" onclick="handleTopicStudy()">
+        <span class="topic-action-icon">📖</span>
+        <div>
+          <div class="topic-action-label">Study</div>
+          <div class="topic-action-sub">Read full notes &amp; theory</div>
+        </div>
+        <span class="topic-action-arrow">›</span>
+      </button>
+
+      <button id="topic-practice-btn" class="topic-action-btn practice-btn" onclick="handleTopicPractice()">
+        <span class="topic-action-icon">📝</span>
+        <div>
+          <div class="topic-action-label">Practice</div>
+          <div class="topic-action-sub">30+ MCQs with explanations</div>
+        </div>
+        <span class="topic-action-arrow">›</span>
+      </button>
+
+      <button class="btn btn-outline btn-block" style="margin-top:1rem;font-size:0.85rem;" onclick="closeTopicModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <script src="firebase.js"></script>
 <script src="script.js"></script>
 
