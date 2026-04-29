@@ -37,6 +37,7 @@ const App = {
   firebase: null,
   selectedPlan: 'yearly',
   darkMode: true,
+  content: {},
 };
 
 // FIX #1: App must be on window so the inline quiz override script in
@@ -670,7 +671,8 @@ async function loadResources() {
   // Use embedded data directly — no network dependency
   App.syllabus  = NEA_SYLLABUS;
   App.questions = NEA_QUESTIONS;
-  console.log('[NavPath] Syllabus and questions loaded ✓');
+  await loadContent();
+  console.log('[NavPath] Syllabus, questions and content loaded ✓');
 }
 
 // ============================================================
@@ -1126,8 +1128,8 @@ function renderChapters(paper) {
               <h4>${chapter.name}</h4>
               <p>${cDone}/${cTotal} done • ${chapter.marks} marks</p>
             </div>
-            <div style="display:flex;gap:0.5rem;align-items:center;">
-              <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();startQuiz('${chapter.id}')">Quiz</button>
+            <div style="display:flex;gap:0.4rem;align-items:center;">
+              <button class="btn btn-sm btn-outline" style="font-size:0.7rem;padding:0.2rem 0.5rem;" onclick="event.stopPropagation();startChapterPractice('${chapter.id}','${chapter.name}')">📝</button>
               <span style="color:var(--text-muted);font-size:0.8rem;">▼</span>
             </div>
           </div>
@@ -1150,10 +1152,12 @@ function renderTopics(chapter) {
 
     html += `
       <div class="topic-item ${done ? 'completed' : ''} ${isLocked ? 'locked' : ''}"
-           onclick="${isLocked ? 'openPremiumModal()' : `toggleTopic('${topic.id}')`}">
+           onclick="${isLocked ? 'openPremiumModal()' : `openTopicModal('${topic.id}','${topic.name.replace(/'/g,"\\'")}','${chapter.id}','${chapter.name.replace(/'/g,"\\'")}')` }">
         <div class="topic-check">${done ? '✓' : ''}</div>
         <span class="topic-name">${topic.name}</span>
-        ${isLocked ? '<span class="lock-icon">🔒</span>' : ''}
+        <div class="topic-right-actions">
+          ${isLocked ? '<span class="lock-icon">🔒</span>' : '<span class="topic-chevron">›</span>'}
+        </div>
       </div>
     `;
   });
@@ -1198,7 +1202,7 @@ function updateSyllabusUI() {
 // index.html override script timing.
 // ============================================================
 function startQuiz(chapterId) {
-  const qBank = App.questions?.questions;
+  const qBank = App.questions?.questions || App.questions?.topics;
   if (!qBank || !qBank[chapterId] || qBank[chapterId].length === 0) {
     toast('No questions available for this chapter yet.', 'info');
     return;
@@ -1206,35 +1210,59 @@ function startQuiz(chapterId) {
 
   const questions = [...qBank[chapterId]].sort(() => Math.random() - 0.5);
 
-  App.currentQuiz = { chapterId, questions, idx: 0, score: 0, answered: false };
+  App.currentQuiz = { chapterId, questions, idx: 0, score: 0, answered: false, wrongIdx: [] };
 
-  switchTab('quiz');
+  switchTab('practice');
 
   // FIX #4: Build the quiz DOM shell, then render the first question into it
   const area = $('#quiz-question-area');
   const result = $('#quiz-result-area');
   if (result) result.classList.add('hidden');
+  // Find chapter/topic name for display
+  let chapterLabel = chapterId;
+  if (App.syllabus) {
+    for (const paper of App.syllabus.papers) {
+      for (const subj of paper.subjects) {
+        const ch = subj.chapters.find(c => c.id === chapterId);
+        if (ch) { chapterLabel = ch.name; break; }
+      }
+    }
+  }
+
   if (area) {
     area.classList.remove('hidden');
     area.innerHTML = `
-      <div class="quiz-container">
-        <div class="quiz-header">
-          <div class="quiz-progress-text" id="quiz-progress-text">1/${questions.length}</div>
-          <div class="streak-badge">🎯 Score: <span id="quiz-score-live">0</span></div>
+      <div class="practice-container">
+
+        <div class="practice-top-bar">
+          <button class="practice-back-btn" onclick="switchTab('syllabus')">← Back</button>
+          <div class="practice-chapter-label">${chapterLabel}</div>
+          <div class="practice-score-badge">🎯 <span id="quiz-score-live">0</span>/${questions.length}</div>
         </div>
-        <div class="progress-bar-wrap mb-2" style="height:4px;">
-          <div class="progress-bar" id="quiz-prog-bar" style="width:0%;transition:width 0.4s ease;"></div>
+
+        <div class="practice-progress-wrap">
+          <div class="practice-progress-bar" id="quiz-prog-bar" style="width:0%"></div>
         </div>
-        <div class="quiz-question-card">
-          <div class="quiz-q-number" id="quiz-q-number">Question 1</div>
-          <div class="quiz-q-text" id="quiz-q-text">Loading...</div>
+
+        <div class="practice-q-counter" id="quiz-progress-text">Question 1 of ${questions.length}</div>
+
+        <div class="practice-question-card">
+          <div class="practice-q-number" id="quiz-q-number">Q1</div>
+          <div class="practice-q-text" id="quiz-q-text">Loading…</div>
         </div>
-        <div class="quiz-options" id="quiz-options"></div>
-        <div class="quiz-explanation" id="quiz-explanation"></div>
-        <button class="btn btn-primary btn-block" id="quiz-next-btn"
-                onclick="nextQuestion()" style="margin-top:0.5rem;">
-          Next Question
+
+        <div class="practice-options" id="quiz-options"></div>
+
+        <div class="practice-explanation hidden" id="quiz-explanation">
+          <div class="practice-exp-label">💡 Explanation</div>
+          <div class="practice-exp-text" id="quiz-exp-text"></div>
+        </div>
+
+        <button class="btn btn-primary btn-block practice-next-btn hidden" id="quiz-next-btn"
+                onclick="nextQuestion()">
+          Next →
         </button>
+
       </div>
     `;
   }
@@ -1249,30 +1277,35 @@ function renderQuestion() {
 
   App.currentQuiz.answered = false;
 
-  const qNum = $(`#quiz-q-number`);
-  const qText = $(`#quiz-q-text`);
-  const qProg = $(`#quiz-progress-text`);
-  const qExp  = $(`#quiz-explanation`);
-  const qNext = $(`#quiz-next-btn`);
-  const qBar  = $(`#quiz-prog-bar`);
-  const scoreLive = $(`#quiz-score-live`);
+  const qNum     = document.getElementById('quiz-q-number');
+  const qText    = document.getElementById('quiz-q-text');
+  const qProg    = document.getElementById('quiz-progress-text');
+  const qExp     = document.getElementById('quiz-explanation');
+  const qNext    = document.getElementById('quiz-next-btn');
+  const qBar     = document.getElementById('quiz-prog-bar');
+  const scoreLive= document.getElementById('quiz-score-live');
 
-  if (qNum)  qNum.textContent  = `Question ${idx + 1} of ${questions.length}`;
-  if (qText) qText.textContent = q.question;
-  if (qProg) qProg.textContent = `${idx + 1}/${questions.length} • Score: ${App.currentQuiz.score}`;
-  if (qExp)  qExp.classList.remove('show');
-  if (qNext) qNext.textContent = idx === questions.length - 1 ? 'Finish Quiz' : 'Next Question';
-  if (qBar)  qBar.style.width  = `${(idx / questions.length) * 100}%`;
+  const total = questions.length;
+  const pct   = Math.round((idx / total) * 100);
+
+  if (qNum)      qNum.textContent  = `Q${idx + 1}`;
+  if (qText)     qText.textContent = q.q || q.question || '';
+  if (qProg)     qProg.textContent = `Question ${idx + 1} of ${total}`;
+  if (qBar)      qBar.style.width  = `${pct}%`;
   if (scoreLive) scoreLive.textContent = App.currentQuiz.score;
 
-  const optionsEl = $('#quiz-options');
+  // Hide explanation and Next button until answer is selected
+  if (qExp)  { qExp.classList.add('hidden'); qExp.classList.remove('show'); }
+  if (qNext) { qNext.classList.add('hidden'); qNext.textContent = idx === total - 1 ? 'Finish ✓' : 'Next →'; }
+
+  const optionsEl = document.getElementById('quiz-options');
   if (!optionsEl) return;
   optionsEl.innerHTML = '';
   const letters = ['A', 'B', 'C', 'D'];
   q.options.forEach((opt, i) => {
     const btn = document.createElement('button');
-    btn.className = 'quiz-option';
-    btn.innerHTML = `<span class="quiz-option-letter">${letters[i]}</span>${opt}`;
+    btn.className = 'practice-option';
+    btn.innerHTML = `<span class="practice-option-letter">${letters[i]}</span><span class="practice-option-text">${opt}</span>`;
     btn.onclick = () => selectAnswer(i, q.answer);
     optionsEl.appendChild(btn);
   });
@@ -1282,30 +1315,52 @@ function selectAnswer(selected, correct) {
   if (App.currentQuiz.answered) return;
   App.currentQuiz.answered = true;
 
-  const options = $$('.quiz-option');
-  options.forEach((opt, i) => {
-    if (i === correct) opt.classList.add('correct');
-    else if (i === selected) opt.classList.add('wrong');
-    opt.onclick = null;
-  });
-
-  if (selected === correct) {
+  const isCorrect = selected === correct;
+  if (isCorrect) {
     App.currentQuiz.score++;
-    toast('Correct! ✓', 'success');
   } else {
-    toast('Wrong. Review the explanation below.', 'error');
+    if (!App.currentQuiz.wrongIdx) App.currentQuiz.wrongIdx = [];
+    App.currentQuiz.wrongIdx.push(App.currentQuiz.idx);
   }
 
-  const expEl = $('#quiz-explanation');
-  if (expEl) {
-    expEl.innerHTML = `<strong>Explanation:</strong> ${App.currentQuiz.questions[App.currentQuiz.idx].explanation}`;
+  // Update score display
+  const scoreEl = document.getElementById('quiz-score-live');
+  if (scoreEl) scoreEl.textContent = App.currentQuiz.score;
+
+  // Style option buttons — correct green, wrong red, others dimmed
+  const options = document.querySelectorAll('.practice-option');
+  options.forEach((opt, i) => {
+    opt.onclick = null; // disable further clicks
+    opt.classList.add('answered');
+    if (i === correct) {
+      opt.classList.add('practice-correct');
+    } else if (i === selected && !isCorrect) {
+      opt.classList.add('practice-wrong');
+    } else {
+      opt.classList.add('practice-dimmed');
+    }
+  });
+
+  // Show result toast
+  if (isCorrect) {
+    toast('✅ Correct!', 'success');
+  } else {
+    toast('❌ Incorrect — read the explanation.', 'error');
+  }
+
+  // Show explanation block
+  const q = App.currentQuiz.questions[App.currentQuiz.idx];
+  const expEl  = document.getElementById('quiz-explanation');
+  const expTxt = document.getElementById('quiz-exp-text');
+  if (expEl && expTxt) {
+    expTxt.textContent = q.explanation || q.exp || '';
+    expEl.classList.remove('hidden');
     expEl.classList.add('show');
   }
 
-  const progEl = $('#quiz-progress-text');
-  if (progEl) progEl.textContent = `${App.currentQuiz.idx + 1}/${App.currentQuiz.questions.length} • Score: ${App.currentQuiz.score}`;
-  const scoreEl = $('#quiz-score-live');
-  if (scoreEl) scoreEl.textContent = App.currentQuiz.score;
+  // Show Next / Finish button
+  const qNext = document.getElementById('quiz-next-btn');
+  if (qNext) qNext.classList.remove('hidden');
 }
 
 function nextQuestion() {
@@ -1318,29 +1373,74 @@ function nextQuestion() {
 }
 
 function showQuizResults() {
-  const { score, questions } = App.currentQuiz;
-  const pct = Math.round(score / questions.length * 100);
-  const emoji = pct >= 80 ? '🏆' : pct >= 60 ? '👍' : '📚';
+  const { score, questions, chapterId } = App.currentQuiz;
+  const total = questions.length;
+  const pct   = Math.round(score / total * 100);
+  const wrong = total - score;
 
-  const resultArea = $('#quiz-result-area');
+  let grade, emoji, msg, gradeCls;
+  if (pct >= 90)      { grade='A+'; emoji='🏆'; msg='Outstanding, Sailor!';              gradeCls='grade-aplus'; }
+  else if (pct >= 80) { grade='A';  emoji='🥇'; msg='Excellent work! Keep it up.';        gradeCls='grade-a'; }
+  else if (pct >= 60) { grade='B';  emoji='👍'; msg='Good progress. Review the misses.';  gradeCls='grade-b'; }
+  else if (pct >= 40) { grade='C';  emoji='📖'; msg='Needs improvement. Study first.';    gradeCls='grade-c'; }
+  else                { grade='D';  emoji='⚓'; msg='Read Study notes, then retry.';      gradeCls='grade-d'; }
+
+  const resultArea = document.getElementById('quiz-result-area');
   if (resultArea) {
     resultArea.innerHTML = `
-      <div class="card" style="text-align:center;padding:2rem;">
-        <div style="font-size:3rem;margin-bottom:1rem;">${emoji}</div>
-        <h2 style="font-size:2rem;color:var(--gold);">${pct}%</h2>
-        <p style="margin:0.5rem 0 1.5rem;">You scored ${score} out of ${questions.length}</p>
-        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">
-          ${pct >= 80 ? 'Excellent work, Sailor! 🎖️' : pct >= 60 ? 'Good progress! Keep it up.' : "Keep studying – you'll get there!"}
-        </p>
-        <button class="btn btn-primary btn-block" onclick="resetQuiz()">Try Again</button>
-        <button class="btn btn-outline btn-block mt-1" onclick="switchTab('syllabus')">Back to Syllabus</button>
+      <div class="practice-results">
+        <div class="result-hero">
+          <div class="result-emoji">${emoji}</div>
+          <div class="result-grade ${gradeCls}">${grade}</div>
+          <div class="result-score">${score} / ${total}</div>
+          <div class="result-pct-text">${pct}%</div>
+          <div class="result-msg">${msg}</div>
+        </div>
+        <div class="result-stats-row">
+          <div class="result-stat result-stat-correct">
+            <div class="result-stat-num">${score}</div>
+            <div class="result-stat-lbl">Correct</div>
+          </div>
+          <div class="result-stat result-stat-wrong">
+            <div class="result-stat-num">${wrong}</div>
+            <div class="result-stat-lbl">Wrong</div>
+          </div>
+          <div class="result-stat result-stat-pct">
+            <div class="result-stat-num">${pct}%</div>
+            <div class="result-stat-lbl">Score</div>
+          </div>
+        </div>
+        <div class="result-actions">
+          <button class="btn btn-primary btn-block" onclick="resetQuiz()">🔄 Try Again</button>
+          <button class="btn btn-outline btn-block" style="margin-top:0.75rem;"
+                  onclick="_handleStudyAfterResult('${chapterId}')">📖 Study This Topic</button>
+          <button class="btn btn-outline btn-block" style="margin-top:0.75rem;"
+                  onclick="switchTab('syllabus')">← Back to Syllabus</button>
+        </div>
       </div>
     `;
     resultArea.classList.remove('hidden');
   }
 
-  const questionArea = $('#quiz-question-area');
+  const questionArea = document.getElementById('quiz-question-area');
   if (questionArea) questionArea.classList.add('hidden');
+}
+
+function _handleStudyAfterResult(chapterId) {
+  if (App.syllabus) {
+    for (const paper of App.syllabus.papers) {
+      for (const subj of paper.subjects) {
+        const ch = subj.chapters.find(c => c.id === chapterId);
+        if (ch && ch.topics.length > 0) {
+          _activeTopicId   = ch.topics[0].id;
+          _activeChapterId = chapterId;
+          handleTopicStudy();
+          return;
+        }
+      }
+    }
+  }
+  switchTab('syllabus');
 }
 
 function resetQuiz() {
@@ -1356,81 +1456,12 @@ function resetQuiz() {
 // ============================================================
 // FORMULAS / NOTES
 // ============================================================
-const FORMULAS = {
-  math: [
-    { title: 'Quadratic Formula', content: 'x = (-b ± √(b²-4ac)) / 2a' },
-    { title: 'AP – nth Term', content: 'aₙ = a + (n-1)d' },
-    { title: 'AP – Sum', content: 'Sₙ = n/2 × [2a + (n-1)d]' },
-    { title: 'GP – nth Term', content: 'aₙ = a × rⁿ⁻¹' },
-    { title: 'Binomial Theorem', content: '(x+y)ⁿ = Σ C(n,r)xⁿ⁻ʳyʳ' },
-    { title: 'sin²θ + cos²θ', content: '= 1' },
-    { title: 'tan θ', content: '= sin θ / cos θ' },
-    { title: 'Area of Triangle (Det)', content: 'Δ = ½|x₁(y₂-y₃) + x₂(y₃-y₁) + x₃(y₁-y₂)|' },
-    { title: 'Binary → Decimal', content: 'Sum of (bit × 2ⁿ) from right, n starts at 0' },
-    { title: 'Distance Formula', content: 'd = √[(x₂-x₁)² + (y₂-y₁)²]' },
-  ],
-  physics: [
-    { title: "Newton's 2nd Law", content: 'F = ma' },
-    { title: 'Kinematic Equation 1', content: 'v = u + at' },
-    { title: 'Kinematic Equation 2', content: 's = ut + ½at²' },
-    { title: 'Kinematic Equation 3', content: 'v² = u² + 2as' },
-    { title: "Ohm's Law", content: 'V = IR' },
-    { title: 'Power (Electrical)', content: 'P = VI = I²R = V²/R' },
-    { title: 'Escape Velocity', content: 'vₑ = √(2gR) ≈ 11.2 km/s' },
-    { title: "Archimedes' Principle", content: 'Buoyant Force = ρ × V × g' },
-    { title: 'Mirror Formula', content: '1/f = 1/v + 1/u' },
-    { title: 'Lens Formula', content: '1/f = 1/v - 1/u' },
-    { title: "Snell's Law", content: 'n₁sin θ₁ = n₂sin θ₂' },
-    { title: 'SHM Frequency', content: 'f = 1/(2π) × √(k/m)' },
-  ]
-};
-
-function renderFormulas() {
-  const container = $('#formulas-container');
-  if (!container) return;
-
-  container.innerHTML = `
-    <div class="section-header mb-2">
-      <h2 class="section-title">📐 Formulas & Tricks</h2>
-    </div>
-    <div class="mb-2">
-      <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
-        <button class="btn btn-primary btn-sm" id="fm-btn-math" onclick="showFormulaTab('math')">Mathematics</button>
-        <button class="btn btn-outline btn-sm" id="fm-btn-physics" onclick="showFormulaTab('physics')">Physics</button>
-      </div>
-      <div id="formula-list"></div>
-    </div>
-  `;
-
-  showFormulaTab('math');
-}
-
-function showFormulaTab(tab) {
-  $('#fm-btn-math')?.classList.toggle('btn-primary', tab === 'math');
-  $('#fm-btn-math')?.classList.toggle('btn-outline', tab !== 'math');
-  $('#fm-btn-physics')?.classList.toggle('btn-primary', tab === 'physics');
-  $('#fm-btn-physics')?.classList.toggle('btn-outline', tab !== 'physics');
-
-  const list = $('#formula-list');
-  if (!list) return;
-
-  list.innerHTML = FORMULAS[tab].map(f => `
-    <div class="formula-card">
-      <div class="formula-title">${f.title}</div>
-      <div class="formula-content">${f.content}</div>
-    </div>
-  `).join('');
-}
-
-// ============================================================
-// TAB SWITCHING
-// ============================================================
 function switchTab(tabName) {
   $$('.tab-content').forEach(el => el.classList.remove('active-tab'));
   $$('.nav-item').forEach(el => el.classList.remove('active'));
 
-  const content = $(`#tab-${tabName}`);
-  const navItem = $(`#nav-${tabName}`);
+  const content = document.getElementById(`tab-${tabName}`);
+  const navItem = document.getElementById(`nav-${tabName}`);
 
   content?.classList.add('active-tab');
   navItem?.classList.add('active');
@@ -1438,10 +1469,10 @@ function switchTab(tabName) {
   switch (tabName) {
     case 'dashboard': renderDashboard(); break;
     case 'syllabus':  renderSyllabus();  break;
-    case 'quiz':
-      if (!App.currentQuiz.questions.length) renderQuizLanding();
+    case 'practice':
+      if (!App.currentQuiz.questions.length) renderPracticeLanding();
       break;
-    case 'formulas': renderFormulas(); break;
+    case 'study': renderStudyLanding(); break;
     case 'profile':  renderProfile();  break;
   }
 }
@@ -1450,7 +1481,7 @@ function updateNavHighlight(tab) {
   switchTab(tab);
 }
 
-function renderQuizLanding() {
+function renderPracticeLanding() {
   const el = $('#quiz-question-area');
   const result = $('#quiz-result-area');
   if (result) result.classList.add('hidden');
@@ -1458,13 +1489,26 @@ function renderQuizLanding() {
     el.classList.remove('hidden');
     el.innerHTML = `
       <div class="empty-state">
-        <div class="empty-icon">🧠</div>
-        <h3>Practice Questions</h3>
-        <p>Go to Syllabus → tap "Quiz" on any chapter to start practicing.</p>
+        <div class="empty-icon">📝</div>
+        <h3>Start Practicing</h3>
+        <p>Go to Syllabus → tap any topic → choose 📝 Practice to begin MCQs.</p>
         <button class="btn btn-primary mt-2" onclick="switchTab('syllabus')">Go to Syllabus</button>
       </div>
     `;
   }
+}
+
+function renderStudyLanding() {
+  const el = $('#study-content-area');
+  if (!el) return;
+  el.innerHTML = `
+    <div class="empty-state">
+      <div class="empty-icon">📖</div>
+      <h3>Study a Topic</h3>
+      <p>Go to Syllabus → tap any topic → choose 📖 Study to read detailed notes.</p>
+      <button class="btn btn-primary mt-2" onclick="switchTab('syllabus')">Go to Syllabus</button>
+    </div>
+  `;
 }
 
 // ============================================================
@@ -1714,6 +1758,150 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+
+// ============================================================
+// TOPIC ACTION MODAL
+// ============================================================
+let _activeTopicId   = null;
+let _activeChapterId = null;
+
+function openTopicModal(topicId, topicName, chapterId, chapterName) {
+  _activeTopicId   = topicId;
+  _activeChapterId = chapterId;
+
+  const modal = document.getElementById('topic-action-modal');
+  document.getElementById('topic-modal-name').textContent    = topicName;
+  document.getElementById('topic-modal-chapter').textContent = chapterName;
+
+  const hasContent   = App.content && App.content[topicId];
+  const hasQuestions = App.questions?.topics?.[chapterId]?.length > 0;
+
+  const studyBtn    = document.getElementById('topic-study-btn');
+  const practiceBtn = document.getElementById('topic-practice-btn');
+
+  studyBtn.querySelector('.topic-action-sub').textContent =
+    hasContent ? 'Read full notes & theory' : 'Notes coming soon';
+  practiceBtn.querySelector('.topic-action-sub').textContent =
+    hasQuestions ? `${App.questions.topics[chapterId].length}+ MCQs with explanations` : 'Questions coming soon';
+
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTopicModal() {
+  document.getElementById('topic-action-modal').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+// ── Study button handler
+function handleTopicStudy() {
+  closeTopicModal();
+  if (!_activeTopicId) return;
+
+  const content = App.content && App.content[_activeTopicId];
+  switchTab('study');
+
+  const el = document.getElementById('study-content-area');
+  if (!el) return;
+
+  if (!content) {
+    el.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📖</div>
+        <h3>Notes Coming Soon</h3>
+        <p>Study notes for this topic are being prepared. Check back soon!</p>
+        <button class="btn btn-outline mt-2" onclick="switchTab('syllabus')">← Back to Syllabus</button>
+      </div>`;
+    return;
+  }
+
+  el.innerHTML = `
+    <div class="study-header">
+      <button class="study-back-btn" onclick="switchTab('syllabus')">← Syllabus</button>
+      <h2 class="study-title">${content.title}</h2>
+    </div>
+
+    <div class="study-body">
+
+      <div class="study-notes-block">
+        <div class="study-section-label">📘 Study Notes</div>
+        <div class="study-notes-text">${content.notes.split('\n\n').map(p=>'<p>'+p+'</p>').join('')}</div>
+      </div>
+
+      ${content.points?.length ? `
+      <div class="study-card">
+        <div class="study-section-label">📌 Key Points</div>
+        <ul class="study-points-list">
+          ${content.points.map(p => `<li>${p}</li>`).join('')}
+        </ul>
+      </div>` : ''}
+
+      ${content.examples?.length ? `
+      <div class="study-card">
+        <div class="study-section-label">💡 Examples</div>
+        <div class="study-examples">
+          ${content.examples.map((e,i) => `
+            <div class="study-example-item">
+              <span class="example-num">${i+1}</span>
+              <span>${e}</span>
+            </div>`).join('')}
+        </div>
+      </div>` : ''}
+
+      ${content.summary ? `
+      <div class="study-card study-summary-card">
+        <div class="study-section-label">⚡ Quick Summary</div>
+        <p class="study-summary-text">${content.summary}</p>
+      </div>` : ''}
+
+      <div style="padding-bottom:6rem;text-align:center;margin-top:1.5rem;">
+        <button class="btn btn-primary" style="margin-right:0.5rem;"
+          onclick="handleTopicPracticeFromStudy()">
+          📝 Practice This Topic
+        </button>
+        <button class="btn btn-outline" onclick="switchTab('syllabus')">
+          ← Back
+        </button>
+      </div>
+
+    </div>
+  `;
+}
+
+// ── Practice button handler (from modal)
+function handleTopicPractice() {
+  closeTopicModal();
+  if (!_activeChapterId) return;
+  startQuiz(_activeChapterId);
+}
+
+// ── Practice button from inside study screen
+function handleTopicPracticeFromStudy() {
+  if (!_activeChapterId) { switchTab('syllabus'); return; }
+  startQuiz(_activeChapterId);
+}
+
+// ── Chapter-level practice shortcut (📝 button on chapter header)
+function startChapterPractice(chapterId, chapterName) {
+  _activeChapterId = chapterId;
+  startQuiz(chapterId);
+}
+
+// ============================================================
+// LOAD CONTENT.JSON
+// ============================================================
+async function loadContent() {
+  try {
+    const res = await fetch('data/content.json');
+    if (!res.ok) throw new Error('not found');
+    App.content = await res.json();
+    console.log('[NavPath] Content loaded ✓');
+  } catch(e) {
+    console.warn('[NavPath] content.json not found — study notes disabled');
+    App.content = {};
+  }
+}
+
 // ============================================================
 // GLOBAL EXPORTS
 // FIX #5: renderQuestion and App were not exported to window,
@@ -1738,4 +1926,11 @@ window.selectPlan        = selectPlan;
 window.initiatePurchase  = initiatePurchase;
 window.toggleDarkMode    = toggleDarkMode;
 window.installApp        = installApp;
-window.showFormulaTab    = showFormulaTab;
+window.openTopicModal    = openTopicModal;
+window.closeTopicModal   = closeTopicModal;
+window.handleTopicStudy  = handleTopicStudy;
+window.handleTopicPractice = handleTopicPractice;
+window.handleTopicPracticeFromStudy = handleTopicPracticeFromStudy;
+window.startChapterPractice = startChapterPractice;
+window._handleStudyAfterResult = _handleStudyAfterResult;
+window._handleStudyAfterResult = _handleStudyAfterResult;
