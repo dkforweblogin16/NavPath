@@ -11,39 +11,21 @@
 
   <title>NavPath – NEA Exam Prep</title>
 
-  <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json" />
-
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/icons/favicon.png" />
   <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
-
-  <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css" />
 
-  <!-- FIX: Firebase SDK must load BEFORE firebase.js and script.js.
-       They were in <head> originally which is correct, but keeping
-       them here ensures order is explicit and clear. -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
-  <!-- Razorpay -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
 
-<!-- ============================================================ -->
-<!-- TOAST CONTAINER                                              -->
-<!-- ============================================================ -->
 <div id="toast-container" class="toast-container"></div>
 
-<!-- ============================================================ -->
-<!-- PWA INSTALL BANNER                                           -->
-<!-- ============================================================ -->
 <div id="install-banner" class="hidden"
      style="position:fixed;bottom:5rem;left:1rem;right:1rem;z-index:150;
             background:var(--navy-mid);border:1px solid var(--gold);
@@ -60,16 +42,12 @@
   </div>
 </div>
 
-<!-- ============================================================ -->
-<!-- APP WRAPPER                                                  -->
-<!-- ============================================================ -->
 <div id="app">
 
   <!-- ======================================================== -->
-  <!-- SCREEN 1: AUTH (Login / Signup)                          -->
+  <!-- SCREEN 1: AUTH                                           -->
   <!-- ======================================================== -->
   <div id="auth-screen" class="screen active">
-    <!-- Background Stars Effect -->
     <div style="position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0;">
       <div style="position:absolute;width:2px;height:2px;background:#c9a84c;border-radius:50%;top:15%;left:20%;opacity:0.4;animation:pulse 3s infinite;"></div>
       <div style="position:absolute;width:1px;height:1px;background:#7a9cc0;border-radius:50%;top:30%;left:70%;opacity:0.6;animation:pulse 2.5s infinite 0.5s;"></div>
@@ -78,7 +56,6 @@
       <div style="position:absolute;width:1px;height:1px;background:#c9a84c;border-radius:50%;top:45%;left:90%;opacity:0.4;animation:pulse 2.8s infinite 1.5s;"></div>
     </div>
 
-    <!-- Logo -->
     <div class="auth-logo" style="position:relative;z-index:1;">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 55" fill="none" width="220" height="68">
         <circle cx="28" cy="27" r="22" stroke="#c9a84c" stroke-width="2.5" fill="none"/>
@@ -97,18 +74,12 @@
       <div class="auth-logo-tagline">Indian Navy Aspirant Platform</div>
     </div>
 
-    <!-- Auth Card -->
     <div class="auth-card" style="position:relative;z-index:1;">
-      <!-- Tab switcher -->
-      <!-- FIX #8: Renamed IDs from tab-login/tab-signup to authtab-login/authtab-signup
-           to prevent switchAuthTab()'s $(`#authtab-${tab}`) from accidentally selecting
-           the main content tab divs (#tab-dashboard, etc.) -->
       <div class="auth-tabs">
         <button class="auth-tab active" id="authtab-login" onclick="switchAuthTab('login')">Sign In</button>
         <button class="auth-tab" id="authtab-signup" onclick="switchAuthTab('signup')">Create Account</button>
       </div>
 
-      <!-- LOGIN FORM -->
       <div id="login-form">
         <div class="form-group">
           <label>Email Address</label>
@@ -127,7 +98,6 @@
         </p>
       </div>
 
-      <!-- SIGNUP FORM -->
       <div id="signup-form" class="hidden">
         <div class="form-group">
           <label>Full Name</label>
@@ -154,7 +124,6 @@
       </div>
     </div>
 
-    <!-- Trial Info -->
     <div style="position:relative;z-index:1;text-align:center;margin-top:1.5rem;padding:0 1.5rem;">
       <p style="font-size:0.75rem;color:var(--text-muted);line-height:1.7;">
         🔓 3-day free trial includes full syllabus access<br>
@@ -167,11 +136,10 @@
 
 
   <!-- ======================================================== -->
-  <!-- SCREEN 2: MAIN APP (Tabs)                                -->
+  <!-- SCREEN 2: MAIN APP                                       -->
   <!-- ======================================================== -->
   <div id="main-screen" class="screen">
 
-    <!-- TOP NAVIGATION -->
     <nav class="top-nav">
       <div class="nav-logo">
         <div class="nav-logo-icon">🧭</div>
@@ -189,19 +157,14 @@
       </div>
     </nav>
 
-    <!-- TAB CONTENTS -->
-
     <!-- ─── DASHBOARD TAB ─── -->
     <div id="tab-dashboard" class="tab-content active-tab">
       <div class="main-content">
-
-        <!-- Welcome -->
         <div class="welcome-section">
           <div class="welcome-greeting">GOOD DAY, SAILOR</div>
           <h1 class="welcome-name" id="welcome-name">Welcome back</h1>
         </div>
 
-        <!-- Trial Banner -->
         <div class="trial-banner" id="trial-banner">
           <div class="trial-info">
             <h4>🕐 Free Trial Active</h4>
@@ -216,7 +179,6 @@
           </div>
         </div>
 
-        <!-- Stats Grid -->
         <div class="stats-grid">
           <div class="stat-card gold">
             <div class="stat-value" id="stat-total">0</div>
@@ -236,7 +198,6 @@
           </div>
         </div>
 
-        <!-- Overall Progress Bar -->
         <div class="card mb-2">
           <div class="card-body">
             <div class="flex items-center justify-between mb-1">
@@ -249,13 +210,11 @@
           </div>
         </div>
 
-        <!-- Streak -->
         <div class="flex items-center gap-1 mb-2">
           <div class="streak-badge">🔥 <span id="streak-count">0</span> Day Streak</div>
           <div style="font-size:0.75rem;color:var(--text-muted);">Keep it going!</div>
         </div>
 
-        <!-- Progress Chart -->
         <div class="card mb-2">
           <div class="card-header">
             <span style="font-size:0.9rem;font-weight:600;">Paper-wise Progress</span>
@@ -267,15 +226,14 @@
           </div>
         </div>
 
-        <!-- Quick Actions -->
         <div class="section-header mb-1">
           <h2 class="section-title">Quick Actions</h2>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.5rem;">
           <button class="card" style="padding:1.25rem;text-align:center;cursor:pointer;border:none;background:var(--card-bg);" onclick="switchTab('syllabus')">
             <div style="font-size:1.75rem;margin-bottom:0.5rem;">📚</div>
-            <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">Study Syllabus</div>
-            <div style="font-size:0.7rem;color:var(--text-muted);">Track topics</div>
+            <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">Track Syllabus</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);">Mark topics done</div>
           </button>
           <button class="card" style="padding:1.25rem;text-align:center;cursor:pointer;border:none;background:var(--card-bg);" onclick="switchTab('practice')">
             <div style="font-size:1.75rem;margin-bottom:0.5rem;">📝</div>
@@ -294,7 +252,6 @@
           </button>
         </div>
 
-        <!-- Exam Info -->
         <div class="card" style="background:linear-gradient(135deg,rgba(42,82,152,0.2),rgba(5,15,28,0.8));">
           <div class="card-body">
             <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
@@ -317,7 +274,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
     <!-- END DASHBOARD TAB -->
@@ -340,38 +296,30 @@
     <!-- END SYLLABUS TAB -->
 
 
-    <!-- ─── PRACTICE TAB (renamed from Quiz) ─── -->
+    <!-- ─── PRACTICE TAB ─── -->
     <div id="tab-practice" class="tab-content">
       <div class="main-content">
-        <div class="section-header mb-2">
-          <h2 class="section-title">📝 Practice</h2>
-          <span style="font-size:0.75rem;color:var(--text-muted);">Select a topic from Syllabus</span>
+        <!-- Practice Browse View (subject → chapter → topic selection) -->
+        <div id="practice-browse-area">
+          <!-- Rendered by JS -->
         </div>
-        <div id="quiz-question-area">
-          <div class="empty-state">
-            <div class="empty-icon">🎯</div>
-            <h3>Start Practicing</h3>
-            <p>Go to Syllabus → tap a topic → choose 📝 Practice to begin.</p>
-            <button class="btn btn-primary mt-2" onclick="switchTab('syllabus')">Go to Syllabus</button>
-          </div>
-        </div>
+        <!-- Practice Quiz View -->
+        <div id="quiz-question-area" class="hidden"></div>
         <div id="quiz-result-area" class="hidden"></div>
       </div>
     </div>
     <!-- END PRACTICE TAB -->
 
 
-    <!-- ─── STUDY TAB (NEW) ─── -->
+    <!-- ─── STUDY TAB ─── -->
     <div id="tab-study" class="tab-content">
       <div class="main-content">
-        <div id="study-content-area">
-          <div class="empty-state">
-            <div class="empty-icon">📖</div>
-            <h3>Study a Topic</h3>
-            <p>Go to Syllabus → tap a topic → choose 📖 Study to read notes.</p>
-            <button class="btn btn-primary mt-2" onclick="switchTab('syllabus')">Go to Syllabus</button>
-          </div>
+        <!-- Study Browse View (subject → chapter → topic selection) -->
+        <div id="study-browse-area">
+          <!-- Rendered by JS -->
         </div>
+        <!-- Study Content View -->
+        <div id="study-content-area" class="hidden"></div>
       </div>
     </div>
     <!-- END STUDY TAB -->
@@ -415,98 +363,44 @@
 <!-- END APP -->
 
 
-<!-- ============================================================ -->
-<!-- PREMIUM MODAL (Paywall)                                      -->
-<!-- ============================================================ -->
+<!-- PREMIUM MODAL -->
 <div id="premium-modal" class="modal-overlay" onclick="if(event.target===this)closePremiumModal()">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div class="modal-body">
-
-      <!-- Header -->
       <div class="premium-icon">⭐</div>
       <h2 style="text-align:center;font-size:1.4rem;margin-bottom:0.4rem;">Unlock Full Access</h2>
       <p style="text-align:center;font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">
         Complete NEA preparation – all topics, quizzes, formulas & more
       </p>
-
-      <!-- Benefits -->
       <div style="background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius);padding:1rem;margin-bottom:1.25rem;">
         <div style="display:grid;gap:0.6rem;">
-          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;">
-            <span style="color:var(--success);font-size:1rem;">✓</span> Full NEA syllabus access
-          </div>
-          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;">
-            <span style="color:var(--success);font-size:1rem;">✓</span> 500+ MCQ practice questions
-          </div>
-          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;">
-            <span style="color:var(--success);font-size:1rem;">✓</span> Full study notes per topic
-          </div>
-          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;">
-            <span style="color:var(--success);font-size:1rem;">✓</span> Progress tracking & daily streak
-          </div>
-          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;">
-            <span style="color:var(--success);font-size:1rem;">✓</span> Works offline (PWA)
-          </div>
+          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;"><span style="color:var(--success);font-size:1rem;">✓</span> Full NEA syllabus access</div>
+          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;"><span style="color:var(--success);font-size:1rem;">✓</span> 500+ MCQ practice questions</div>
+          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;"><span style="color:var(--success);font-size:1rem;">✓</span> Full study notes per topic</div>
+          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;"><span style="color:var(--success);font-size:1rem;">✓</span> Progress tracking & daily streak</div>
+          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;"><span style="color:var(--success);font-size:1rem;">✓</span> Works offline (PWA)</div>
         </div>
       </div>
-
-      <!-- Plan Cards -->
       <div class="plan-cards">
         <div class="plan-card" id="plan-monthly" onclick="selectPlan('monthly')">
-          <div class="plan-left">
-            <h4>3-Month Plan</h4>
-            <p>Perfect for focused preparation</p>
-          </div>
-          <div class="plan-price">
-            <div class="amount">₹99</div>
-            <span class="per">per 3 months</span>
-          </div>
+          <div class="plan-left"><h4>3-Month Plan</h4><p>Perfect for focused preparation</p></div>
+          <div class="plan-price"><div class="amount">₹99</div><span class="per">per 3 months</span></div>
         </div>
-
         <div class="plan-card best-value selected" id="plan-yearly" onclick="selectPlan('yearly')">
-          <div class="plan-left">
-            <h4>1-Year Plan</h4>
-            <p>Best for thorough preparation</p>
-          </div>
-          <div class="plan-price">
-            <div class="amount">₹199</div>
-            <span class="per">per year</span>
-          </div>
+          <div class="plan-left"><h4>1-Year Plan</h4><p>Best for thorough preparation</p></div>
+          <div class="plan-price"><div class="amount">₹199</div><span class="per">per year</span></div>
         </div>
       </div>
-
-      <!-- CTA Button -->
-      <button class="btn btn-gold btn-block btn-lg" onclick="initiatePurchase()" style="margin-bottom:0.75rem;">
-        🔓 Unlock Premium Now
-      </button>
-
-      <button class="btn btn-outline btn-block" onclick="closePremiumModal()">
-        Maybe Later
-      </button>
-
-      <p style="text-align:center;font-size:0.7rem;color:var(--text-muted);margin-top:0.75rem;">
-        🔒 Secure payment via Razorpay • Instant activation
-      </p>
+      <button class="btn btn-gold btn-block btn-lg" onclick="initiatePurchase()" style="margin-bottom:0.75rem;">🔓 Unlock Premium Now</button>
+      <button class="btn btn-outline btn-block" onclick="closePremiumModal()">Maybe Later</button>
+      <p style="text-align:center;font-size:0.7rem;color:var(--text-muted);margin-top:0.75rem;">🔒 Secure payment via Razorpay • Instant activation</p>
     </div>
   </div>
 </div>
 
 
-<!-- Tab visibility is controlled by style.css (.tab-content / .tab-content.active-tab) -->
-
-
-<!-- ============================================================ -->
-<!-- SCRIPTS — ORDER MATTERS:
-     1. Firebase SDKs (in <head> above)
-     2. firebase.js  (initializes Firebase, returns { auth, db })
-     3. script.js    (full app logic, attaches onAuthStateChanged)
-     NO inline override scripts — quiz override is now inside script.js
-============================================================ -->
-
-<!-- ============================================================ -->
-<!-- TOPIC ACTION MODAL — Study or Practice                       -->
-<!-- ============================================================ -->
+<!-- TOPIC ACTION MODAL (used from Syllabus only) -->
 <div id="topic-action-modal" class="modal-overlay hidden" onclick="if(event.target===this)closeTopicModal()">
   <div class="modal-sheet topic-action-sheet">
     <div class="modal-handle"></div>
