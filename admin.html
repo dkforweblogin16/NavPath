@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NavPath Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<style>
+:root {
+  --bg:       #06101e;
+  --surface:  #0d1f35;
+  --surface2: #122540;
+  --border:   rgba(201,168,76,0.18);
+  --border2:  rgba(255,255,255,0.06);
+  --gold:     #c9a84c;
+  --gold-dim: rgba(201,168,76,0.12);
+  --cyan:     #38bdf8;
+  --cyan-dim: rgba(56,189,248,0.1);
+  --green:    #22c55e;
+  --red:      #ef4444;
+  --orange:   #f59e0b;
+  --text:     #e2effd;
+  --text2:    #6b92bc;
+  --text3:    #384f6b;
+  --mono:     'IBM Plex Mono', monospace;
+  --sans:     'DM Sans', sans-serif;
+  --display:  'Syne', sans-serif;
+  --r:        10px;
+  --r-lg:     16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;overflow:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 0% 0%,rgba(56,189,248,0.04) 0%,transparent 50%),radial-gradient(ellipse at 100% 100%,rgba(201,168,76,0.04) 0%,transparent 50%);pointer-events:none;z-index:0}
+
+/* ── AUTH SCREEN ── */
+#auth-screen{display:flex;position:fixed;inset:0;background:var(--bg);z-index:200;align-items:center;justify-content:center;flex-direction:column}
+#auth-screen.hidden{display:none}
+.auth-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:2.5rem 2rem;width:100%;max-width:380px}
+.auth-logo{text-align:center;margin-bottom:1.75rem}
+.auth-logo-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--gold-dim);border:1px solid rgba(201,168,76,0.3);border-radius:6px;padding:0.2rem 0.75rem;font-family:var(--mono);font-size:0.65rem;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.6rem}
+.auth-title{font-family:var(--display);font-size:1.6rem;font-weight:800;color:var(--text);letter-spacing:-0.03em}
+.auth-title span{color:var(--gold)}
+.auth-sub{font-size:0.8rem;color:var(--text3);margin-top:0.25rem;font-family:var(--mono)}
+.auth-form-label{display:block;font-size:0.72rem;font-weight:600;color:var(--text2);margin-bottom:0.35rem;font-family:var(--mono);letter-spacing:0.04em;margin-top:1rem}
+.auth-input{width:100%;padding:0.7rem 0.9rem;background:var(--bg);border:1.5px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:var(--sans);font-size:0.9rem;outline:none;transition:border-color 0.18s}
+.auth-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.1)}
+.auth-btn{width:100%;margin-top:1.5rem;padding:0.75rem;background:var(--gold);color:#0a1628;border:none;border-radius:var(--r);font-family:var(--display);font-size:0.95rem;font-weight:700;cursor:pointer;transition:background 0.18s}
+.auth-btn:hover{background:#dab850}
+.auth-btn:disabled{opacity:0.5;cursor:not-allowed}
+.auth-error{margin-top:0.75rem;padding:0.6rem 0.9rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:var(--r);font-size:0.8rem;color:var(--red);display:none}
+.auth-error.show{display:block}
+.auth-lock-note{margin-top:1rem;text-align:center;font-size:0.7rem;color:var(--text3);font-family:var(--mono)}
+
+/* ── MAIN LAYOUT ── */
+#app{display:flex;height:100%;position:relative;z-index:1}
+#app.hidden{display:none}
+
+/* ── SIDEBAR ── */
+#sidebar{width:220px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sidebar-logo{padding:1.5rem 1.25rem 1.25rem;border-bottom:1px solid var(--border)}
+.logo-badge{display:inline-flex;align-items:center;background:var(--gold-dim);border:1px solid rgba(201,168,76,0.3);border-radius:6px;padding:0.2rem 0.6rem;font-family:var(--mono);font-size:0.62rem;font-weight:600;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.6rem}
+.logo-title{font-family:var(--display);font-size:1.35rem;font-weight:800;color:var(--text);letter-spacing:-0.03em}
+.logo-title span{color:var(--gold)}
+.sidebar-nav{flex:1;padding:1rem 0.75rem;display:flex;flex-direction:column;gap:0.2rem;overflow-y:auto}
+.nav-sep{font-family:var(--mono);font-size:0.6rem;font-weight:600;letter-spacing:0.12em;color:var(--text3);text-transform:uppercase;padding:0.75rem 0.5rem 0.35rem}
+.nav-item{display:flex;align-items:center;gap:0.65rem;padding:0.55rem 0.75rem;border-radius:var(--r);border:none;background:transparent;color:var(--text2);font-family:var(--sans);font-size:0.875rem;font-weight:500;cursor:pointer;text-align:left;width:100%;transition:all 0.18s;position:relative}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{background:var(--gold-dim);color:var(--gold);font-weight:600}
+.nav-item.active::before{content:'';position:absolute;left:0;top:25%;bottom:25%;width:3px;background:var(--gold);border-radius:0 3px 3px 0}
+.nav-icon{font-size:1rem;width:18px;text-align:center}
+.sidebar-footer{padding:1rem;border-top:1px solid var(--border)}
+.admin-badge{display:flex;align-items:center;gap:0.5rem;padding:0.6rem 0.75rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r)}
+.admin-avatar{width:28px;height:28px;border-radius:50%;background:var(--gold-dim);border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:var(--gold);font-weight:700;font-family:var(--mono);flex-shrink:0}
+.admin-info{flex:1;min-width:0}
+.admin-name{font-size:0.78rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-role{font-size:0.62rem;color:var(--text3);font-family:var(--mono)}
+.logout-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:0.85rem;padding:0.15rem;transition:color 0.15s}
+.logout-btn:hover{color:var(--red)}
+
+/* ── MAIN ── */
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:56px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.75rem;flex-shrink:0;background:var(--surface)}
+.page-title{font-family:var(--display);font-size:1rem;font-weight:700;color:var(--text)}
+.topbar-right{display:flex;align-items:center;gap:0.75rem}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pdot 2s infinite}
+@keyframes pdot{0%,100%{opacity:1}50%{opacity:0.4}}
+.status-text{font-family:var(--mono);font-size:0.65rem;color:var(--text3)}
+
+/* ── PANELS ── */
+.panel{display:none;flex:1;overflow-y:auto;padding:1.75rem}
+.panel.active{display:block}
+
+/* ── STAT CARDS ── */
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.25rem 1.5rem;position:relative;overflow:hidden}
+.stat-card::after{content:'';position:absolute;top:-40px;right:-40px;width:100px;height:100px;border-radius:50%;opacity:0.06}
+.stat-card.gold::after{background:var(--gold)}
+.stat-card.cyan::after{background:var(--cyan)}
+.stat-card.green::after{background:var(--green)}
+.stat-card.red::after{background:var(--red)}
+.stat-label{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:0.5rem}
+.stat-value{font-family:var(--display);font-size:2rem;font-weight:800;line-height:1}
+.stat-card.gold .stat-value{color:var(--gold)}
+.stat-card.cyan .stat-value{color:var(--cyan)}
+.stat-card.green .stat-value{color:var(--green)}
+.stat-card.red .stat-value{color:var(--red)}
+.stat-sub{font-size:0.72rem;color:var(--text3);margin-top:0.35rem;font-family:var(--mono)}
+.stat-icon{position:absolute;top:1.1rem;right:1.25rem;font-size:1.5rem;opacity:0.4}
+
+/* ── CARD ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:1.25rem}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border2)}
+.card-title{font-family:var(--display);font-size:0.9rem;font-weight:700;color:var(--text)}
+.card-body{padding:1.25rem 1.5rem}
+
+/* ── TABLE ── */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);text-align:left;padding:0.6rem 1rem;border-bottom:1px solid var(--border2);white-space:nowrap}
+.data-table td{padding:0.75rem 1rem;border-bottom:1px solid var(--border2);font-size:0.875rem;vertical-align:middle}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:rgba(255,255,255,0.02)}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;padding:0.2rem 0.55rem;border-radius:100px;font-size:0.68rem;font-weight:600;font-family:var(--mono);white-space:nowrap}
+.badge-premium{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(201,168,76,0.3)}
+.badge-trial{background:var(--cyan-dim);color:var(--cyan);border:1px solid rgba(56,189,248,0.25)}
+.badge-expired{background:rgba(239,68,68,0.1);color:var(--red);border:1px solid rgba(239,68,68,0.25)}
+.badge-free{background:rgba(107,146,188,0.12);color:var(--text2);border:1px solid var(--border2)}
+.badge-green{background:rgba(34,197,94,0.1);color:var(--green);border:1px solid rgba(34,197,94,0.25)}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.55rem 1.1rem;border:none;border-radius:var(--r);font-family:var(--sans);font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.18s;white-space:nowrap}
+.btn-gold{background:var(--gold);color:#0a1628}
+.btn-gold:hover{background:#dab850}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text2)}
+.btn-outline:hover{border-color:var(--text2);color:var(--text)}
+.btn-danger{background:rgba(239,68,68,0.12);color:var(--red);border:1px solid rgba(239,68,68,0.3)}
+.btn-danger:hover{background:rgba(239,68,68,0.22)}
+.btn-cyan{background:var(--cyan-dim);color:var(--cyan);border:1px solid rgba(56,189,248,0.25)}
+.btn-cyan:hover{background:rgba(56,189,248,0.18)}
+.btn-sm{padding:0.3rem 0.7rem;font-size:0.75rem}
+.btn-block{width:100%;justify-content:center}
+.btn:disabled{opacity:0.45;cursor:not-allowed}
+
+/* ── FORM ── */
+.form-row{margin-bottom:1.1rem}
+.form-label{display:block;font-size:0.72rem;font-weight:600;color:var(--text2);margin-bottom:0.35rem;font-family:var(--mono);letter-spacing:0.04em}
+.form-input,.form-select,.form-textarea{width:100%;padding:0.65rem 0.9rem;background:var(--bg);border:1.5px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:var(--sans);font-size:0.875rem;outline:none;transition:border-color 0.18s;appearance:none}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.1)}
+.form-textarea{min-height:110px;resize:vertical;line-height:1.6}
+.form-select option{background:var(--surface2)}
+.form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.option-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem}
+.option-letter{font-family:var(--mono);font-size:0.7rem;font-weight:700;color:var(--gold);width:18px;flex-shrink:0}
+.option-radio{width:16px;height:16px;accent-color:var(--gold);flex-shrink:0;cursor:pointer}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(6,16,30,0.88);backdrop-filter:blur(6px);z-index:100;align-items:center;justify-content:center;padding:1.5rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);width:100%;max-width:640px;max-height:90vh;overflow-y:auto;animation:slideUp 0.22s ease;position:relative}
+@keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.modal-header{display:flex;align-items:flex-start;justify-content:space-between;padding:1.4rem 1.5rem 1.2rem;border-bottom:1px solid var(--border2);position:sticky;top:0;background:var(--surface);z-index:2}
+.modal-title{font-family:var(--display);font-size:1rem;font-weight:700;color:var(--text)}
+.modal-sub{font-size:0.72rem;color:var(--text3);font-family:var(--mono);margin-top:0.2rem}
+.modal-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.2rem;line-height:1;padding:0.1rem;transition:color 0.15s;flex-shrink:0}
+.modal-close:hover{color:var(--text)}
+.modal-body{padding:1.5rem}
+.modal-footer{padding:1rem 1.5rem 1.5rem;display:flex;justify-content:flex-end;gap:0.75rem;border-top:1px solid var(--border2)}
+
+/* ── SEARCH ── */
+.search-wrap{position:relative;flex:1}
+.search-wrap::before{content:'🔍';position:absolute;left:0.65rem;top:50%;transform:translateY(-50%);font-size:0.75rem;pointer-events:none}
+.search-input{width:100%;padding:0.5rem 0.9rem 0.5rem 2.2rem;background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:var(--sans);font-size:0.82rem;outline:none;transition:border-color 0.18s}
+.search-input:focus{border-color:var(--gold)}
+
+/* ── Q ITEM ── */
+.q-list{display:flex;flex-direction:column;gap:0.65rem;max-height:420px;overflow-y:auto}
+.q-item{background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);padding:0.875rem 1rem;position:relative}
+.q-num{font-family:var(--mono);font-size:0.62rem;color:var(--text3);margin-bottom:0.3rem}
+.q-text{font-size:0.875rem;color:var(--text);font-weight:500;line-height:1.5;margin-bottom:0.45rem;padding-right:4rem}
+.q-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.2rem}
+.q-opt{font-size:0.72rem;color:var(--text3);padding:0.15rem 0}
+.q-opt.correct{color:var(--green);font-weight:600}
+.q-actions{position:absolute;top:0.75rem;right:0.75rem;display:flex;gap:0.3rem}
+
+/* ── TOAST ── */
+#toast-zone{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;display:flex;flex-direction:column;gap:0.5rem;pointer-events:none}
+.toast{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:0.7rem 1.2rem;font-size:0.84rem;font-weight:500;color:var(--text);animation:tin 0.22s ease,tout 0.3s ease 2.7s forwards;max-width:300px;pointer-events:all;display:flex;align-items:center;gap:0.5rem}
+.toast.success{border-color:rgba(34,197,94,0.3)}
+.toast.success::before{content:'✓';color:var(--green);font-weight:700}
+.toast.error{border-color:rgba(239,68,68,0.3)}
+.toast.error::before{content:'✕';color:var(--red);font-weight:700}
+.toast.info{border-color:rgba(56,189,248,0.3)}
+.toast.info::before{content:'·';color:var(--cyan);font-weight:900;font-size:1.2rem}
+@keyframes tin{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+@keyframes tout{from{opacity:1}to{opacity:0;transform:translateX(14px)}}
+
+/* ── LOADER ── */
+.loader{display:flex;align-items:center;justify-content:center;padding:2.5rem;color:var(--text3);font-family:var(--mono);font-size:0.8rem;gap:0.5rem}
+.spinner{width:16px;height:16px;border:2px solid var(--border2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:3rem 2rem;color:var(--text3)}
+.empty-state .es-icon{font-size:2.5rem;margin-bottom:0.75rem}
+.empty-state p{font-size:0.85rem;font-family:var(--mono)}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     AUTH SCREEN
+════════════════════════════════════════════════ -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <div class="auth-logo-badge">⚓ Admin Access</div>
+      <div class="auth-title">Nav<span>Path</span></div>
+      <div class="auth-sub">Command &amp; Control Panel</div>
+    </div>
+    <label class="auth-form-label">EMAIL</label>
+    <input class="auth-input" id="auth-email" type="email" placeholder="navpath.admin@gmail.com" autocomplete="username" />
+    <label class="auth-form-label">PASSWORD</label>
+    <input class="auth-input" id="auth-password" type="password" placeholder="••••••••••••" autocomplete="current-password" />
+    <div class="auth-error" id="auth-error"></div>
+    <button class="auth-btn" id="auth-btn" onclick="adminLogin()">Access Panel</button>
+    <div class="auth-lock-note">🔒 Restricted to authorised admin only</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     MAIN APP
+════════════════════════════════════════════════ -->
+<div id="app" class="hidden">
+
+  <!-- SIDEBAR -->
+  <div id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-badge">⚓ Admin</div>
+      <div class="logo-title">Nav<span>Path</span></div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-sep">Overview</div>
+      <button class="nav-item active" data-panel="dashboard" onclick="showPanel('dashboard',this)">
+        <span class="nav-icon">📊</span> Dashboard
+      </button>
+
+      <div class="nav-sep">Content</div>
+      <button class="nav-item" data-panel="questions" onclick="showPanel('questions',this)">
+        <span class="nav-icon">📝</span> Questions
+      </button>
+      <button class="nav-item" data-panel="notes" onclick="showPanel('notes',this)">
+        <span class="nav-icon">📚</span> Study Notes
+      </button>
+
+      <div class="nav-sep">Users</div>
+      <button class="nav-item" data-panel="users" onclick="showPanel('users',this)">
+        <span class="nav-icon">👥</span> All Users
+      </button>
+      <button class="nav-item" data-panel="payments" onclick="showPanel('payments',this)">
+        <span class="nav-icon">💳</span> Payments
+      </button>
+
+      <div class="nav-sep">Tools</div>
+      <button class="nav-item" data-panel="announce" onclick="showPanel('announce',this)">
+        <span class="nav-icon">📣</span> Announce
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="admin-badge">
+        <div class="admin-avatar">A</div>
+        <div class="admin-info">
+          <div class="admin-name">NavPath Admin</div>
+          <div class="admin-role">superadmin</div>
+        </div>
+        <button class="logout-btn" onclick="adminLogout()" title="Logout">⏻</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div id="main">
+    <div class="topbar">
+      <div class="page-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-right">
+        <div class="status-dot"></div>
+        <div class="status-text">LIVE · navpath-19986</div>
+      </div>
+    </div>
+
+    <!-- ── DASHBOARD PANEL ── -->
+    <div class="panel active" id="panel-dashboard">
+      <div class="grid-4" id="stat-cards">
+        <div class="stat-card cyan">
+          <div class="stat-icon">👥</div>
+          <div class="stat-label">Total Users</div>
+          <div class="stat-value" id="stat-total">—</div>
+          <div class="stat-sub">registered accounts</div>
+        </div>
+        <div class="stat-card gold">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-label">Premium</div>
+          <div class="stat-value" id="stat-premium">—</div>
+          <div class="stat-sub">active subscribers</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon">🟢</div>
+          <div class="stat-label">On Trial</div>
+          <div class="stat-value" id="stat-trial">—</div>
+          <div class="stat-sub">3-day free trial</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-icon">⛔</div>
+          <div class="stat-label">Expired</div>
+          <div class="stat-value" id="stat-expired">—</div>
+          <div class="stat-sub">trial ended, no premium</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🕐 Recent Signups</div>
+          <button class="btn btn-outline btn-sm" onclick="showPanel('users', document.querySelector('[data-panel=users]'))">View All →</button>
+        </div>
+        <div id="recent-users-body">
+          <div class="loader"><div class="spinner"></div> Loading...</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">💳 Recent Payments</div>
+          <button class="btn btn-outline btn-sm" onclick="showPanel('payments', document.querySelector('[data-panel=payments]'))">View All →</button>
+        </div>
+        <div id="recent-payments-body">
+          <div class="loader"><div class="spinner"></div> Loading...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── QUESTIONS PANEL ── -->
+    <div class="panel" id="panel-questions">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;gap:1rem;flex-wrap:wrap;">
+        <div>
+          <div style="font-family:var(--display);font-size:1.1rem;font-weight:700;">MCQ Question Bank</div>
+          <div style="font-size:0.75rem;color:var(--text3);font-family:var(--mono);margin-top:0.15rem;">Stored in Firestore · questions collection</div>
+        </div>
+        <button class="btn btn-gold" onclick="openAddQuestionModal()">＋ Add Question</button>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div style="display:flex;align-items:center;gap:0.75rem;flex:1;flex-wrap:wrap;">
+            <div class="search-wrap" style="max-width:280px;">
+              <input class="search-input" id="q-search" placeholder="Search questions..." oninput="filterQuestions()" />
+            </div>
+            <select class="form-select" id="q-filter-chapter" style="width:200px;padding:0.48rem 0.9rem;" onchange="filterQuestions()">
+              <option value="">All Chapters</option>
+            </select>
+            <select class="form-select" id="q-filter-diff" style="width:140px;padding:0.48rem 0.9rem;" onchange="filterQuestions()">
+              <option value="">All Difficulty</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
+          <div style="font-family:var(--mono);font-size:0.72rem;color:var(--text3);margin-left:1rem;white-space:nowrap;" id="q-count-label">— questions</div>
+        </div>
+        <div class="card-body" style="padding:1rem 1.5rem;">
+          <div id="q-list-body">
+            <div class="loader"><div class="spinner"></div> Loading questions...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── NOTES PANEL ── -->
+    <div class="panel" id="panel-notes">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;gap:1rem;flex-wrap:wrap;">
+        <div>
+          <div style="font-family:var(--display);font-size:1.1rem;font-weight:700;">Study Notes Manager</div>
+          <div style="font-size:0.75rem;color:var(--text3);font-family:var(--mono);margin-top:0.15rem;">Stored in Firestore · notes collection</div>
+        </div>
+        <button class="btn btn-gold" onclick="openAddNoteModal()">＋ Add Note</button>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div id="notes-list-body">
+            <div class="loader"><div class="spinner"></div> Loading notes...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── USERS PANEL ── -->
+    <div class="panel" id="panel-users">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;gap:1rem;flex-wrap:wrap;">
+        <div>
+          <div style="font-family:var(--display);font-size:1.1rem;font-weight:700;">User Management</div>
+          <div style="font-size:0.75rem;color:var(--text3);font-family:var(--mono);margin-top:0.15rem;">Live Firestore · users collection</div>
+        </div>
+        <div style="display:flex;gap:0.6rem;align-items:center;flex-wrap:wrap;">
+          <div class="search-wrap" style="max-width:240px;">
+            <input class="search-input" id="u-search" placeholder="Search name or email..." oninput="filterUsers()" />
+          </div>
+          <select class="form-select" id="u-filter" style="width:150px;padding:0.48rem 0.9rem;" onchange="filterUsers()">
+            <option value="">All Users</option>
+            <option value="premium">Premium</option>
+            <option value="trial">On Trial</option>
+            <option value="expired">Expired</option>
+          </select>
+          <button class="btn btn-outline btn-sm" onclick="loadUsers()">↻ Refresh</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div id="users-table-body">
+          <div class="loader"><div class="spinner"></div> Loading users...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PAYMENTS PANEL ── -->
+    <div class="panel" id="panel-payments">
+      <div style="font-family:var(--display);font-size:1.1rem;font-weight:700;margin-bottom:0.4rem;">Payment History</div>
+      <div style="font-size:0.75rem;color:var(--text3);font-family:var(--mono);margin-bottom:1.25rem;">All premium payment records across all users</div>
+      <div class="card">
+        <div id="payments-table-body">
+          <div class="loader"><div class="spinner"></div> Loading payments...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ANNOUNCE PANEL ── -->
+    <div class="panel" id="panel-announce">
+      <div style="font-family:var(--display);font-size:1.1rem;font-weight:700;margin-bottom:0.4rem;">Announcements</div>
+      <div style="font-size:0.75rem;color:var(--text3);font-family:var(--mono);margin-bottom:1.25rem;">Push a notice to all users — shown on their dashboard</div>
+
+      <div class="card" style="max-width:640px;">
+        <div class="card-header"><div class="card-title">📣 New Announcement</div></div>
+        <div class="card-body">
+          <div class="form-row">
+            <label class="form-label">TITLE</label>
+            <input class="form-input" id="ann-title" placeholder="e.g. New questions added for Paper II" />
+          </div>
+          <div class="form-row">
+            <label class="form-label">MESSAGE</label>
+            <textarea class="form-textarea" id="ann-body" placeholder="Write your message to all students..."></textarea>
+          </div>
+          <div class="form-row">
+            <label class="form-label">TYPE</label>
+            <select class="form-select" id="ann-type">
+              <option value="info">ℹ️ Info</option>
+              <option value="success">✅ Success / Achievement</option>
+              <option value="warning">⚠️ Warning / Reminder</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:0.75rem;margin-top:0.5rem;">
+            <button class="btn btn-gold" onclick="sendAnnouncement()">📣 Publish Announcement</button>
+            <button class="btn btn-outline" onclick="clearAnnouncement()">Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="max-width:640px;">
+        <div class="card-header">
+          <div class="card-title">📋 Past Announcements</div>
+          <button class="btn btn-outline btn-sm" onclick="loadAnnouncements()">↻ Refresh</button>
+        </div>
+        <div class="card-body" id="ann-list-body">
+          <div class="loader"><div class="spinner"></div> Loading...</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ═══════════════════════════════════════════════
+     MODAL — ADD / EDIT QUESTION
+════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-question">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="qmodal-title">Add Question</div>
+        <div class="modal-sub" id="qmodal-sub">New MCQ for the question bank</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-question')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="q-edit-id" />
+      <div class="form-row">
+        <label class="form-label">CHAPTER / TOPIC ID</label>
+        <select class="form-select" id="q-chapter">
+          <option value="">— Select chapter —</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">QUESTION</label>
+        <textarea class="form-textarea" id="q-question" placeholder="Type the full question..." style="min-height:80px;"></textarea>
+      </div>
+      <div class="form-row">
+        <label class="form-label">OPTIONS (select the correct answer)</label>
+        <div class="option-row">
+          <span class="option-letter">A</span>
+          <input type="radio" name="q-correct" value="0" class="option-radio" id="qr0" />
+          <input class="form-input" id="q-opt-0" placeholder="Option A" />
+        </div>
+        <div class="option-row">
+          <span class="option-letter">B</span>
+          <input type="radio" name="q-correct" value="1" class="option-radio" id="qr1" />
+          <input class="form-input" id="q-opt-1" placeholder="Option B" />
+        </div>
+        <div class="option-row">
+          <span class="option-letter">C</span>
+          <input type="radio" name="q-correct" value="2" class="option-radio" id="qr2" />
+          <input class="form-input" id="q-opt-2" placeholder="Option C" />
+        </div>
+        <div class="option-row">
+          <span class="option-letter">D</span>
+          <input type="radio" name="q-correct" value="3" class="option-radio" id="qr3" />
+          <input class="form-input" id="q-opt-3" placeholder="Option D" />
+        </div>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row">
+          <label class="form-label">DIFFICULTY</label>
+          <select class="form-select" id="q-difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label class="form-label">MARKS</label>
+          <input class="form-input" id="q-marks" type="number" value="1" min="1" max="5" />
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">EXPLANATION (shown after answer)</label>
+        <textarea class="form-textarea" id="q-explanation" placeholder="Brief explanation of the correct answer..." style="min-height:80px;"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-question')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveQuestion()">💾 Save Question</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     MODAL — ADD / EDIT NOTE
+════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-note">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="nmodal-title">Add Study Note</div>
+        <div class="modal-sub">Rich text note for a topic</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-note')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="n-edit-id" />
+      <div class="form-grid-2">
+        <div class="form-row">
+          <label class="form-label">CHAPTER ID</label>
+          <select class="form-select" id="n-chapter">
+            <option value="">— Select chapter —</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label class="form-label">TOPIC ID</label>
+          <input class="form-input" id="n-topic" placeholder="e.g. tenses-simple-present" />
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">NOTE TITLE</label>
+        <input class="form-input" id="n-title" placeholder="e.g. Simple Present Tense — Key Rules" />
+      </div>
+      <div class="form-row">
+        <label class="form-label">CONTENT (supports basic HTML)</label>
+        <textarea class="form-textarea" id="n-content" placeholder="Write notes here. You can use &lt;b&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;br&gt; tags." style="min-height:200px;font-family:var(--mono);font-size:0.82rem;"></textarea>
+      </div>
+      <div class="form-row">
+        <label class="form-label">TAGS (comma separated)</label>
+        <input class="form-input" id="n-tags" placeholder="e.g. grammar, tenses, verb" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-note')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveNote()">💾 Save Note</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     MODAL — USER DETAIL
+════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-user">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="umodal-name">User Detail</div>
+        <div class="modal-sub" id="umodal-email"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-user')">✕</button>
+    </div>
+    <div class="modal-body" id="umodal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-user')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST ZONE -->
+<div id="toast-zone"></div>
+
+<!-- ═══════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════ -->
+<script>
+// ── Firebase config (from firebase.js) ──────────────────────
+const firebaseConfig = {
+  apiKey:            "AIzaSyAr7Tnoq0FrMEx8BZotdOTg7Du-2-wZ0fo",
+  authDomain:        "navpath-19986.firebaseapp.com",
+  projectId:         "navpath-19986",
+  storageBucket:     "navpath-19986.appspot.com",
+  messagingSenderId: "424012418705",
+  appId:             "1:424012418705:web:ad5a50a10254edac357930"
+};
+
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db   = firebase.firestore();
+
+// ── Admin credentials lock ───────────────────────────────────
+const ADMIN_EMAIL = 'navpath.admin@gmail.com';
+
+// ── Chapter map (mirrors NEA_SYLLABUS from script.js) ────────
+const CHAPTERS = [
+  // Paper I — English
+  { id:'comprehension',     name:'Reading Comprehension',    paper:'Paper I' },
+  { id:'tenses-voices',     name:'Tenses & Voices',          paper:'Paper I' },
+  { id:'applied-grammar',   name:'Applied Grammar',           paper:'Paper I' },
+  { id:'idioms-phrases',    name:'Idioms & Phrases',          paper:'Paper I' },
+  { id:'vocabulary',        name:'Vocabulary',                paper:'Paper I' },
+  // Paper I — GK
+  { id:'indian-constitution', name:'Indian Constitution',     paper:'Paper I' },
+  { id:'military-history',  name:'Military History',          paper:'Paper I' },
+  { id:'current-affairs',   name:'Current Affairs',           paper:'Paper I' },
+  { id:'abbreviations',     name:'Abbreviations',             paper:'Paper I' },
+  { id:'science-tech',      name:'Science & Technology',      paper:'Paper I' },
+  { id:'indian-navy-gk',    name:'Indian Navy GK',            paper:'Paper I' },
+  // Paper II — Maths
+  { id:'trigonometry',      name:'Trigonometry',              paper:'Paper II' },
+  { id:'algebra',           name:'Algebra',                   paper:'Paper II' },
+  { id:'coordinate-geometry', name:'Coordinate Geometry',     paper:'Paper II' },
+  { id:'calculus',          name:'Calculus',                  paper:'Paper II' },
+  { id:'statistics-probability', name:'Statistics & Probability', paper:'Paper II' },
+  { id:'matrices-determinants', name:'Matrices & Determinants', paper:'Paper II' },
+  { id:'number-system',     name:'Number System',             paper:'Paper II' },
+  // Paper III — Physics
+  { id:'physical-world',    name:'Physical World & Units',    paper:'Paper III' },
+  { id:'kinematics',        name:'Kinematics',                paper:'Paper III' },
+  { id:'motion-force-work', name:'Motion, Force & Work',      paper:'Paper III' },
+  { id:'gravitation',       name:'Gravitation',               paper:'Paper III' },
+  { id:'oscillations-waves', name:'Oscillations & Waves',     paper:'Paper III' },
+  { id:'optics',            name:'Optics',                    paper:'Paper III' },
+  { id:'current-electricity', name:'Current Electricity',     paper:'Paper III' },
+  { id:'heat',              name:'Heat & Thermodynamics',     paper:'Paper III' },
+  { id:'magnetism',         name:'Magnetism',                 paper:'Paper III' },
+  { id:'communication-systems', name:'Communication Systems', paper:'Paper III' },
+];
+
+// ── State ────────────────────────────────────────────────────
+let allUsers     = [];
+let allQuestions = [];
+let allNotes     = [];
+
+// ═══════════════════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════════════════
+auth.onAuthStateChanged(user => {
+  if (user && user.email === ADMIN_EMAIL) {
+    document.getElementById('auth-screen').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    bootstrapAdmin();
+  } else {
+    if (user) auth.signOut(); // kick non-admin
+    document.getElementById('auth-screen').classList.remove('hidden');
+    document.getElementById('app').classList.add('hidden');
+  }
+});
+
+async function adminLogin() {
+  const email = document.getElementById('auth-email').value.trim();
+  const pass  = document.getElementById('auth-password').value;
+  const errEl = document.getElementById('auth-error');
+  const btn   = document.getElementById('auth-btn');
+
+  errEl.classList.remove('show');
+
+  // Guard: only our admin email
+  if (email !== ADMIN_EMAIL) {
+    errEl.textContent = 'Access denied — not an authorised admin account.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Authenticating...';
+
+  try {
+    await auth.signInWithEmailAndPassword(email, pass);
+    // onAuthStateChanged handles the rest
+  } catch(e) {
+    errEl.textContent = e.code === 'auth/wrong-password'
+      ? 'Wrong password. Try again.'
+      : e.code === 'auth/user-not-found'
+      ? 'Admin account not found in Firebase.'
+      : e.message;
+    errEl.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Access Panel';
+  }
+}
+
+// Allow Enter key on auth inputs
+document.getElementById('auth-password').addEventListener('keydown', e => {
+  if (e.key === 'Enter') adminLogin();
+});
+
+function adminLogout() {
+  if (!confirm('Log out of admin panel?')) return;
+  auth.signOut();
+}
+
+// ═══════════════════════════════════════════════════════════
+// BOOTSTRAP — load everything on first entry
+// ═══════════════════════════════════════════════════════════
+function bootstrapAdmin() {
+  populateChapterSelects();
+  loadDashboard();
+  loadUsers();
+  loadQuestions();
+  loadNotes();
+  loadPayments();
+  loadAnnouncements();
+}
+
+// ═══════════════════════════════════════════════════════════
+// PANEL NAVIGATION
+// ═══════════════════════════════════════════════════════════
+const PANEL_TITLES = {
+  dashboard: 'Dashboard',
+  questions: 'Question Bank',
+  notes:     'Study Notes',
+  users:     'User Management',
+  payments:  'Payments',
+  announce:  'Announcements',
+};
+
+function showPanel(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  document.getElementById('topbar-title').textContent = PANEL_TITLES[id] || id;
+}
+
+// ═══════════════════════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════════════════════
+async function loadDashboard() {
+  try {
+    const snap = await db.collection('users').orderBy('trialStartDate','desc').limit(100).get();
+    const users = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    let premium = 0, trial = 0, expired = 0;
+    const now = new Date();
+
+    users.forEach(u => {
+      if (u.isPremium) { premium++; return; }
+      const start = u.trialStartDate?.toDate?.() || new Date(u.trialStartDate || 0);
+      const days  = Math.ceil((now - start) / 86400000);
+      if (days <= 3) trial++; else expired++;
+    });
+
+    document.getElementById('stat-total').textContent   = users.length;
+    document.getElementById('stat-premium').textContent = premium;
+    document.getElementById('stat-trial').textContent   = trial;
+    document.getElementById('stat-expired').textContent = expired;
+
+    // Recent users table
+    const recent = users.slice(0, 8);
+    document.getElementById('recent-users-body').innerHTML = tableWrap(
+      `<tr><th>Name</th><th>Email</th><th>Status</th><th>Joined</th></tr>`,
+      recent.map(u => {
+        const status = userStatusBadge(u);
+        const date   = u.trialStartDate?.toDate?.() || new Date(u.trialStartDate || 0);
+        return `<tr>
+          <td style="font-weight:600;">${esc(u.displayName || '—')}</td>
+          <td style="font-family:var(--mono);font-size:0.78rem;color:var(--text2);">${esc(u.email || '—')}</td>
+          <td>${status}</td>
+          <td style="font-family:var(--mono);font-size:0.75rem;color:var(--text3);">${fmtDate(date)}</td>
+        </tr>`;
+      }).join('')
+    );
+  } catch(e) {
+    console.error(e);
+    toast('Failed to load dashboard: ' + e.message, 'error');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// USERS
+// ═══════════════════════════════════════════════════════════
+async function loadUsers() {
+  document.getElementById('users-table-body').innerHTML = '<div class="loader"><div class="spinner"></div> Loading users...</div>';
+  try {
+    const snap = await db.collection('users').orderBy('trialStartDate','desc').get();
+    allUsers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderUsers(allUsers);
+  } catch(e) {
+    toast('Error loading users: ' + e.message, 'error');
+  }
+}
+
+function renderUsers(users) {
+  if (!users.length) {
+    document.getElementById('users-table-body').innerHTML = '<div class="empty-state"><div class="es-icon">👥</div><p>No users found.</p></div>';
+    return;
+  }
+  document.getElementById('users-table-body').innerHTML = tableWrap(
+    `<tr><th>Name</th><th>Email</th><th>Status</th><th>Streak</th><th>Joined</th><th>Actions</th></tr>`,
+    users.map(u => {
+      const date = u.trialStartDate?.toDate?.() || new Date(u.trialStartDate || 0);
+      return `<tr>
+        <td style="font-weight:600;">${esc(u.displayName || '—')}</td>
+        <td style="font-family:var(--mono);font-size:0.78rem;color:var(--text2);">${esc(u.email || '—')}</td>
+        <td>${userStatusBadge(u)}</td>
+        <td style="font-family:var(--mono);color:var(--gold);font-weight:600;">${u.streak || 0} 🔥</td>
+        <td style="font-family:var(--mono);font-size:0.75rem;color:var(--text3);">${fmtDate(date)}</td>
+        <td><div style="display:flex;gap:0.35rem;">
+          <button class="btn btn-sm btn-cyan" onclick="openUserModal('${u.id}')">👁 View</button>
+          ${!u.isPremium
+            ? `<button class="btn btn-sm btn-gold" onclick="grantPremium('${u.id}')">⭐ Premium</button>`
+            : `<button class="btn btn-sm btn-danger" onclick="revokePremium('${u.id}')">✕ Revoke</button>`
+          }
+        </div></td>
+      </tr>`;
+    }).join('')
+  );
+}
+
+function filterUsers() {
+  const q   = document.getElementById('u-search').value.toLowerCase();
+  const f   = document.getElementById('u-filter').value;
+  const now = new Date();
+
+  const filtered = allUsers.filter(u => {
+    const matchQ = !q || (u.displayName||'').toLowerCase().includes(q) || (u.email||'').toLowerCase().includes(q);
+    let matchF = true;
+    if (f === 'premium') matchF = !!u.isPremium;
+    if (f === 'trial') {
+      const start = u.trialStartDate?.toDate?.() || new Date(u.trialStartDate || 0);
+      matchF = !u.isPremium && Math.ceil((now - start)/86400000) <= 3;
+    }
+    if (f === 'expired') {
+      const start = u.trialStartDate?.toDate?.() || new Date(u.trialStartDate || 0);
+      matchF = !u.isPremium && Math.ceil((now - start)/86400000) > 3;
+    }
+    return matchQ && matchF;
+  });
+  renderUsers(filtered);
+}
+
+async function openUserModal(uid) {
+  const u = allUsers.find(x => x.id === uid);
+  if (!u) return;
+
+  document.getElementById('umodal-name').textContent  = u.displayName || 'Unknown';
+  document.getElementById('umodal-email').textContent = u.email || uid;
+
+  // Load progress subcollection
+  let progressCount = 0;
+  try {
+    const pSnap = await db.collection('users').doc(uid).collection('progress').get();
+    progressCount = pSnap.size;
+  } catch(e) {}
+
+  const date = u.trialStartDate?.toDate?.() || new Date(u.trialStartDate || 0);
+  const expiry = u.premiumExpiry?.toDate?.() ? fmtDate(u.premiumExpiry.toDate()) : '—';
+
+  document.getElementById('umodal-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;">
+      <div style="background:var(--bg);border-radius:var(--r);padding:1rem;">
+        <div style="font-family:var(--mono);font-size:0.62rem;color:var(--text3);margin-bottom:0.4rem;">STATUS</div>
+        <div>${userStatusBadge(u)}</div>
+      </div>
+      <div style="background:var(--bg);border-radius:var(--r);padding:1rem;">
+        <div style="font-family:var(--mono);font-size:0.62rem;color:var(--text3);margin-bottom:0.4rem;">STREAK</div>
+        <div style="font-family:var(--display);font-size:1.4rem;font-weight:800;color:var(--gold);">${u.streak||0} 🔥</div>
+      </div>
+      <div style="background:var(--bg);border-radius:var(--r);padding:1rem;">
+        <div style="font-family:var(--mono);font-size:0.62rem;color:var(--text3);margin-bottom:0.4rem;">TOPICS COMPLETED</div>
+        <div style="font-family:var(--display);font-size:1.4rem;font-weight:800;color:var(--cyan);">${progressCount}</div>
+      </div>
+      <div style="background:var(--bg);border-radius:var(--r);padding:1rem;">
+        <div style="font-family:var(--mono);font-size:0.62rem;color:var(--text3);margin-bottom:0.4rem;">PLAN TYPE</div>
+        <div style="font-weight:600;color:var(--text);text-transform:capitalize;">${u.planType||'trial'}</div>
+      </div>
+    </div>
+    <table style="width:100%;font-size:0.82rem;">
+      <tr><td style="color:var(--text3);padding:0.4rem 0;font-family:var(--mono);font-size:0.72rem;">UID</td><td style="font-family:var(--mono);font-size:0.72rem;color:var(--text2);">${uid}</td></tr>
+      <tr><td style="color:var(--text3);padding:0.4rem 0;font-family:var(--mono);font-size:0.72rem;">JOINED</td><td>${fmtDate(date)}</td></tr>
+      <tr><td style="color:var(--text3);padding:0.4rem 0;font-family:var(--mono);font-size:0.72rem;">PREMIUM EXPIRY</td><td>${expiry}</td></tr>
+      <tr><td style="color:var(--text3);padding:0.4rem 0;font-family:var(--mono);font-size:0.72rem;">IS PREMIUM</td><td>${u.isPremium ? '<span style="color:var(--green)">✓ Yes</span>' : '<span style="color:var(--text3)">No</span>'}</td></tr>
+    </table>
+    <div style="display:flex;gap:0.6rem;margin-top:1.25rem;flex-wrap:wrap;">
+      ${!u.isPremium
+        ? `<button class="btn btn-gold btn-sm" onclick="grantPremium('${uid}');closeModal('modal-user')">⭐ Grant Premium (30 days)</button>`
+        : `<button class="btn btn-danger btn-sm" onclick="revokePremium('${uid}');closeModal('modal-user')">✕ Revoke Premium</button>`
+      }
+      <button class="btn btn-cyan btn-sm" onclick="extendTrial('${uid}')">＋ Extend Trial 3 Days</button>
+    </div>
+  `;
+  openModal('modal-user');
+}
+
+async function grantPremium(uid) {
+  if (!confirm('Grant 30-day premium to this user?')) return;
+  try {
+    const expiry = new Date();
+    expiry.setDate(expiry.getDate() + 30);
+    await db.collection('users').doc(uid).update({
+      isPremium:     true,
+      planType:      'premium',
+      premiumExpiry: firebase.firestore.Timestamp.fromDate(expiry)
+    });
+    toast('✓ Premium granted for 30 days', 'success');
+    loadUsers(); loadDashboard();
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+async function revokePremium(uid) {
+  if (!confirm('Revoke premium from this user?')) return;
+  try {
+    await db.collection('users').doc(uid).update({
+      isPremium:     false,
+      planType:      'trial',
+      premiumExpiry: null
+    });
+    toast('Premium revoked', 'info');
+    loadUsers(); loadDashboard();
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+async function extendTrial(uid) {
+  if (!confirm('Extend this user\'s trial by 3 days?')) return;
+  try {
+    const u = allUsers.find(x => x.id === uid);
+    const current = u?.trialStartDate?.toDate?.() || new Date();
+    const newStart = new Date(current.getTime() + 3 * 86400000);
+    await db.collection('users').doc(uid).update({
+      trialStartDate: firebase.firestore.Timestamp.fromDate(newStart)
+    });
+    toast('Trial extended by 3 days', 'success');
+    loadUsers();
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+// ═══════════════════════════════════════════════════════════
+// QUESTIONS
+// ═══════════════════════════════════════════════════════════
+async function loadQuestions() {
+  try {
+    const snap = await db.collection('questions').orderBy('createdAt','desc').get();
+    allQuestions = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderQuestions(allQuestions);
+  } catch(e) {
+    // Collection may not exist yet
+    allQuestions = [];
+    renderQuestions([]);
+  }
+}
+
+function renderQuestions(list) {
+  document.getElementById('q-count-label').textContent = list.length + ' questions';
+  if (!list.length) {
+    document.getElementById('q-list-body').innerHTML = '<div class="empty-state"><div class="es-icon">📝</div><p>No questions yet. Add your first one.</p></div>';
+    return;
+  }
+  const letters = ['A','B','C','D'];
+  document.getElementById('q-list-body').innerHTML = `<div class="q-list">${
+    list.map(q => `
+      <div class="q-item">
+        <div class="q-num">${q.chapterId || '—'} · ${q.difficulty || 'medium'}</div>
+        <div class="q-text">${esc(q.q || q.question || '')}</div>
+        <div class="q-opts">${(q.options||[]).map((o,i) =>
+          `<div class="q-opt ${i===q.answer?'correct':''}">${letters[i]}. ${esc(o)}</div>`
+        ).join('')}</div>
+        <div class="q-actions">
+          <button class="btn btn-sm btn-outline" onclick="editQuestion('${q.id}')">✏️</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteQuestion('${q.id}')">🗑</button>
+        </div>
+      </div>`)
+    .join('')}</div>`;
+}
+
+function filterQuestions() {
+  const q    = document.getElementById('q-search').value.toLowerCase();
+  const ch   = document.getElementById('q-filter-chapter').value;
+  const diff = document.getElementById('q-filter-diff').value;
+  const filtered = allQuestions.filter(x =>
+    (!q    || (x.q||x.question||'').toLowerCase().includes(q)) &&
+    (!ch   || x.chapterId === ch) &&
+    (!diff || x.difficulty === diff)
+  );
+  renderQuestions(filtered);
+}
+
+function openAddQuestionModal() {
+  document.getElementById('q-edit-id').value = '';
+  document.getElementById('qmodal-title').textContent = 'Add Question';
+  document.getElementById('qmodal-sub').textContent   = 'New MCQ for the question bank';
+  document.getElementById('q-chapter').value    = '';
+  document.getElementById('q-question').value   = '';
+  document.getElementById('q-opt-0').value      = '';
+  document.getElementById('q-opt-1').value      = '';
+  document.getElementById('q-opt-2').value      = '';
+  document.getElementById('q-opt-3').value      = '';
+  document.getElementById('q-explanation').value= '';
+  document.getElementById('q-difficulty').value = 'medium';
+  document.getElementById('q-marks').value      = '1';
+  document.querySelectorAll('input[name="q-correct"]').forEach(r => r.checked = false);
+  openModal('modal-question');
+}
+
+function editQuestion(id) {
+  const q = allQuestions.find(x => x.id === id);
+  if (!q) return;
+  document.getElementById('q-edit-id').value    = id;
+  document.getElementById('qmodal-title').textContent = 'Edit Question';
+  document.getElementById('qmodal-sub').textContent   = 'ID: ' + id;
+  document.getElementById('q-chapter').value    = q.chapterId || '';
+  document.getElementById('q-question').value   = q.q || q.question || '';
+  (q.options||[]).forEach((o,i) => { const el = document.getElementById('q-opt-'+i); if(el) el.value = o; });
+  document.getElementById('q-difficulty').value = q.difficulty || 'medium';
+  document.getElementById('q-marks').value      = q.marks || 1;
+  document.getElementById('q-explanation').value= q.explanation || '';
+  const radio = document.getElementById('qr' + q.answer);
+  if (radio) radio.checked = true;
+  openModal('modal-question');
+}
+
+async function saveQuestion() {
+  const chapterId   = document.getElementById('q-chapter').value;
+  const question    = document.getElementById('q-question').value.trim();
+  const opts        = [0,1,2,3].map(i => document.getElementById('q-opt-'+i).value.trim());
+  const correctEl   = document.querySelector('input[name="q-correct"]:checked');
+  const difficulty  = document.getElementById('q-difficulty').value;
+  const explanation = document.getElementById('q-explanation').value.trim();
+  const marks       = parseInt(document.getElementById('q-marks').value) || 1;
+  const editId      = document.getElementById('q-edit-id').value;
+
+  if (!chapterId)          return toast('Select a chapter', 'error');
+  if (!question)           return toast('Enter the question', 'error');
+  if (opts.some(o => !o)) return toast('Fill all 4 options', 'error');
+  if (!correctEl)          return toast('Select the correct answer', 'error');
+
+  const data = {
+    chapterId,
+    q:           question,
+    options:     opts,
+    answer:      parseInt(correctEl.value),
+    difficulty,
+    explanation,
+    marks,
+    updatedAt:   firebase.firestore.Timestamp.now()
+  };
+
+  try {
+    if (editId) {
+      await db.collection('questions').doc(editId).update(data);
+      toast('Question updated ✓', 'success');
+    } else {
+      data.createdAt = firebase.firestore.Timestamp.now();
+      await db.collection('questions').add(data);
+      toast('Question added ✓', 'success');
+    }
+    closeModal('modal-question');
+    loadQuestions();
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+async function deleteQuestion(id) {
+  if (!confirm('Delete this question permanently?')) return;
+  try {
+    await db.collection('questions').doc(id).delete();
+    toast('Question deleted', 'info');
+    loadQuestions();
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+// ═══════════════════════════════════════════════════════════
+// NOTES
+// ═══════════════════════════════════════════════════════════
+async function loadNotes() {
+  try {
+    const snap = await db.collection('notes').orderBy('createdAt','desc').get();
+    allNotes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderNotes(allNotes);
+  } catch(e) {
+    allNotes = [];
+    renderNotes([]);
+  }
+}
+
+function renderNotes(list) {
+  if (!list.length) {
+    document.getElementById('notes-list-body').innerHTML = '<div class="empty-state"><div class="es-icon">📚</div><p>No notes yet. Add study notes for topics.</p></div>';
+    return;
+  }
+  document.getElementById('notes-list-body').innerHTML = `
+    <table class="data-table">
+      <thead><tr><th>Title</th><th>Chapter</th><th>Topic ID</th><th>Tags</th><th>Actions</th></tr></thead>
+      <tbody>${list.map(n => `<tr>
+        <td style="font-weight:600;">${esc(n.title||'Untitled')}</td>
+        <td><span class="badge badge-trial">${esc(n.chapterId||'—')}</span></td>
+        <td style="font-family:var(--mono);font-size:0.72rem;color:var(--text3);">${esc(n.topicId||'—')}</td>
+        <td style="font-size:0.72rem;color:var(--text2);">${(n.tags||[]).join(', ')||'—'}</td>
+        <td><div style="display:flex;gap:0.35rem;">
+          <button class="btn btn-sm btn-outline" onclick="editNote('${n.id}')">✏️ Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteNote('${n.id}')">🗑</button>
+        </div></td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+}
+
+function openAddNoteModal() {
+  document.getElementById('n-edit-id').value  = '';
+  document.getElementById('nmodal-title').textContent = 'Add Study Note';
+  document.getElementById('n-chapter').value  = '';
+  document.getElementById('n-topic').value    = '';
+  document.getElementById('n-title').value    = '';
+  document.getElementById('n-content').value  = '';
+  document.getElementById('n-tags').value     = '';
+  openModal('modal-note');
+}
+
+function editNote(id) {
+  const n = allNotes.find(x => x.id === id);
+  if (!n) return;
+  document.getElementById('n-edit-id').value  = id;
+  document.getElementById('nmodal-title').textContent = 'Edit Note';
+  document.getElementById('n-chapter').value  = n.chapterId || '';
+  document.getElementById('n-topic').value    = n.topicId   || '';
+  document.getElementById('n-title').value    = n.title     || '';
+  document.getElementById('n-content').value  = n.content   || '';
+  document.getElementById('n-tags').value     = (n.tags||[]).join(', ');
+  openModal('modal-note');
+}
+
+async function saveNote() {
+  const chapterId = document.getElementById('n-chapter').value;
+  const topicId   = document.getElementById('n-topic').value.trim();
+  const title     = document.getElementById('n-title').value.trim();
+  const content   = document.getElementById('n-content').value.trim();
+  const tagsRaw   = document.getElementById('n-tags').value;
+  const editId    = document.getElementById('n-edit-id').value;
+
+  if (!chapterId) return toast('Select a chapter', 'error');
+  if (!title)     return toast('Enter a title', 'error');
+  if (!content)   return toast('Content cannot be empty', 'error');
+
+  const tags = tagsRaw.split(',').map(t => t.trim()).filter(Boolean);
+
+  const data = { chapterId, topicId, title, content, tags, updatedAt: firebase.firestore.Timestamp.now() };
+
+  try {
+    if (editId) {
+      await db.collection('notes').doc(editId).update(data);
+      toast('Note updated ✓', 'success');
+    } else {
+      data.createdAt = firebase.firestore.Timestamp.now();
+      await db.collection('notes').add(data);
+      toast('Note added ✓', 'success');
+    }
+    closeModal('modal-note');
+    loadNotes();
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+async function deleteNote(id) {
+  if (!confirm('Delete this note permanently?')) return;
+  try {
+    await db.collection('notes').doc(id).delete();
+    toast('Note deleted', 'info');
+    loadNotes();
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+// ═══════════════════════════════════════════════════════════
+// PAYMENTS
+// ═══════════════════════════════════════════════════════════
+async function loadPayments() {
+  document.getElementById('payments-table-body').innerHTML = '<div class="loader"><div class="spinner"></div> Loading payments...</div>';
+  try {
+    // Query all users and get their payments subcollection
+    const usersSnap = await db.collection('users').get();
+    const allPayments = [];
+
+    const promises = usersSnap.docs.map(async uDoc => {
+      const pSnap = await uDoc.ref.collection('payments').orderBy('createdAt','desc').get();
+      pSnap.docs.forEach(pDoc => {
+        allPayments.push({ id: pDoc.id, userId: uDoc.id, userName: uDoc.data().displayName || uDoc.data().email, ...pDoc.data() });
+      });
+    });
+
+    await Promise.all(promises);
+    allPayments.sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
+
+    if (!allPayments.length) {
+      document.getElementById('payments-table-body').innerHTML = '<div class="empty-state"><div class="es-icon">💳</div><p>No payments recorded yet.</p></div>';
+      return;
+    }
+
+    document.getElementById('payments-table-body').innerHTML = tableWrap(
+      `<tr><th>User</th><th>Amount</th><th>Plan</th><th>Payment ID</th><th>Date</th></tr>`,
+      allPayments.map(p => `<tr>
+        <td style="font-weight:600;">${esc(p.userName||'—')}</td>
+        <td style="color:var(--green);font-weight:700;font-family:var(--mono);">₹${p.amount||'—'}</td>
+        <td><span class="badge badge-premium">${esc(p.plan||'premium')}</span></td>
+        <td style="font-family:var(--mono);font-size:0.72rem;color:var(--text3);">${esc(p.razorpayPaymentId||p.paymentId||'—')}</td>
+        <td style="font-family:var(--mono);font-size:0.75rem;color:var(--text3);">${fmtDate(p.createdAt?.toDate?.())}</td>
+      </tr>`).join('')
+    );
+  } catch(e) {
+    toast('Error loading payments: ' + e.message, 'error');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// ANNOUNCEMENTS
+// ═══════════════════════════════════════════════════════════
+async function sendAnnouncement() {
+  const title   = document.getElementById('ann-title').value.trim();
+  const body    = document.getElementById('ann-body').value.trim();
+  const type    = document.getElementById('ann-type').value;
+  if (!title || !body) return toast('Fill title and message', 'error');
+  try {
+    await db.collection('announcements').add({
+      title, body, type,
+      createdAt: firebase.firestore.Timestamp.now(),
+      active: true
+    });
+    toast('Announcement published ✓', 'success');
+    clearAnnouncement();
+    loadAnnouncements();
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+function clearAnnouncement() {
+  document.getElementById('ann-title').value = '';
+  document.getElementById('ann-body').value  = '';
+  document.getElementById('ann-type').value  = 'info';
+}
+
+async function loadAnnouncements() {
+  document.getElementById('ann-list-body').innerHTML = '<div class="loader"><div class="spinner"></div> Loading...</div>';
+  try {
+    const snap = await db.collection('announcements').orderBy('createdAt','desc').limit(20).get();
+    const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (!list.length) {
+      document.getElementById('ann-list-body').innerHTML = '<div class="empty-state"><div class="es-icon">📣</div><p>No announcements yet.</p></div>';
+      return;
+    }
+    const icons = { info:'ℹ️', success:'✅', warning:'⚠️' };
+    document.getElementById('ann-list-body').innerHTML = list.map(a => `
+      <div style="display:flex;align-items:flex-start;gap:0.75rem;padding:0.875rem;background:var(--bg);border-radius:var(--r);border:1px solid var(--border2);margin-bottom:0.65rem;">
+        <div style="font-size:1.25rem;">${icons[a.type]||'📣'}</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:0.875rem;color:var(--text);margin-bottom:0.15rem;">${esc(a.title)}</div>
+          <div style="font-size:0.8rem;color:var(--text2);margin-bottom:0.35rem;">${esc(a.body)}</div>
+          <div style="font-family:var(--mono);font-size:0.65rem;color:var(--text3);">${fmtDate(a.createdAt?.toDate?.())}</div>
+        </div>
+        <button class="btn btn-sm btn-danger" onclick="deleteAnnouncement('${a.id}')">🗑</button>
+      </div>`).join('');
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+async function deleteAnnouncement(id) {
+  if (!confirm('Delete this announcement?')) return;
+  try {
+    await db.collection('announcements').doc(id).delete();
+    toast('Deleted', 'info');
+    loadAnnouncements();
+  } catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+// ═══════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════
+function populateChapterSelects() {
+  const paperGroups = {};
+  CHAPTERS.forEach(c => {
+    if (!paperGroups[c.paper]) paperGroups[c.paper] = [];
+    paperGroups[c.paper].push(c);
+  });
+
+  ['q-chapter','n-chapter','q-filter-chapter'].forEach(selId => {
+    const sel = document.getElementById(selId);
+    if (!sel) return;
+    const isFilter = selId === 'q-filter-chapter';
+    sel.innerHTML = isFilter ? '<option value="">All Chapters</option>' : '<option value="">— Select chapter —</option>';
+    Object.entries(paperGroups).forEach(([paper, chapters]) => {
+      const grp = document.createElement('optgroup');
+      grp.label = paper;
+      chapters.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value       = c.id;
+        opt.textContent = c.name;
+        grp.appendChild(opt);
+      });
+      sel.appendChild(grp);
+    });
+  });
+}
+
+function userStatusBadge(u) {
+  if (u.isPremium) return '<span class="badge badge-premium">⭐ Premium</span>';
+  const start = u.trialStartDate?.toDate?.() || new Date(u.trialStartDate || 0);
+  const days  = Math.ceil((new Date() - start) / 86400000);
+  if (days <= 3) return `<span class="badge badge-trial">🟢 Trial (${Math.max(0,3-days)}d left)</span>`;
+  return '<span class="badge badge-expired">⛔ Expired</span>';
+}
+
+function tableWrap(thead, rows) {
+  return `<table class="data-table"><thead>${thead}</thead><tbody>${rows}</tbody></table>`;
+}
+
+function fmtDate(d) {
+  if (!d) return '—';
+  try {
+    const dt = d instanceof Date ? d : new Date(d);
+    return dt.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+  } catch(e) { return '—'; }
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function openModal(id)  { document.getElementById(id).classList.add('open');  }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+
+function toast(msg, type='info') {
+  const zone = document.getElementById('toast-zone');
+  const el   = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  zone.appendChild(el);
+  setTimeout(() => el.remove(), 3200);
+}
+</script>
+</body>
+</html>
