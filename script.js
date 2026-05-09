@@ -104,10 +104,19 @@ function initApp() {
       App.user = user;
       try {
         await loadUserData();
-        await loadResources();
-        renderDashboard();
-        showScreen('main-screen');
-        switchTab('dashboard');
+
+const role = App.userDoc?.role;
+
+if (role === "admin") {
+  window.location.href = "admin.html";
+  return;
+}
+
+await loadResources();
+renderDashboard();
+showScreen('main-screen');
+switchTab('dashboard');
+        
       } catch (e) {
         console.error('[NavPath] Post-login setup failed:', e);
         showScreen('main-screen');
