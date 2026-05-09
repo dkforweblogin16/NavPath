@@ -665,14 +665,41 @@ const NEA_QUESTIONS = {
 };
 
 // ============================================================
-// LOAD RESOURCES — now uses embedded data, no external fetch
+// LOAD RESOURCES — merges embedded questions with questions.json
 // ============================================================
 async function loadResources() {
-  // Use embedded data directly — no network dependency
-  App.syllabus  = NEA_SYLLABUS;
-  App.questions = NEA_QUESTIONS;
+  App.syllabus = NEA_SYLLABUS;
+  // Start with embedded questions as the base
+  App.questions = { topics: {}, mockTests: [] };
+  // Merge embedded NEA_QUESTIONS into App.questions.topics
+  if (NEA_QUESTIONS && NEA_QUESTIONS.topics) {
+    Object.assign(App.questions.topics, NEA_QUESTIONS.topics);
+  }
+  // Try to load external questions.json and merge on top
+  try {
+    const res = await fetch('data/questions.json');
+    if (res.ok) {
+      const ext = await res.json();
+      if (ext.topics) {
+        for (const [chId, qs] of Object.entries(ext.topics)) {
+          if (App.questions.topics[chId]) {
+            // Combine: external first, then embedded (dedup by question text)
+            const existing = new Set(App.questions.topics[chId].map(q => (q.q || q.question)));
+            const newQs = qs.filter(q => !existing.has(q.q || q.question));
+            App.questions.topics[chId] = [...qs, ...newQs];
+          } else {
+            App.questions.topics[chId] = qs;
+          }
+        }
+      }
+      if (ext.mockTests) App.questions.mockTests = ext.mockTests;
+      console.log('[NavPath] questions.json merged ✓ — total chapters:', Object.keys(App.questions.topics).length);
+    }
+  } catch(e) {
+    console.warn('[NavPath] questions.json not found — using embedded questions only');
+  }
   await loadContent();
-  console.log('[NavPath] Syllabus, questions and content loaded ✓');
+  console.log('[NavPath] All resources loaded ✓');
 }
 
 // ============================================================
@@ -1202,7 +1229,7 @@ function updateSyllabusUI() {
 // index.html override script timing.
 // ============================================================
 function startQuiz(chapterId) {
-  const qBank = App.questions?.questions || App.questions?.topics;
+  const qBank = App.questions?.topics || App.questions?.questions;
   if (!qBank || !qBank[chapterId] || qBank[chapterId].length === 0) {
     toast('No questions available for this chapter yet.', 'info');
     return;
@@ -1451,8 +1478,10 @@ function practiceGoBack() {
   const browseEl  = $('#practice-browse-area');
   const quizArea  = $('#quiz-question-area');
   const resultArea= $('#quiz-result-area');
+  const mockArea  = document.getElementById('mock-test-area');
   if (quizArea)   quizArea.classList.add('hidden');
   if (resultArea) resultArea.classList.add('hidden');
+  if (mockArea)   mockArea.classList.add('hidden');
   if (browseEl)   browseEl.classList.remove('hidden');
   renderPracticeBrowse();
 }
@@ -1674,11 +1703,28 @@ function renderPracticeBrowse() {
   if (quizArea)  quizArea.classList.add('hidden');
   if (resultArea) resultArea.classList.add('hidden');
 
+  // ── Total questions count ──
+  const qBank = App.questions?.topics || App.questions?.questions || {};
+  const totalQs = Object.values(qBank).reduce((s, arr) => s + (arr?.length || 0), 0);
+
   let html = `
     <div class="section-header mb-2">
       <h2 class="section-title">📝 Practice MCQs</h2>
-      <span style="font-size:0.75rem;color:var(--text-muted);">Select a chapter to begin</span>
+      <span style="font-size:0.75rem;color:var(--text-muted);">${totalQs}+ questions loaded</span>
     </div>
+
+    <div class="mock-test-banner card mb-2" style="background:linear-gradient(135deg,rgba(42,82,152,0.3),rgba(201,168,76,0.15));border:1px solid rgba(201,168,76,0.3);cursor:pointer;" onclick="openMockTestModal()">
+      <div class="card-body" style="display:flex;align-items:center;gap:1rem;padding:1rem;">
+        <div style="font-size:2rem;">🎯</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:0.95rem;color:var(--text-primary);">Timed Mock Tests</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.15rem;">Simulate real NEA exam conditions with timer</div>
+        </div>
+        <div style="background:var(--gold);color:var(--navy-deepest);border-radius:100px;padding:0.3rem 0.75rem;font-size:0.72rem;font-weight:700;">START →</div>
+      </div>
+    </div>
+
+    <div style="font-size:0.8rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.75rem;">Chapter-wise Practice</div>
   `;
 
   App.syllabus.papers.forEach(paper => {
@@ -1695,8 +1741,7 @@ function renderPracticeBrowse() {
 
     paper.subjects.forEach(subject => {
       subject.chapters.forEach(chapter => {
-        const qBank = App.questions?.questions || App.questions?.topics;
-        const qCount = qBank && qBank[chapter.id] ? qBank[chapter.id].length : 0;
+        const qCount = qBank[chapter.id] ? qBank[chapter.id].length : 0;
         const hasQ = qCount > 0;
 
         html += `
@@ -1711,7 +1756,7 @@ function renderPracticeBrowse() {
               </div>
               <div class="chapter-meta">
                 <h4>${chapter.name}</h4>
-                <p>${hasQ ? `${qCount} questions available` : 'Questions coming soon'} • ${chapter.marks} marks</p>
+                <p>${hasQ ? `${qCount} questions` : 'Questions coming soon'} • ${chapter.marks} marks</p>
               </div>
               <div style="display:flex;gap:0.4rem;align-items:center;">
                 ${hasQ
@@ -1721,23 +1766,7 @@ function renderPracticeBrowse() {
                 }
               </div>
             </div>
-
-            <div class="topic-list" id="prac-topics-${chapter.id}" style="display:none;">`;
-
-        chapter.topics.forEach(topic => {
-          const accessible = canAccessTopic(topic.id);
-          html += `
-              <div class="topic-item ${accessible ? '' : 'locked'}"
-                   onclick="${accessible && hasQ ? `practiceStartChapter('${chapter.id}','${chapter.name.replace(/'/g,"\\'")}')` : accessible ? '' : 'openPremiumModal()'}">
-                <div class="topic-check"></div>
-                <span class="topic-name">${topic.name}</span>
-                <div class="topic-right-actions">
-                  ${accessible ? (hasQ ? '<span class="topic-chevron" style="color:var(--gold);">📝</span>' : '<span style="font-size:0.7rem;color:var(--text-muted);">Soon</span>') : '<span class="lock-icon">🔒</span>'}
-                </div>
-              </div>`;
-        });
-
-        html += `</div></div>`;
+          </div>`;
       });
     });
 
@@ -1747,6 +1776,8 @@ function renderPracticeBrowse() {
   html += `<div style="padding-bottom:5rem;"></div>`;
   browseEl.innerHTML = html;
 }
+
+
 
 function practiceStartChapter(chapterId, chapterName) {
   _activeChapterId = chapterId;
@@ -2016,7 +2047,8 @@ function openTopicModal(topicId, topicName, chapterId, chapterName) {
   document.getElementById('topic-modal-chapter').textContent = chapterName;
 
   const hasContent   = App.content && App.content[topicId];
-  const hasQuestions = App.questions?.topics?.[chapterId]?.length > 0;
+  const hasQuestions = App.questions?.topics?.[chapterId]?.length > 0 ||
+                       App.questions?.questions?.[chapterId]?.length > 0;
 
   const studyBtn    = document.getElementById('topic-study-btn');
   const practiceBtn = document.getElementById('topic-practice-btn');
@@ -2507,7 +2539,393 @@ async function loadContent() {
 }
 
 // ============================================================
-// GLOBAL EXPORTS
+// MOCK TEST SYSTEM — Timed full-paper simulation
+// ============================================================
+const MockTest = {
+  active: false,
+  testConfig: null,
+  questions: [],
+  answers: {},          // { idx: selectedOptionIndex }
+  startTime: null,
+  timerInterval: null,
+  durationSecs: 0,
+  remainingSecs: 0,
+};
+
+function openMockTestModal() {
+  const mockTests = App.questions?.mockTests || [];
+  if (!mockTests.length) {
+    toast('Mock tests not loaded. Please reload the app.', 'error');
+    return;
+  }
+  const modal = document.getElementById('mock-test-modal');
+  if (!modal) {
+    renderMockTestModal(mockTests);
+  } else {
+    modal.classList.remove('hidden');
+  }
+}
+
+function renderMockTestModal(mockTests) {
+  // Remove old if exists
+  document.getElementById('mock-test-modal')?.remove();
+
+  const div = document.createElement('div');
+  div.id = 'mock-test-modal';
+  div.className = 'modal-overlay';
+  div.onclick = (e) => { if (e.target === div) closeMockTestModal(); };
+
+  const cards = mockTests.map(t => `
+    <div class="mock-test-card" onclick="startMockTest('${t.id}')" style="
+      border:1px solid var(--card-border);border-radius:var(--radius-sm);
+      padding:1rem;margin-bottom:0.75rem;cursor:pointer;
+      background:var(--glass);transition:var(--transition);"
+      onmouseover="this.style.borderColor='var(--gold)'"
+      onmouseout="this.style.borderColor='var(--card-border)'">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <div style="font-weight:700;font-size:0.9rem;color:var(--text-primary);margin-bottom:0.25rem;">${t.title}</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);">${t.description}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;margin-left:0.75rem;">
+          <div style="font-size:0.8rem;color:var(--gold);font-weight:600;">⏱ ${t.duration} min</div>
+          <div style="font-size:0.72rem;color:var(--text-muted);">${t.totalMarks} marks</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  div.innerHTML = `
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-body">
+        <h2 style="text-align:center;font-size:1.2rem;margin-bottom:0.4rem;">🎯 Timed Mock Tests</h2>
+        <p style="text-align:center;font-size:0.8rem;color:var(--text-muted);margin-bottom:1.25rem;">
+          Simulate real NEA exam conditions. Timer starts immediately.
+        </p>
+        ${cards}
+        <button class="btn btn-outline btn-block" style="margin-top:0.5rem;" onclick="closeMockTestModal()">Cancel</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(div);
+}
+
+function closeMockTestModal() {
+  document.getElementById('mock-test-modal')?.classList.add('hidden');
+}
+
+function startMockTest(testId) {
+  closeMockTestModal();
+  const testConfig = (App.questions?.mockTests || []).find(t => t.id === testId);
+  if (!testConfig) { toast('Test not found.', 'error'); return; }
+
+  // Gather questions from specified topics
+  const qBank = App.questions?.topics || App.questions?.questions || {};
+  let allQuestions = [];
+  testConfig.topics.forEach(topicId => {
+    const qs = qBank[topicId];
+    if (qs && qs.length) {
+      allQuestions.push(...qs.map(q => ({ ...q, _topic: topicId })));
+    }
+  });
+
+  // Shuffle and cap
+  allQuestions = allQuestions.sort(() => Math.random() - 0.5);
+  const maxQ = testConfig.id === 'mock-full' ? 150 : 50;
+  allQuestions = allQuestions.slice(0, maxQ);
+
+  if (!allQuestions.length) {
+    toast('Not enough questions loaded for this mock test.', 'error');
+    return;
+  }
+
+  MockTest.active = true;
+  MockTest.testConfig = testConfig;
+  MockTest.questions = allQuestions;
+  MockTest.answers = {};
+  MockTest.startTime = Date.now();
+  MockTest.durationSecs = testConfig.duration * 60;
+  MockTest.remainingSecs = MockTest.durationSecs;
+
+  switchTab('practice');
+  renderMockTestScreen();
+  startMockTimer();
+}
+
+function renderMockTestScreen() {
+  const browseEl   = $('#practice-browse-area');
+  const quizArea   = $('#quiz-question-area');
+  const resultArea = $('#quiz-result-area');
+  if (browseEl)   browseEl.classList.add('hidden');
+  if (quizArea)   quizArea.classList.add('hidden');
+  if (resultArea) resultArea.classList.add('hidden');
+
+  let mockArea = document.getElementById('mock-test-area');
+  if (!mockArea) {
+    mockArea = document.createElement('div');
+    mockArea.id = 'mock-test-area';
+    document.getElementById('tab-practice')?.querySelector('.main-content')?.appendChild(mockArea);
+  }
+  mockArea.classList.remove('hidden');
+
+  const q = MockTest.questions;
+  const total = q.length;
+
+  mockArea.innerHTML = `
+    <div class="practice-container" id="mock-container">
+      <div class="practice-top-bar" style="position:sticky;top:0;z-index:10;background:var(--navy-deep);padding:0.75rem 1rem;margin:-1rem -1rem 1rem -1rem;">
+        <button class="practice-back-btn" onclick="confirmExitMockTest()">✕ Exit</button>
+        <div style="font-size:0.8rem;font-weight:600;color:var(--text-primary);">${MockTest.testConfig.title}</div>
+        <div style="text-align:right;">
+          <div id="mock-timer" style="font-family:var(--font-mono);font-size:1rem;color:var(--gold);font-weight:700;">--:--</div>
+          <div style="font-size:0.65rem;color:var(--text-muted);">remaining</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:0.5rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap;">
+        <div style="font-size:0.75rem;color:var(--text-muted);">Question <span id="mock-q-counter">1</span>/${total}</div>
+        <div style="flex:1;background:var(--card-border);height:4px;border-radius:4px;overflow:hidden;">
+          <div id="mock-prog-bar" style="height:100%;background:var(--gold);width:0%;transition:width 0.3s;"></div>
+        </div>
+        <div id="mock-answered-count" style="font-size:0.75rem;color:var(--success);">0 answered</div>
+      </div>
+
+      <div id="mock-question-display"></div>
+
+      <div style="display:flex;gap:0.75rem;margin-top:1.25rem;flex-wrap:wrap;">
+        <button class="btn btn-outline" id="mock-prev-btn" onclick="mockNav(-1)" style="flex:1;" disabled>← Prev</button>
+        <button class="btn btn-outline" id="mock-next-btn" onclick="mockNav(1)" style="flex:1;">Next →</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(2.5rem,1fr));gap:0.4rem;margin-top:1.25rem;padding:0.75rem;background:var(--card-bg);border-radius:var(--radius-sm);">
+        ${q.map((_,i) => `<button id="mock-grid-${i}" onclick="mockJumpTo(${i})"
+          style="padding:0.4rem;border-radius:6px;font-size:0.72rem;font-weight:600;
+                 background:var(--navy-mid);border:1px solid var(--card-border);color:var(--text-muted);
+                 cursor:pointer;transition:all 0.2s;">${i+1}</button>`).join('')}
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-top:1.25rem;">
+        <div style="background:var(--card-bg);border-radius:var(--radius-sm);padding:0.75rem;text-align:center;">
+          <div style="font-size:1.1rem;font-weight:700;color:var(--success);" id="mock-stat-answered">0</div>
+          <div style="font-size:0.7rem;color:var(--text-muted);">Answered</div>
+        </div>
+        <div style="background:var(--card-bg);border-radius:var(--radius-sm);padding:0.75rem;text-align:center;">
+          <div style="font-size:1.1rem;font-weight:700;color:var(--warning);" id="mock-stat-unanswered">${total}</div>
+          <div style="font-size:0.7rem;color:var(--text-muted);">Unanswered</div>
+        </div>
+      </div>
+
+      <button class="btn btn-gold btn-block" style="margin-top:1.25rem;margin-bottom:2rem;" onclick="submitMockTest()">
+        ✅ Submit Test
+      </button>
+    </div>
+  `;
+
+  MockTest._currentIdx = 0;
+  renderMockQuestion(0);
+}
+
+function renderMockQuestion(idx) {
+  MockTest._currentIdx = idx;
+  const q = MockTest.questions[idx];
+  const total = MockTest.questions.length;
+  const answered = Object.keys(MockTest.answers).length;
+
+  // Update progress bar and counters
+  const pct = Math.round(((idx) / total) * 100);
+  document.getElementById('mock-prog-bar').style.width = pct + '%';
+  document.getElementById('mock-q-counter').textContent = idx + 1;
+  document.getElementById('mock-answered-count').textContent = answered + ' answered';
+  document.getElementById('mock-stat-answered').textContent = answered;
+  document.getElementById('mock-stat-unanswered').textContent = total - answered;
+
+  // Update nav buttons
+  document.getElementById('mock-prev-btn').disabled = idx === 0;
+  document.getElementById('mock-next-btn').textContent = idx === total - 1 ? 'Last ✓' : 'Next →';
+  document.getElementById('mock-next-btn').disabled = idx === total - 1;
+
+  // Update grid button highlighting
+  document.querySelectorAll('[id^="mock-grid-"]').forEach((btn, i) => {
+    btn.style.background = MockTest.answers[i] !== undefined ? 'rgba(34,197,94,0.2)' : 'var(--navy-mid)';
+    btn.style.borderColor = MockTest.answers[i] !== undefined ? 'var(--success)' :
+                            i === idx ? 'var(--gold)' : 'var(--card-border)';
+    btn.style.color = i === idx ? 'var(--gold)' :
+                      MockTest.answers[i] !== undefined ? 'var(--success)' : 'var(--text-muted)';
+  });
+
+  const letters = ['A', 'B', 'C', 'D'];
+  const selectedAnswer = MockTest.answers[idx];
+
+  const optionsHtml = q.options.map((opt, i) => {
+    const isSelected = selectedAnswer === i;
+    return `<button class="practice-option ${isSelected ? 'mock-selected' : ''}"
+      onclick="mockSelectAnswer(${idx}, ${i})"
+      style="${isSelected ? 'border-color:var(--gold);background:rgba(201,168,76,0.15);' : ''}">
+      <span class="practice-option-letter" style="${isSelected ? 'background:var(--gold);color:var(--navy-deepest);' : ''}">${letters[i]}</span>
+      <span class="practice-option-text">${opt}</span>
+    </button>`;
+  }).join('');
+
+  document.getElementById('mock-question-display').innerHTML = `
+    <div class="practice-question-card">
+      <div class="practice-q-number">Q${idx + 1}</div>
+      <div class="practice-q-text">${q.q || q.question}</div>
+    </div>
+    <div class="practice-options" id="mock-options-${idx}">${optionsHtml}</div>
+  `;
+}
+
+function mockSelectAnswer(questionIdx, optionIdx) {
+  MockTest.answers[questionIdx] = optionIdx;
+  renderMockQuestion(questionIdx);
+}
+
+function mockNav(dir) {
+  const newIdx = MockTest._currentIdx + dir;
+  if (newIdx >= 0 && newIdx < MockTest.questions.length) {
+    renderMockQuestion(newIdx);
+  }
+}
+
+function mockJumpTo(idx) {
+  renderMockQuestion(idx);
+}
+
+function startMockTimer() {
+  clearInterval(MockTest.timerInterval);
+  MockTest.timerInterval = setInterval(() => {
+    MockTest.remainingSecs--;
+    const timerEl = document.getElementById('mock-timer');
+    if (timerEl) {
+      const m = Math.floor(MockTest.remainingSecs / 60);
+      const s = MockTest.remainingSecs % 60;
+      timerEl.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      if (MockTest.remainingSecs <= 300) timerEl.style.color = 'var(--danger)'; // red in last 5 min
+      if (MockTest.remainingSecs <= 60)  timerEl.style.animation = 'pulse 1s infinite';
+    }
+    if (MockTest.remainingSecs <= 0) {
+      clearInterval(MockTest.timerInterval);
+      toast('⏱ Time up! Auto-submitting...', 'error');
+      setTimeout(submitMockTest, 1500);
+    }
+  }, 1000);
+}
+
+function confirmExitMockTest() {
+  const answered = Object.keys(MockTest.answers).length;
+  const total = MockTest.questions.length;
+  if (confirm(`Exit mock test? You've answered ${answered}/${total} questions. Progress will be lost.`)) {
+    exitMockTest();
+  }
+}
+
+function exitMockTest() {
+  clearInterval(MockTest.timerInterval);
+  MockTest.active = false;
+  const mockArea = document.getElementById('mock-test-area');
+  if (mockArea) mockArea.classList.add('hidden');
+  renderPracticeBrowse();
+}
+
+function submitMockTest() {
+  clearInterval(MockTest.timerInterval);
+  MockTest.active = false;
+
+  const questions = MockTest.questions;
+  const total = questions.length;
+  let correct = 0;
+  const wrongQs = [];
+
+  questions.forEach((q, i) => {
+    const selected = MockTest.answers[i];
+    const ans = q.answer;
+    if (selected === ans) {
+      correct++;
+    } else {
+      wrongQs.push({ q, selected, idx: i });
+    }
+  });
+
+  const unanswered = total - Object.keys(MockTest.answers).length;
+  const pct = Math.round(correct / total * 100);
+  const timeTaken = MockTest.durationSecs - MockTest.remainingSecs;
+  const minsUsed = Math.floor(timeTaken / 60);
+  const secsUsed = timeTaken % 60;
+
+  let grade, emoji, gradeCls;
+  if (pct >= 80)       { grade = 'A+'; emoji = '🏆'; gradeCls = 'grade-aplus'; }
+  else if (pct >= 65)  { grade = 'A';  emoji = '🥇'; gradeCls = 'grade-a'; }
+  else if (pct >= 50)  { grade = 'B';  emoji = '👍'; gradeCls = 'grade-b'; }
+  else if (pct >= 35)  { grade = 'C';  emoji = '📖'; gradeCls = 'grade-c'; }
+  else                 { grade = 'D';  emoji = '⚓'; gradeCls = 'grade-d'; }
+
+  const mockArea = document.getElementById('mock-test-area');
+  if (!mockArea) return;
+  mockArea.classList.remove('hidden');
+
+  // Build wrong questions review (max 5)
+  const wrongHtml = wrongQs.slice(0, 5).map(({ q, selected, idx }) => {
+    const letters = ['A','B','C','D'];
+    return `
+      <div style="background:var(--card-bg);border-radius:var(--radius-sm);padding:0.75rem;margin-bottom:0.5rem;border-left:3px solid var(--danger);">
+        <div style="font-size:0.78rem;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;">Q${idx+1}: ${(q.q || q.question).slice(0,80)}${(q.q || q.question).length > 80 ? '…' : ''}</div>
+        <div style="font-size:0.72rem;margin-bottom:0.2rem;"><span style="color:var(--danger);">✗ Your answer: ${selected !== undefined ? letters[selected] + ' – ' + q.options[selected] : 'Not answered'}</span></div>
+        <div style="font-size:0.72rem;"><span style="color:var(--success);">✓ Correct: ${letters[q.answer]} – ${q.options[q.answer]}</span></div>
+        ${q.explanation ? `<div style="font-size:0.7rem;color:var(--text-muted);margin-top:0.3rem;font-style:italic;">💡 ${q.explanation.slice(0,120)}…</div>` : ''}
+      </div>`;
+  }).join('');
+
+  mockArea.innerHTML = `
+    <div class="practice-container">
+      <div class="practice-results">
+        <div class="result-hero">
+          <div class="result-emoji">${emoji}</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.25rem;">${MockTest.testConfig.title}</div>
+          <div class="result-grade ${gradeCls}">${grade}</div>
+          <div class="result-score">${correct} / ${total}</div>
+          <div class="result-pct-text">${pct}%</div>
+        </div>
+
+        <div class="result-stats-row" style="grid-template-columns:repeat(4,1fr);">
+          <div class="result-stat result-stat-correct">
+            <div class="result-stat-num">${correct}</div>
+            <div class="result-stat-lbl">Correct</div>
+          </div>
+          <div class="result-stat result-stat-wrong">
+            <div class="result-stat-num">${total - correct - unanswered}</div>
+            <div class="result-stat-lbl">Wrong</div>
+          </div>
+          <div class="result-stat" style="background:rgba(245,158,11,0.1);">
+            <div class="result-stat-num" style="color:var(--warning);">${unanswered}</div>
+            <div class="result-stat-lbl">Skipped</div>
+          </div>
+          <div class="result-stat result-stat-pct">
+            <div class="result-stat-num">${minsUsed}m ${secsUsed}s</div>
+            <div class="result-stat-lbl">Time used</div>
+          </div>
+        </div>
+
+        ${wrongQs.length ? `
+          <div style="margin-top:1.25rem;">
+            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem;">
+              📌 Review — First ${Math.min(5, wrongQs.length)} wrong answers
+            </div>
+            ${wrongHtml}
+          </div>` : '<div style="text-align:center;color:var(--success);margin:1rem 0;font-weight:600;">🎯 Perfect or near-perfect — outstanding!</div>'}
+
+        <div class="result-actions" style="margin-top:1.25rem;">
+          <button class="btn btn-gold btn-block" onclick="startMockTest('${MockTest.testConfig.id}')">🔄 Retake This Test</button>
+          <button class="btn btn-outline btn-block" style="margin-top:0.75rem;" onclick="exitMockTest()">← Back to Practice</button>
+        </div>
+
+        <div style="padding-bottom:5rem;"></div>
+      </div>
+    </div>
+  `;
+}
+
+
 // FIX #5: renderQuestion and App were not exported to window,
 // breaking the inline override script in index.html
 // ============================================================
@@ -2543,3 +2961,12 @@ window.studyOpenTopic       = studyOpenTopic;
 window.studyStartPractice   = studyStartPractice;
 window.practiceStartChapter = practiceStartChapter;
 window.practiceGoBack       = practiceGoBack;
+window.openMockTestModal    = openMockTestModal;
+window.closeMockTestModal   = closeMockTestModal;
+window.startMockTest        = startMockTest;
+window.submitMockTest       = submitMockTest;
+window.confirmExitMockTest  = confirmExitMockTest;
+window.exitMockTest         = exitMockTest;
+window.mockNav              = mockNav;
+window.mockJumpTo           = mockJumpTo;
+window.mockSelectAnswer     = mockSelectAnswer;

@@ -1871,3 +1871,41 @@ a { text-decoration: none; color: var(--gold); }
   display: grid;
   gap: 0;
 }
+
+/* ============================================================
+   MOCK TEST SYSTEM
+   ============================================================ */
+
+/* Gold CTA button */
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--navy-deepest);
+  border: none;
+  font-weight: 700;
+}
+.btn-gold:hover { opacity: 0.9; }
+
+/* Mock test modal overlay */
+#mock-test-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 15, 28, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+#mock-test-modal.hidden { display: none; }
+
+/* Mock timer pulse animation */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Mock question selected state */
+.practice-option.mock-selected {
+  border-color: var(--gold);
+  background: rgba(201, 168, 76, 0.12);
+}
