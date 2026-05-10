@@ -2145,28 +2145,78 @@ const StudyReminder = {
     }, 12000);
   },
 
-  /** Start the background checker (runs every 30s) */
+  /** Register & get the reminder service worker */
+  async _getSW() {
+    if (!('serviceWorker' in navigator)) return null;
+    try {
+      // Register sw-reminder.js (separate from main service-worker.js)
+      const reg = await navigator.serviceWorker.register('sw-reminder.js', { scope: '/' });
+      // Wait until it's active
+      await new Promise(resolve => {
+        if (reg.active) { resolve(); return; }
+        const sw = reg.installing || reg.waiting;
+        if (sw) { sw.addEventListener('statechange', () => { if (sw.state === 'activated') resolve(); }); }
+        else { setTimeout(resolve, 1000); }
+      });
+      return reg;
+    } catch (e) {
+      console.warn('[NavPath] sw-reminder.js registration failed:', e);
+      return null;
+    }
+  },
+
+  /** Send message to SW */
+  async _sendToSW(msg) {
+    if (!('serviceWorker' in navigator)) return false;
+    try {
+      const reg = await navigator.serviceWorker.getRegistration('sw-reminder.js') ||
+                  await navigator.serviceWorker.register('sw-reminder.js', { scope: '/' });
+      const sw = reg.active || reg.waiting || reg.installing;
+      if (sw) { sw.postMessage(msg); return true; }
+    } catch(e) { console.warn('[NavPath] SW message failed:', e); }
+    return false;
+  },
+
+  /** Start the background checker — SW-first, interval as fallback */
   start() {
     this.stop();
+    const s = this.load();
+    if (!s.enabled) return;
+
+    // ── Primary: use sw-reminder.js (works even when app is closed) ──
+    const name = window.App?.userDoc?.displayName || window.App?.user?.displayName || window.App?.user?.email || 'Sailor';
+    this._sendToSW({
+      type: 'SCHEDULE_REMINDER',
+      hour: s.hour,
+      minute: s.minute,
+      name: name.split(/[\s@]/)[0] || 'Sailor'
+    });
+
+    // ── Fallback: in-page interval (fires banner when app IS open) ──
     this._interval = setInterval(() => {
-      const s = this.load();
-      if (!s.enabled) return;
+      const cfg = this.load();
+      if (!cfg.enabled) return;
       const now = new Date();
-      if (now.getHours() === s.hour && now.getMinutes() === s.minute) {
-        // Avoid double-firing in same minute by checking last-fired timestamp
-        const lastFired = parseInt(localStorage.getItem('navpath-reminder-last') || '0');
+      if (now.getHours() === cfg.hour && now.getMinutes() === cfg.minute) {
         const todayKey = now.getFullYear() * 10000 + (now.getMonth()+1) * 100 + now.getDate();
+        const lastFired = parseInt(localStorage.getItem('navpath-reminder-last') || '0');
         if (lastFired !== todayKey) {
           localStorage.setItem('navpath-reminder-last', String(todayKey));
-          this.fireNotification();
+          // Only show in-app banner (SW handles the push notification)
+          const name2 = this._studentName();
+          const quote2 = this._randomQuote();
+          const greeting2 = this._randomGreeting(name2);
+          this._showBanner(name2, quote2, greeting2);
         }
       }
-    }, 30000); // check every 30 seconds
+    }, 30000);
   },
 
   /** Stop the checker */
   stop() {
     if (this._interval) { clearInterval(this._interval); this._interval = null; }
+    // Tell SW to cancel too
+    this._sendToSW({ type: 'CANCEL_REMINDER' });
   },
 
   /** Enable reminders: request permission, set time, save, start */
@@ -2177,6 +2227,10 @@ const StudyReminder = {
       return false;
     }
     this.save({ enabled: true, hour, minute });
+
+    // Register & activate sw-reminder.js immediately
+    await this._getSW();
+
     this.start();
     return true;
   },
@@ -2186,6 +2240,7 @@ const StudyReminder = {
     const s = this.load();
     s.enabled = false;
     this.save(s);
+    this.stop(); // also cancels SW
   },
 };
 
@@ -2193,6 +2248,19 @@ const StudyReminder = {
 (function initReminderOnLoad() {
   const s = StudyReminder.load();
   if (s.enabled) StudyReminder.start();
+
+  // ── Listen for REMINDER_FIRED from sw-reminder.js ──────────
+  // When app is open and SW fires the alarm, SW posts a message
+  // back to the page so we show the in-app banner too.
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', (e) => {
+      if (!e.data) return;
+      if (e.data.type === 'REMINDER_FIRED') {
+        const { quote, greeting, name } = e.data;
+        StudyReminder._showBanner(name, quote || StudyReminder._randomQuote(), greeting || '');
+      }
+    });
+  }
 })();
 
 // ── REMINDER MODAL ─────────────────────────────────────────
@@ -2503,6 +2571,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   registerServiceWorker();
   initApp();
+  setupAdminLongPress();
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
@@ -3409,6 +3478,61 @@ mockArea.innerHTML = `
 }
 
 
+// ============================================================
+// ADMIN LONG-PRESS — secret entry, admin email only
+// ============================================================
+const ADMIN_EMAIL_KEY = 'navpath.admin@gmail.com';
+
+function setupAdminLongPress() {
+  const logo = document.querySelector('.nav-logo');
+  if (!logo) return;
+
+  let pressTimer = null;
+  let toastEl    = null;
+
+  function startPress() {
+    const user = App.firebase?.auth?.currentUser;
+    if (!user || user.email !== ADMIN_EMAIL_KEY) return;
+
+    toastEl = document.createElement('div');
+    toastEl.style.cssText = [
+      'position:fixed', 'bottom:5.5rem', 'left:50%',
+      'transform:translateX(-50%)',
+      'background:rgba(201,168,76,0.15)',
+      'border:1.5px solid rgba(201,168,76,0.45)',
+      'border-radius:50px',
+      'padding:0.4rem 1.2rem',
+      'color:#c9a84c',
+      'font-family:IBM Plex Mono,monospace',
+      'font-size:0.68rem',
+      'font-weight:600',
+      'z-index:9999',
+      'pointer-events:none',
+      'white-space:nowrap',
+      'box-shadow:0 4px 16px rgba(0,0,0,0.4)',
+    ].join(';');
+    toastEl.textContent = '⚓ Hold to open Admin Panel…';
+    document.body.appendChild(toastEl);
+
+    pressTimer = setTimeout(() => {
+      if (toastEl) toastEl.remove();
+      window.location.href = 'admin.html';
+    }, 2000);
+  }
+
+  function cancelPress() {
+    clearTimeout(pressTimer);
+    if (toastEl) { toastEl.remove(); toastEl = null; }
+  }
+
+  logo.addEventListener('mousedown',   startPress);
+  logo.addEventListener('touchstart',  startPress, { passive: true });
+  logo.addEventListener('mouseup',     cancelPress);
+  logo.addEventListener('mouseleave',  cancelPress);
+  logo.addEventListener('touchend',    cancelPress);
+  logo.addEventListener('touchcancel', cancelPress);
+}
+
 // FIX #5: renderQuestion and App were not exported to window,
 // breaking the inline override script in index.html
 // ============================================================
@@ -3458,3 +3582,4 @@ window.exitMockTest         = exitMockTest;
 window.mockNav              = mockNav;
 window.mockJumpTo           = mockJumpTo;
 window.mockSelectAnswer     = mockSelectAnswer;
+window.setupAdminLongPress  = setupAdminLongPress;
