@@ -101,6 +101,12 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .admin-role{font-size:0.6rem;color:var(--text3);font-family:var(--mono)}
 .logout-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:0.9rem;padding:0.2rem;transition:color 0.15s;flex-shrink:0}
 .logout-btn:hover{color:var(--red)}
+/* ── BACK TO APP ── */
+.back-to-app-btn{display:flex;align-items:center;gap:0.45rem;width:100%;padding:0.55rem 0.75rem;margin-bottom:0.5rem;background:rgba(56,189,248,0.07);border:1px solid rgba(56,189,248,0.2);border-radius:var(--r);color:var(--cyan);font-family:var(--sans);font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.18s;text-decoration:none;justify-content:center}
+.back-to-app-btn:hover{background:rgba(56,189,248,0.14);border-color:rgba(56,189,248,0.4);color:#7dd8f8}
+.topbar-back-btn{display:none;align-items:center;gap:0.3rem;padding:0.3rem 0.7rem;background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);border-radius:var(--r);color:var(--cyan);font-family:var(--sans);font-size:0.75rem;font-weight:600;cursor:pointer;transition:all 0.18s;text-decoration:none;white-space:nowrap}
+.topbar-back-btn:hover{background:rgba(56,189,248,0.16)}
+@media(max-width:768px){.topbar-back-btn{display:flex}}
 
 /* ── MAIN ── */
 #main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
@@ -381,6 +387,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     </nav>
 
     <div class="sidebar-footer">
+      <a class="back-to-app-btn" href="index.html">
+        ← Back to App
+      </a>
       <div class="admin-badge">
         <div class="admin-avatar">A</div>
         <div class="admin-info">
@@ -407,6 +416,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         <div class="page-title" id="topbar-title">Dashboard</div>
       </div>
       <div class="topbar-right">
+        <a class="topbar-back-btn" href="index.html">← App</a>
         <div class="status-dot"></div>
         <div class="status-text">LIVE · navpath-19986</div>
       </div>
@@ -875,7 +885,7 @@ document.getElementById('auth-password').addEventListener('keydown', e => {
 
 function adminLogout() {
   if (!confirm('Log out of admin panel?')) return;
-  auth.signOut();
+  auth.signOut().then(() => { window.location.href = 'index.html'; });
 }
 
 // ═══════════════════════════════════════════════════════════
