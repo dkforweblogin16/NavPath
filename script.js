@@ -7,7 +7,7 @@
 //  1. App object not exposed to window  → window.App = App
 //  2. login/signup btn never re-enabled on success → added reset in finally/success
 //  3. firebase.firestore.Timestamp used directly → guarded with App.firebase ref
-//  4. renderQuestion() references DOM nodes that don't exist until
+//  4. renderQuestion() references DOM nodes that don't exist intil 
 //     renderLiveQuiz() is called → moved quiz DOM render inside startQuiz()
 //  5. window.renderQuestion not exported → added to window exports
 //  6. Demo mode showScreen called before loadResources resolves → await fixed
@@ -104,19 +104,10 @@ function initApp() {
       App.user = user;
       try {
         await loadUserData();
-
-const role = App.userDoc?.role;
-
-if (role === "admin") {
-  window.location.href = "admin.html";
-  return;
-}
-
-await loadResources();
-renderDashboard();
-showScreen('main-screen');
-switchTab('dashboard');
-        
+        await loadResources();
+        renderDashboard();
+        showScreen('main-screen');
+        switchTab('dashboard');
       } catch (e) {
         console.error('[NavPath] Post-login setup failed:', e);
         showScreen('main-screen');
@@ -1847,13 +1838,19 @@ function renderProfile() {
             <span class="toggle-slider"></span>
           </label>
         </div>
-        <div class="settings-item">
+        <div class="settings-item" onclick="toggleStudyReminder()" style="cursor:pointer;">
           <div class="settings-item-left">
             <div class="settings-item-icon">🔔</div>
-            <span>Study Reminders</span>
+            <div>
+              <span>Study Reminders</span>
+              ${StudyReminder.load().enabled
+                ? `<div style="font-size:0.7rem;color:var(--gold,#c9a84c);margin-top:0.1rem;">⏰ ${StudyReminder.formatTime(StudyReminder.load().hour, StudyReminder.load().minute)} daily</div>`
+                : `<div style="font-size:0.7rem;color:var(--text-muted,#6b92bc);margin-top:0.1rem;">Tap to set a daily alarm</div>`
+              }
+            </div>
           </div>
-          <label class="toggle-switch">
-            <input type="checkbox">
+          <label class="toggle-switch" onclick="event.stopPropagation();toggleStudyReminder();">
+            <input type="checkbox" ${StudyReminder.load().enabled ? 'checked' : ''} readonly>
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -1872,6 +1869,483 @@ function renderProfile() {
       </p>
     </div>
   `;
+}
+
+// ============================================================
+// STUDY REMINDER SYSTEM
+// Uses Web Notifications API + localStorage for persistence.
+// Works as a daily alarm: checks every minute if it's time to
+// notify, and fires a browser notification at the set time.
+// ============================================================
+const StudyReminder = {
+  _interval: null,
+  _notifPermission: Notification.permission || 'default',
+
+  /** Load saved settings from localStorage */
+  load() {
+    try {
+      const raw = localStorage.getItem('navpath-reminder');
+      if (!raw) return { enabled: false, hour: 18, minute: 0 };
+      return JSON.parse(raw);
+    } catch (e) { return { enabled: false, hour: 18, minute: 0 }; }
+  },
+
+  /** Save settings to localStorage */
+  save(settings) {
+    localStorage.setItem('navpath-reminder', JSON.stringify(settings));
+  },
+
+  /** Format as "HH:MM AM/PM" for display */
+  formatTime(hour, minute) {
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const h = hour % 12 || 12;
+    const m = String(minute).padStart(2, '0');
+    return `${h}:${m} ${ampm}`;
+  },
+
+  /** Request notification permission if not granted */
+  async requestPermission() {
+    if (!('Notification' in window)) return false;
+    if (Notification.permission === 'granted') return true;
+    if (Notification.permission === 'denied') return false;
+    const result = await Notification.requestPermission();
+    this._notifPermission = result;
+    return result === 'granted';
+  },
+
+  /** Motivational quotes pool — 55 total (20 English + 20 Hinglish + 15 NavPath/NEA) */
+  _quotes: [
+    // ── English quotes (20) ──────────────────────────────────
+    { text: "Success is the sum of small efforts repeated day in and day out.", author: "Robert Collier", color: "#1a3a5c", accent: "#38bdf8" },
+    { text: "The secret of getting ahead is getting started.", author: "Mark Twain", color: "#1a3320", accent: "#22c55e" },
+    { text: "Don't wish it were easier. Wish you were better.", author: "Jim Rohn", color: "#2a1a3a", accent: "#a78bfa" },
+    { text: "Discipline is the bridge between goals and accomplishment.", author: "Jim Rohn", color: "#3a1a1a", accent: "#f87171" },
+    { text: "A ship in harbour is safe, but that's not what ships are for.", author: "John A. Shedd", color: "#1a2a3a", accent: "#c9a84c" },
+    { text: "Small daily improvements over time lead to stunning results.", author: "Robin Sharma", color: "#1a3326", accent: "#34d399" },
+    { text: "The harder you work for something, the greater you'll feel when you achieve it.", author: "Unknown", color: "#2a2a1a", accent: "#fbbf24" },
+    { text: "Push yourself, because no one else is going to do it for you.", author: "Unknown", color: "#1a1a3a", accent: "#818cf8" },
+    { text: "Great things never come from comfort zones.", author: "Unknown", color: "#3a1a2a", accent: "#f472b6" },
+    { text: "Dream it. Believe it. Achieve it.", author: "Unknown", color: "#1a3a30", accent: "#2dd4bf" },
+    { text: "Your only limit is your mind.", author: "Unknown", color: "#2a1a10", accent: "#fb923c" },
+    { text: "Work hard in silence; let your success make the noise.", author: "Frank Ocean", color: "#1a2a1a", accent: "#86efac" },
+    { text: "Opportunities don't happen. You create them.", author: "Chris Grosser", color: "#1a1a2a", accent: "#93c5fd" },
+    { text: "It always seems impossible until it's done.", author: "Nelson Mandela", color: "#2a1a1a", accent: "#fca5a5" },
+    { text: "Strive for progress, not perfection.", author: "Unknown", color: "#1a2a3a", accent: "#c9a84c" },
+    { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt", color: "#1a2a1a", accent: "#4ade80" },
+    { text: "Every expert was once a beginner.", author: "Helen Hayes", color: "#2a1a3a", accent: "#c084fc" },
+    { text: "You don't have to be great to start, but you have to start to be great.", author: "Zig Ziglar", color: "#1a3a1a", accent: "#86efac" },
+    { text: "Winners are not people who never fail, but people who never quit.", author: "Unknown", color: "#1a2030", accent: "#60a5fa" },
+    { text: "Study now so you can live the life others only dream of.", author: "Unknown", color: "#1a1f10", accent: "#a3e635" },
+
+    // ── Hinglish quotes (20) ────────────────────────────────
+    { text: "Kal ki chinta mat kar, aaj ki mehnat kar — result khud aa jayega.", author: "NavPath", color: "#1a2a1a", accent: "#4ade80" },
+    { text: "Sapne dekhna band mat karo, unhe pura karne ke liye padhai shuru karo.", author: "NavPath", color: "#2a1a3a", accent: "#c084fc" },
+    { text: "Thoda aur padhlo yaar — Navy ka sapna door nahi hai!", author: "NavPath", color: "#0a1e3a", accent: "#38bdf8" },
+    { text: "Mehnat karo aaj, uniform pahno kal — ye wada hai NEA ka.", author: "NavPath", color: "#1a2a10", accent: "#86efac" },
+    { text: "Har question ek step hai — apni uniform ki taraf.", author: "NavPath", color: "#1a1a3a", accent: "#818cf8" },
+    { text: "Mushkil lagta hai? Theek hai. Mushkil kaam hi bade log karte hain.", author: "NavPath", color: "#3a1a1a", accent: "#fca5a5" },
+    { text: "Neend baad mein lena — pehle Navy mein select ho jao!", author: "NavPath", color: "#1a2a3a", accent: "#c9a84c" },
+    { text: "Ek din aisa aayega jab ye sab struggle kaam aayega. Tab muskurana yaad rakhna.", author: "NavPath", color: "#1a3326", accent: "#34d399" },
+    { text: "Jo aaj thak kar padh raha hai, kal wahi uniform mein chamkeyga.", author: "NavPath", color: "#2a1a10", accent: "#fb923c" },
+    { text: "Distraction bahut hai — focus sirf ek cheez pe: NEA crack karna.", author: "NavPath", color: "#2a1a3a", accent: "#a78bfa" },
+    { text: "Haar mat — abhi toh khel shuru hua hai, aur tu jeetne ke liye bana hai.", author: "NavPath", color: "#1a3a30", accent: "#2dd4bf" },
+    { text: "Padhai bore lagti hai? Soch — selection letter milne par kaisi feeling hogi!", author: "NavPath", color: "#3a1a2a", accent: "#f472b6" },
+    { text: "Log bolenge 'naseeb tha' — par tu janega kitni mehnat thi. Carry on.", author: "NavPath", color: "#2a2a1a", accent: "#fbbf24" },
+    { text: "Uth, padh, practice kar — repeat. Yahi formula hai Navy ka.", author: "NavPath", color: "#1a1a2a", accent: "#93c5fd" },
+    { text: "Tera competition sirf kal wala tu hai — aaj usse better ban.", author: "NavPath", color: "#1a2a1a", accent: "#22c55e" },
+    { text: "Darr mat — Navy ke sabse bade sapne, sabse zyada mehnat se pure hote hain.", author: "NavPath", color: "#1a3a5c", accent: "#60a5fa" },
+    { text: "Time barbad mat kar yaar — ye pal dobara nahi aayega.", author: "NavPath", color: "#2a1a1a", accent: "#f87171" },
+    { text: "Uniform ka sapna hai toh mobile rakh aur book uthao — simple hai.", author: "NavPath", color: "#1a2030", accent: "#38bdf8" },
+    { text: "Mehnat ka koi shortcut nahi hota — par hard work ka reward zaroor hota hai.", author: "NavPath", color: "#1a1f10", accent: "#a3e635" },
+    { text: "Thoda aur — ek aur chapter, ek aur question. Tu kar sakta hai!", author: "NavPath", color: "#0d1f35", accent: "#c9a84c" },
+
+    // ── NavPath / NEA special quotes (15) ───────────────────
+    { text: "The Navy doesn't just build ships — it builds sailors. Keep going.", author: "NavPath", color: "#0a1e3a", accent: "#38bdf8" },
+    { text: "NEA is not just an exam — it's the door to your destiny. Open it.", author: "NavPath", color: "#0d1f35", accent: "#c9a84c" },
+    { text: "Every page you read today is a step closer to the deck of a warship.", author: "NavPath", color: "#0a1e2a", accent: "#2dd4bf" },
+    { text: "The ocean doesn't care how tired you are. Train harder.", author: "NavPath", color: "#0a1628", accent: "#60a5fa" },
+    { text: "One day you'll wear that white uniform with pride — today, earn it.", author: "NavPath", color: "#1a2a3a", accent: "#e2effd" },
+    { text: "Sailors are not born — they are made through discipline and study.", author: "NavPath", color: "#0f1e30", accent: "#38bdf8" },
+    { text: "Your rank in the Navy starts with your rank in the exam. Study well.", author: "NavPath", color: "#1a1a2a", accent: "#c9a84c" },
+    { text: "The sea is calling. Answer it with your best score.", author: "NavPath", color: "#0a2030", accent: "#34d399" },
+    { text: "Math, Science, English — these three subjects are your ticket to the Navy.", author: "NavPath", color: "#1a2010", accent: "#86efac" },
+    { text: "Every great officer once sat where you sit — studying, struggling, succeeding.", author: "NavPath", color: "#1e1a2a", accent: "#a78bfa" },
+    { text: "INS Vikrant was built by engineers. You could be one — start studying.", author: "NavPath", color: "#0a1e1a", accent: "#2dd4bf" },
+    { text: "Sam No Varuna — May the sea be kind to you. But first, clear NEA.", author: "NavPath", color: "#0a1830", accent: "#38bdf8" },
+    { text: "You didn't come this far to only come this far. Push harder today.", author: "NavPath", color: "#1a0a2a", accent: "#c084fc" },
+    { text: "The exam is tough because the Navy is tougher. You're tougher still.", author: "NavPath", color: "#1a2a1a", accent: "#4ade80" },
+    { text: "Operation Padhai: Mission Active. Target: NEA Selection. Go!", author: "NavPath", color: "#0d1f35", accent: "#fbbf24" },
+  ],
+
+  /** Random greeting templates — mix of English + Hinglish */
+  _greetings: [
+    (name) => `Hey ${name}, time to study! 📚`,
+    (name) => `Hey ${name}, chalo padhai karte hain! 📖`,
+    (name) => `Hey ${name}, chalo padne ka time ho gaya! ⏰`,
+    (name) => `Hey ${name}, chalo chalo padne ka time ho gaya! 🚀`,
+    (name) => `${name} bhai, uth! Padhai ka waqt aa gaya! 💪`,
+    (name) => `Aye ${name}! Navy ka sapna hai toh padhai karo! ⚓`,
+    (name) => `${name}, ab phone rakh aur book uthao! 📗`,
+    (name) => `Oye ${name}! Ek aur chapter? Chalo! 🎯`,
+    (name) => `${name}, your future self is waiting — go study! 🏆`,
+    (name) => `Hey ${name}! NEA won't crack itself. Let's go! 💥`,
+    (name) => `${name} — padh lo yaar, kal ke liye! 🌟`,
+    (name) => `Rise and study, ${name}! Navy awaits! 🛳️`,
+  ],
+
+  /** Pick a random greeting */
+  _randomGreeting(name) {
+    const templates = this._greetings;
+    return templates[Math.floor(Math.random() * templates.length)](name);
+  },
+
+  /** Pick a random quote */
+  _randomQuote() {
+    return this._quotes[Math.floor(Math.random() * this._quotes.length)];
+  },
+
+  /** Get student first name from App state */
+  _studentName() {
+    try {
+      const name = window.App?.userDoc?.displayName || window.App?.user?.displayName || window.App?.user?.email || '';
+      return name.split(/[\s@]/)[0] || 'Sailor';
+    } catch (e) { return 'Sailor'; }
+  },
+
+  /** Fire a study reminder notification + rich in-app banner */
+  fireNotification() {
+    const name     = this._studentName();
+    const quote    = this._randomQuote();
+    const greeting = this._randomGreeting(name);
+
+    // ── Browser push notification ──────────────────────────
+    if ('Notification' in window && Notification.permission === 'granted') {
+      const n = new Notification(greeting, {
+        body: `"${quote.text}" — ${quote.author}`,
+        icon: 'assets/icons/icon-192.png',
+        badge: 'assets/icons/icon-192.png',
+        tag: 'navpath-study-reminder',
+        renotify: true,
+        requireInteraction: true,
+      });
+      n.onclick = () => { window.focus(); n.close(); };
+    }
+
+    // ── Rich in-app banner (works even when app is open) ───
+    this._showBanner(name, quote, greeting);
+  },
+
+  /** Show a beautiful full-width reminder banner inside the app */
+  _showBanner(name, quote, greeting) {
+    // Remove any existing banner
+    document.getElementById('study-reminder-banner')?.remove();
+
+    const banner = document.createElement('div');
+    banner.id = 'study-reminder-banner';
+    banner.style.cssText = `
+      position:fixed;top:0;left:0;right:0;z-index:9999;
+      animation:reminderSlideDown 0.4s cubic-bezier(.4,0,.2,1);
+    `;
+
+    banner.innerHTML = `
+      <style>
+        @keyframes reminderSlideDown{from{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:none}}
+        @keyframes reminderFadeOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-100%)}}
+        #study-reminder-banner .rb-quote-box{
+          background:${quote.color};
+          border-bottom:3px solid ${quote.accent};
+          position:relative;overflow:hidden;
+        }
+        #study-reminder-banner .rb-quote-box::before{
+          content:'❝';
+          position:absolute;top:-10px;left:12px;
+          font-size:5rem;color:${quote.accent};opacity:0.12;
+          font-family:Georgia,serif;line-height:1;pointer-events:none;
+        }
+      </style>
+
+      <div style="
+        background:#0d1f35;
+        border-bottom:1px solid rgba(201,168,76,0.3);
+        padding:0.75rem 1rem 0;
+        display:flex;align-items:center;justify-content:space-between;
+      ">
+        <div style="display:flex;align-items:center;gap:0.5rem;">
+          <span style="font-size:1.1rem;">📚</span>
+          <div>
+            <div style="font-size:0.85rem;font-weight:700;color:#e2effd;">
+              ${greeting.replace(name, `<span style="color:${quote.accent};">${name}</span>`)}
+            </div>
+            <div style="font-size:0.65rem;color:#6b92bc;font-family:monospace;">NavPath Daily Reminder</div>
+          </div>
+        </div>
+        <button onclick="document.getElementById('study-reminder-banner').remove()"
+          style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);
+                 border-radius:50%;width:28px;height:28px;color:#6b92bc;
+                 cursor:pointer;font-size:0.85rem;display:flex;align-items:center;
+                 justify-content:center;flex-shrink:0;transition:all 0.15s;"
+          onmouseover="this.style.background='rgba(239,68,68,0.2)';this.style.color='#ef4444'"
+          onmouseout="this.style.background='rgba(255,255,255,0.07)';this.style.color='#6b92bc'"
+        >✕</button>
+      </div>
+
+      <div class="rb-quote-box" style="padding:1rem 1rem 1rem 1.25rem;">
+        <div style="
+          font-size:0.88rem;font-style:italic;
+          color:#e2effd;line-height:1.55;
+          position:relative;z-index:1;padding-right:0.5rem;
+        ">
+          "${quote.text}"
+        </div>
+        <div style="
+          margin-top:0.5rem;
+          font-size:0.7rem;font-weight:600;
+          color:${quote.accent};
+          font-family:monospace;letter-spacing:0.04em;
+          position:relative;z-index:1;
+        ">— ${quote.author}</div>
+      </div>
+
+      <div style="
+        background:#0a1628;
+        border-bottom:2px solid ${quote.accent};
+        padding:0.5rem 1rem;
+        display:flex;gap:0.5rem;align-items:center;
+      ">
+        <button onclick="window.switchTab&&window.switchTab('study');document.getElementById('study-reminder-banner').remove();"
+          style="
+            flex:1;padding:0.45rem;
+            background:${quote.accent};color:#0a1628;
+            border:none;border-radius:0.5rem;
+            font-size:0.78rem;font-weight:700;cursor:pointer;
+          ">
+          📖 Start Studying
+        </button>
+        <button onclick="window.switchTab&&window.switchTab('practice');document.getElementById('study-reminder-banner').remove();"
+          style="
+            flex:1;padding:0.45rem;
+            background:rgba(255,255,255,0.06);color:#e2effd;
+            border:1px solid rgba(255,255,255,0.12);border-radius:0.5rem;
+            font-size:0.78rem;font-weight:600;cursor:pointer;
+          ">
+          📝 Practice MCQs
+        </button>
+      </div>
+    `;
+
+    document.body.appendChild(banner);
+
+    // Auto-dismiss after 12 seconds
+    setTimeout(() => {
+      const el = document.getElementById('study-reminder-banner');
+      if (el) {
+        el.style.animation = 'reminderFadeOut 0.4s ease forwards';
+        setTimeout(() => el.remove(), 400);
+      }
+    }, 12000);
+  },
+
+  /** Start the background checker (runs every 30s) */
+  start() {
+    this.stop();
+    this._interval = setInterval(() => {
+      const s = this.load();
+      if (!s.enabled) return;
+      const now = new Date();
+      if (now.getHours() === s.hour && now.getMinutes() === s.minute) {
+        // Avoid double-firing in same minute by checking last-fired timestamp
+        const lastFired = parseInt(localStorage.getItem('navpath-reminder-last') || '0');
+        const todayKey = now.getFullYear() * 10000 + (now.getMonth()+1) * 100 + now.getDate();
+        if (lastFired !== todayKey) {
+          localStorage.setItem('navpath-reminder-last', String(todayKey));
+          this.fireNotification();
+        }
+      }
+    }, 30000); // check every 30 seconds
+  },
+
+  /** Stop the checker */
+  stop() {
+    if (this._interval) { clearInterval(this._interval); this._interval = null; }
+  },
+
+  /** Enable reminders: request permission, set time, save, start */
+  async enable(hour, minute) {
+    const granted = await this.requestPermission();
+    if (!granted) {
+      toast('Please allow notifications in your browser to use reminders.', 'error');
+      return false;
+    }
+    this.save({ enabled: true, hour, minute });
+    this.start();
+    return true;
+  },
+
+  /** Disable reminders */
+  disable() {
+    const s = this.load();
+    s.enabled = false;
+    this.save(s);
+  },
+};
+
+// Auto-start checker on load if previously enabled
+(function initReminderOnLoad() {
+  const s = StudyReminder.load();
+  if (s.enabled) StudyReminder.start();
+})();
+
+// ── REMINDER MODAL ─────────────────────────────────────────
+function openReminderModal() {
+  // Remove existing modal if any
+  document.getElementById('reminder-modal')?.remove();
+
+  const s = StudyReminder.load();
+  const hour   = s.hour   ?? 18;
+  const minute = s.minute ?? 0;
+
+  // Build 24h time string for <input type="time">
+  const timeVal = `${String(hour).padStart(2,'0')}:${String(minute).padStart(2,'0')}`;
+
+  const overlay = document.createElement('div');
+  overlay.id = 'reminder-modal';
+  overlay.style.cssText = `
+    position:fixed;inset:0;background:rgba(6,16,30,0.85);
+    backdrop-filter:blur(6px);z-index:999;display:flex;
+    align-items:flex-end;justify-content:center;
+  `;
+  overlay.onclick = (e) => { if (e.target === overlay) closeReminderModal(); };
+
+  overlay.innerHTML = `
+    <div style="
+      background:var(--card-bg,#112240);
+      border:1px solid var(--card-border,rgba(201,168,76,0.25));
+      border-radius:1.25rem 1.25rem 0 0;
+      padding:1.5rem 1.25rem 2.5rem;
+      width:100%;max-width:480px;
+      box-shadow:0 -8px 40px rgba(0,0,0,0.5);
+      animation:slideUpModal 0.28s cubic-bezier(.4,0,.2,1);
+    ">
+      <div style="width:40px;height:4px;background:rgba(255,255,255,0.15);border-radius:99px;margin:0 auto 1.25rem;"></div>
+
+      <h2 style="text-align:center;font-size:1.1rem;font-weight:700;color:var(--text-primary,#e2effd);margin-bottom:0.35rem;">
+        🔔 Study Reminder
+      </h2>
+      <p style="text-align:center;font-size:0.8rem;color:var(--text-muted,#6b92bc);margin-bottom:1.5rem;">
+        Get a daily notification at your chosen study time.
+      </p>
+
+      <div style="background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.2);border-radius:0.875rem;padding:1.25rem;margin-bottom:1.25rem;">
+        <label style="display:block;font-size:0.72rem;font-weight:600;color:var(--text-muted,#6b92bc);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.6rem;">
+          Choose reminder time
+        </label>
+        <input
+          type="time"
+          id="reminder-time-input"
+          value="${timeVal}"
+          style="
+            width:100%;padding:0.75rem 1rem;
+            background:var(--navy-deepest,#060d1a);
+            border:1.5px solid rgba(201,168,76,0.35);
+            border-radius:0.625rem;color:var(--text-primary,#e2effd);
+            font-size:1.2rem;font-weight:600;text-align:center;
+            outline:none;cursor:pointer;font-family:inherit;
+          "
+        />
+        <p style="margin-top:0.6rem;font-size:0.72rem;color:var(--text-muted,#6b92bc);text-align:center;">
+          You'll get a browser notification at this time every day.
+        </p>
+      </div>
+
+      <div id="reminder-notif-warning" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:0.625rem;padding:0.75rem;margin-bottom:1rem;font-size:0.78rem;color:#ef4444;text-align:center;">
+        ⚠️ Notifications are blocked. Please enable them in your browser settings, then try again.
+      </div>
+
+      <button
+        onclick="saveReminderFromModal()"
+        style="
+          width:100%;padding:0.875rem;
+          background:linear-gradient(135deg,#c9a84c,#dab850);
+          color:#0a1628;border:none;border-radius:0.75rem;
+          font-size:0.95rem;font-weight:700;cursor:pointer;
+          margin-bottom:0.75rem;transition:opacity 0.15s;
+        "
+        onmouseover="this.style.opacity='0.9'"
+        onmouseout="this.style.opacity='1'"
+      >
+        ✅ Set Reminder
+      </button>
+
+      <button
+        onclick="disableReminderFromModal()"
+        style="
+          width:100%;padding:0.75rem;
+          background:transparent;
+          color:var(--text-muted,#6b92bc);
+          border:1px solid rgba(255,255,255,0.1);
+          border-radius:0.75rem;font-size:0.85rem;
+          font-weight:500;cursor:pointer;transition:all 0.15s;
+        "
+        onmouseover="this.style.borderColor='rgba(239,68,68,0.4)';this.style.color='#ef4444'"
+        onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='var(--text-muted,#6b92bc)'"
+      >
+        🔕 Turn Off Reminders
+      </button>
+    </div>
+    <style>
+      @keyframes slideUpModal{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+      #reminder-time-input:focus{border-color:var(--gold,#c9a84c)!important;box-shadow:0 0 0 3px rgba(201,168,76,0.15)}
+    </style>
+  `;
+
+  document.body.appendChild(overlay);
+
+  // Show warning if notifications already blocked
+  if ('Notification' in window && Notification.permission === 'denied') {
+    document.getElementById('reminder-notif-warning').style.display = 'block';
+  }
+}
+
+function closeReminderModal() {
+  document.getElementById('reminder-modal')?.remove();
+  // Re-render profile to reflect any changes
+  renderProfile();
+}
+
+async function saveReminderFromModal() {
+  const timeInput = document.getElementById('reminder-time-input');
+  if (!timeInput || !timeInput.value) {
+    toast('Please select a time.', 'error');
+    return;
+  }
+  const [h, m] = timeInput.value.split(':').map(Number);
+  const ok = await StudyReminder.enable(h, m);
+  if (ok) {
+    toast(`✅ Reminder set for ${StudyReminder.formatTime(h, m)} daily!`, 'success');
+    closeReminderModal();
+  } else {
+    document.getElementById('reminder-notif-warning').style.display = 'block';
+  }
+}
+
+function disableReminderFromModal() {
+  StudyReminder.disable();
+  toast('🔕 Study reminders turned off.', 'info');
+  closeReminderModal();
+}
+
+// ── Toggle called from the profile toggle switch ─────────────
+async function toggleStudyReminder() {
+  const s = StudyReminder.load();
+  if (s.enabled) {
+    // Currently on → turn off
+    StudyReminder.disable();
+    toast('🔕 Study reminders turned off.', 'info');
+    renderProfile();
+  } else {
+    // Currently off → open the time-picker modal
+    openReminderModal();
+  }
 }
 
 // ============================================================
@@ -2649,7 +3123,7 @@ function startMockTest(testId) {
     return;
   }
 
-  MockTest.active = true;
+MockTest.active = true;
   MockTest.testConfig = testConfig;
   MockTest.questions = allQuestions;
   MockTest.answers = {};
@@ -2885,7 +3359,7 @@ function submitMockTest() {
       </div>`;
   }).join('');
 
-  mockArea.innerHTML = `
+mockArea.innerHTML = `
     <div class="practice-container">
       <div class="practice-results">
         <div class="result-hero">
@@ -2956,6 +3430,11 @@ window.closePremiumModal = closePremiumModal;
 window.selectPlan        = selectPlan;
 window.initiatePurchase  = initiatePurchase;
 window.toggleDarkMode    = toggleDarkMode;
+window.toggleStudyReminder = toggleStudyReminder;
+window.openReminderModal   = openReminderModal;
+window.closeReminderModal  = closeReminderModal;
+window.saveReminderFromModal  = saveReminderFromModal;
+window.disableReminderFromModal = disableReminderFromModal;
 window.installApp        = installApp;
 window.openTopicModal    = openTopicModal;
 window.closeTopicModal   = closeTopicModal;
