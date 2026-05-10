@@ -30,13 +30,14 @@
   --display:  'Syne', sans-serif;
   --r:        10px;
   --r-lg:     16px;
+  --sidebar-w: 240px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;overflow:hidden}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 0% 0%,rgba(56,189,248,0.04) 0%,transparent 50%),radial-gradient(ellipse at 100% 100%,rgba(201,168,76,0.04) 0%,transparent 50%);pointer-events:none;z-index:0}
 
 /* ── AUTH SCREEN ── */
-#auth-screen{display:flex;position:fixed;inset:0;background:var(--bg);z-index:200;align-items:center;justify-content:center;flex-direction:column}
+#auth-screen{display:flex;position:fixed;inset:0;background:var(--bg);z-index:200;align-items:center;justify-content:center;flex-direction:column;padding:1rem}
 #auth-screen.hidden{display:none}
 .auth-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:2.5rem 2rem;width:100%;max-width:380px}
 .auth-logo{text-align:center;margin-bottom:1.75rem}
@@ -58,73 +59,107 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 #app{display:flex;height:100%;position:relative;z-index:1}
 #app.hidden{display:none}
 
+/* ── SIDEBAR OVERLAY (mobile) ── */
+#sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(6,16,30,0.7);backdrop-filter:blur(3px);z-index:49}
+#sidebar-overlay.show{display:block}
+
 /* ── SIDEBAR ── */
-#sidebar{width:220px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
-.sidebar-logo{padding:1.5rem 1.25rem 1.25rem;border-bottom:1px solid var(--border)}
-.logo-badge{display:inline-flex;align-items:center;background:var(--gold-dim);border:1px solid rgba(201,168,76,0.3);border-radius:6px;padding:0.2rem 0.6rem;font-family:var(--mono);font-size:0.62rem;font-weight:600;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.6rem}
-.logo-title{font-family:var(--display);font-size:1.35rem;font-weight:800;color:var(--text);letter-spacing:-0.03em}
+#sidebar{
+  width:var(--sidebar-w);
+  flex-shrink:0;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  position:relative;
+  z-index:50;
+  transition:transform 0.28s cubic-bezier(0.4,0,0.2,1);
+}
+.sidebar-logo{padding:1.25rem 1.25rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.sidebar-logo-left{display:flex;flex-direction:column;gap:0.35rem}
+.logo-badge{display:inline-flex;align-items:center;gap:0.3rem;background:var(--gold-dim);border:1px solid rgba(201,168,76,0.3);border-radius:6px;padding:0.15rem 0.55rem;font-family:var(--mono);font-size:0.6rem;font-weight:600;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase}
+.logo-title{font-family:var(--display);font-size:1.3rem;font-weight:800;color:var(--text);letter-spacing:-0.03em}
 .logo-title span{color:var(--gold)}
-.sidebar-nav{flex:1;padding:1rem 0.75rem;display:flex;flex-direction:column;gap:0.2rem;overflow-y:auto}
-.nav-sep{font-family:var(--mono);font-size:0.6rem;font-weight:600;letter-spacing:0.12em;color:var(--text3);text-transform:uppercase;padding:0.75rem 0.5rem 0.35rem}
-.nav-item{display:flex;align-items:center;gap:0.65rem;padding:0.55rem 0.75rem;border-radius:var(--r);border:none;background:transparent;color:var(--text2);font-family:var(--sans);font-size:0.875rem;font-weight:500;cursor:pointer;text-align:left;width:100%;transition:all 0.18s;position:relative}
+/* close btn inside sidebar, only on mobile */
+.sidebar-close-btn{display:none;background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.2rem;padding:0.3rem;line-height:1;transition:color 0.15s;align-self:flex-start}
+.sidebar-close-btn:hover{color:var(--text)}
+
+.sidebar-nav{flex:1;padding:0.75rem 0.75rem;display:flex;flex-direction:column;gap:0.15rem;overflow-y:auto}
+.nav-sep{font-family:var(--mono);font-size:0.58rem;font-weight:600;letter-spacing:0.12em;color:var(--text3);text-transform:uppercase;padding:0.65rem 0.5rem 0.3rem}
+.nav-item{display:flex;align-items:center;gap:0.65rem;padding:0.6rem 0.85rem;border-radius:var(--r);border:none;background:transparent;color:var(--text2);font-family:var(--sans);font-size:0.875rem;font-weight:500;cursor:pointer;text-align:left;width:100%;transition:all 0.18s;position:relative}
 .nav-item:hover{background:var(--surface2);color:var(--text)}
 .nav-item.active{background:var(--gold-dim);color:var(--gold);font-weight:600}
-.nav-item.active::before{content:'';position:absolute;left:0;top:25%;bottom:25%;width:3px;background:var(--gold);border-radius:0 3px 3px 0}
-.nav-icon{font-size:1rem;width:18px;text-align:center}
-.sidebar-footer{padding:1rem;border-top:1px solid var(--border)}
-.admin-badge{display:flex;align-items:center;gap:0.5rem;padding:0.6rem 0.75rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r)}
-.admin-avatar{width:28px;height:28px;border-radius:50%;background:var(--gold-dim);border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:var(--gold);font-weight:700;font-family:var(--mono);flex-shrink:0}
+.nav-item.active::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:3px;background:var(--gold);border-radius:0 3px 3px 0}
+.nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+.nav-label{flex:1}
+.sidebar-footer{padding:0.875rem 0.875rem;border-top:1px solid var(--border)}
+.admin-badge{display:flex;align-items:center;gap:0.6rem;padding:0.65rem 0.75rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r)}
+.admin-avatar{width:30px;height:30px;border-radius:50%;background:var(--gold-dim);border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:0.72rem;color:var(--gold);font-weight:700;font-family:var(--mono);flex-shrink:0}
 .admin-info{flex:1;min-width:0}
 .admin-name{font-size:0.78rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.admin-role{font-size:0.62rem;color:var(--text3);font-family:var(--mono)}
-.logout-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:0.85rem;padding:0.15rem;transition:color 0.15s}
+.admin-role{font-size:0.6rem;color:var(--text3);font-family:var(--mono)}
+.logout-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:0.9rem;padding:0.2rem;transition:color 0.15s;flex-shrink:0}
 .logout-btn:hover{color:var(--red)}
 
 /* ── MAIN ── */
-#main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.topbar{height:56px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.75rem;flex-shrink:0;background:var(--surface)}
-.page-title{font-family:var(--display);font-size:1rem;font-weight:700;color:var(--text)}
-.topbar-right{display:flex;align-items:center;gap:0.75rem}
-.status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pdot 2s infinite}
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.topbar{height:56px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;flex-shrink:0;background:var(--surface);gap:0.75rem}
+.topbar-left{display:flex;align-items:center;gap:0.75rem;min-width:0}
+/* Hamburger — hidden on desktop */
+.menu-toggle{display:none;background:none;border:none;cursor:pointer;padding:0.35rem;color:var(--text2);border-radius:6px;transition:all 0.15s;flex-shrink:0}
+.menu-toggle:hover{background:var(--surface2);color:var(--text)}
+.menu-toggle svg{display:block}
+.page-title{font-family:var(--display);font-size:1rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-right{display:flex;align-items:center;gap:0.6rem;flex-shrink:0}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pdot 2s infinite;flex-shrink:0}
 @keyframes pdot{0%,100%{opacity:1}50%{opacity:0.4}}
-.status-text{font-family:var(--mono);font-size:0.65rem;color:var(--text3)}
+.status-text{font-family:var(--mono);font-size:0.62rem;color:var(--text3);white-space:nowrap}
 
 /* ── PANELS ── */
-.panel{display:none;flex:1;overflow-y:auto;padding:1.75rem}
+.panel{display:none;flex:1;overflow-y:auto;padding:1.25rem}
 .panel.active{display:block}
 
+/* ── PANEL HEADER (reusable) ── */
+.panel-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem;gap:0.75rem;flex-wrap:wrap}
+.panel-header-left{}
+.panel-title{font-family:var(--display);font-size:1.1rem;font-weight:700;color:var(--text)}
+.panel-sub{font-size:0.72rem;color:var(--text3);font-family:var(--mono);margin-top:0.15rem}
+.panel-actions{display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;flex-shrink:0}
+
 /* ── STAT CARDS ── */
-.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.25rem 1.5rem;position:relative;overflow:hidden}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.875rem;margin-bottom:1.25rem}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.1rem 1.25rem;position:relative;overflow:hidden}
 .stat-card::after{content:'';position:absolute;top:-40px;right:-40px;width:100px;height:100px;border-radius:50%;opacity:0.06}
 .stat-card.gold::after{background:var(--gold)}
 .stat-card.cyan::after{background:var(--cyan)}
 .stat-card.green::after{background:var(--green)}
 .stat-card.red::after{background:var(--red)}
-.stat-label{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:0.5rem}
-.stat-value{font-family:var(--display);font-size:2rem;font-weight:800;line-height:1}
+.stat-label{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:0.4rem}
+.stat-value{font-family:var(--display);font-size:1.9rem;font-weight:800;line-height:1}
 .stat-card.gold .stat-value{color:var(--gold)}
 .stat-card.cyan .stat-value{color:var(--cyan)}
 .stat-card.green .stat-value{color:var(--green)}
 .stat-card.red .stat-value{color:var(--red)}
-.stat-sub{font-size:0.72rem;color:var(--text3);margin-top:0.35rem;font-family:var(--mono)}
-.stat-icon{position:absolute;top:1.1rem;right:1.25rem;font-size:1.5rem;opacity:0.4}
+.stat-sub{font-size:0.68rem;color:var(--text3);margin-top:0.3rem;font-family:var(--mono)}
+.stat-icon{position:absolute;top:1rem;right:1rem;font-size:1.4rem;opacity:0.35}
 
 /* ── CARD ── */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:1.25rem}
-.card-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border2)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:1.1rem}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:0.875rem 1.25rem;border-bottom:1px solid var(--border2);flex-wrap:wrap;gap:0.5rem}
 .card-title{font-family:var(--display);font-size:0.9rem;font-weight:700;color:var(--text)}
-.card-body{padding:1.25rem 1.5rem}
+.card-body{padding:1.1rem 1.25rem}
 
-/* ── TABLE ── */
-.data-table{width:100%;border-collapse:collapse}
-.data-table th{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);text-align:left;padding:0.6rem 1rem;border-bottom:1px solid var(--border2);white-space:nowrap}
-.data-table td{padding:0.75rem 1rem;border-bottom:1px solid var(--border2);font-size:0.875rem;vertical-align:middle}
+/* ── TABLE (scroll on mobile) ── */
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.data-table{width:100%;border-collapse:collapse;min-width:480px}
+.data-table th{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);text-align:left;padding:0.6rem 1rem;border-bottom:1px solid var(--border2);white-space:nowrap}
+.data-table td{padding:0.7rem 1rem;border-bottom:1px solid var(--border2);font-size:0.85rem;vertical-align:middle}
 .data-table tr:last-child td{border-bottom:none}
 .data-table tr:hover td{background:rgba(255,255,255,0.02)}
 
 /* ── BADGES ── */
-.badge{display:inline-flex;align-items:center;padding:0.2rem 0.55rem;border-radius:100px;font-size:0.68rem;font-weight:600;font-family:var(--mono);white-space:nowrap}
+.badge{display:inline-flex;align-items:center;padding:0.2rem 0.55rem;border-radius:100px;font-size:0.67rem;font-weight:600;font-family:var(--mono);white-space:nowrap}
 .badge-premium{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(201,168,76,0.3)}
 .badge-trial{background:var(--cyan-dim);color:var(--cyan);border:1px solid rgba(56,189,248,0.25)}
 .badge-expired{background:rgba(239,68,68,0.1);color:var(--red);border:1px solid rgba(239,68,68,0.25)}
@@ -141,54 +176,57 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .btn-danger:hover{background:rgba(239,68,68,0.22)}
 .btn-cyan{background:var(--cyan-dim);color:var(--cyan);border:1px solid rgba(56,189,248,0.25)}
 .btn-cyan:hover{background:rgba(56,189,248,0.18)}
-.btn-sm{padding:0.3rem 0.7rem;font-size:0.75rem}
+.btn-sm{padding:0.3rem 0.65rem;font-size:0.75rem}
 .btn-block{width:100%;justify-content:center}
 .btn:disabled{opacity:0.45;cursor:not-allowed}
 
 /* ── FORM ── */
-.form-row{margin-bottom:1.1rem}
-.form-label{display:block;font-size:0.72rem;font-weight:600;color:var(--text2);margin-bottom:0.35rem;font-family:var(--mono);letter-spacing:0.04em}
+.form-row{margin-bottom:1rem}
+.form-label{display:block;font-size:0.7rem;font-weight:600;color:var(--text2);margin-bottom:0.3rem;font-family:var(--mono);letter-spacing:0.04em}
 .form-input,.form-select,.form-textarea{width:100%;padding:0.65rem 0.9rem;background:var(--bg);border:1.5px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:var(--sans);font-size:0.875rem;outline:none;transition:border-color 0.18s;appearance:none}
 .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.1)}
 .form-textarea{min-height:110px;resize:vertical;line-height:1.6}
 .form-select option{background:var(--surface2)}
-.form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0.875rem}
 .option-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem}
 .option-letter{font-family:var(--mono);font-size:0.7rem;font-weight:700;color:var(--gold);width:18px;flex-shrink:0}
 .option-radio{width:16px;height:16px;accent-color:var(--gold);flex-shrink:0;cursor:pointer}
 
+/* ── FILTER BAR ── */
+.filter-bar{display:flex;align-items:center;gap:0.6rem;flex:1;flex-wrap:wrap}
+
 /* ── MODAL ── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(6,16,30,0.88);backdrop-filter:blur(6px);z-index:100;align-items:center;justify-content:center;padding:1.5rem}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(6,16,30,0.88);backdrop-filter:blur(6px);z-index:100;align-items:center;justify-content:center;padding:1rem}
 .modal-overlay.open{display:flex}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);width:100%;max-width:640px;max-height:90vh;overflow-y:auto;animation:slideUp 0.22s ease;position:relative}
 @keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-.modal-header{display:flex;align-items:flex-start;justify-content:space-between;padding:1.4rem 1.5rem 1.2rem;border-bottom:1px solid var(--border2);position:sticky;top:0;background:var(--surface);z-index:2}
+.modal-header{display:flex;align-items:flex-start;justify-content:space-between;padding:1.25rem 1.35rem 1.1rem;border-bottom:1px solid var(--border2);position:sticky;top:0;background:var(--surface);z-index:2}
 .modal-title{font-family:var(--display);font-size:1rem;font-weight:700;color:var(--text)}
 .modal-sub{font-size:0.72rem;color:var(--text3);font-family:var(--mono);margin-top:0.2rem}
 .modal-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.2rem;line-height:1;padding:0.1rem;transition:color 0.15s;flex-shrink:0}
 .modal-close:hover{color:var(--text)}
-.modal-body{padding:1.5rem}
-.modal-footer{padding:1rem 1.5rem 1.5rem;display:flex;justify-content:flex-end;gap:0.75rem;border-top:1px solid var(--border2)}
+.modal-body{padding:1.35rem}
+.modal-footer{padding:1rem 1.35rem 1.35rem;display:flex;justify-content:flex-end;gap:0.75rem;border-top:1px solid var(--border2)}
 
 /* ── SEARCH ── */
-.search-wrap{position:relative;flex:1}
-.search-wrap::before{content:'🔍';position:absolute;left:0.65rem;top:50%;transform:translateY(-50%);font-size:0.75rem;pointer-events:none}
-.search-input{width:100%;padding:0.5rem 0.9rem 0.5rem 2.2rem;background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:var(--sans);font-size:0.82rem;outline:none;transition:border-color 0.18s}
+.search-wrap{position:relative}
+.search-wrap::before{content:'🔍';position:absolute;left:0.65rem;top:50%;transform:translateY(-50%);font-size:0.72rem;pointer-events:none}
+.search-input{width:100%;padding:0.5rem 0.9rem 0.5rem 2.1rem;background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:var(--sans);font-size:0.82rem;outline:none;transition:border-color 0.18s}
 .search-input:focus{border-color:var(--gold)}
 
 /* ── Q ITEM ── */
 .q-list{display:flex;flex-direction:column;gap:0.65rem;max-height:420px;overflow-y:auto}
 .q-item{background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);padding:0.875rem 1rem;position:relative}
-.q-num{font-family:var(--mono);font-size:0.62rem;color:var(--text3);margin-bottom:0.3rem}
-.q-text{font-size:0.875rem;color:var(--text);font-weight:500;line-height:1.5;margin-bottom:0.45rem;padding-right:4rem}
+.q-num{font-family:var(--mono);font-size:0.6rem;color:var(--text3);margin-bottom:0.3rem}
+.q-text{font-size:0.875rem;color:var(--text);font-weight:500;line-height:1.5;margin-bottom:0.45rem;padding-right:5rem}
 .q-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.2rem}
 .q-opt{font-size:0.72rem;color:var(--text3);padding:0.15rem 0}
 .q-opt.correct{color:var(--green);font-weight:600}
 .q-actions{position:absolute;top:0.75rem;right:0.75rem;display:flex;gap:0.3rem}
 
 /* ── TOAST ── */
-#toast-zone{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;display:flex;flex-direction:column;gap:0.5rem;pointer-events:none}
-.toast{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:0.7rem 1.2rem;font-size:0.84rem;font-weight:500;color:var(--text);animation:tin 0.22s ease,tout 0.3s ease 2.7s forwards;max-width:300px;pointer-events:all;display:flex;align-items:center;gap:0.5rem}
+#toast-zone{position:fixed;bottom:1.25rem;right:1.25rem;z-index:999;display:flex;flex-direction:column;gap:0.5rem;pointer-events:none}
+.toast{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:0.65rem 1.1rem;font-size:0.84rem;font-weight:500;color:var(--text);animation:tin 0.22s ease,tout 0.3s ease 2.7s forwards;max-width:300px;pointer-events:all;display:flex;align-items:center;gap:0.5rem}
 .toast.success{border-color:rgba(34,197,94,0.3)}
 .toast.success::before{content:'✓';color:var(--green);font-weight:700}
 .toast.error{border-color:rgba(239,68,68,0.3)}
@@ -207,6 +245,71 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .empty-state{text-align:center;padding:3rem 2rem;color:var(--text3)}
 .empty-state .es-icon{font-size:2.5rem;margin-bottom:0.75rem}
 .empty-state p{font-size:0.85rem;font-family:var(--mono)}
+
+/* ════════════════════════════════════
+   RESPONSIVE — MOBILE
+════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Show hamburger */
+  .menu-toggle { display:flex; align-items:center; justify-content:center; }
+
+  /* Sidebar slides in from left as overlay */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    transform: translateX(-100%);
+    z-index: 50;
+    box-shadow: 4px 0 32px rgba(0,0,0,0.5);
+  }
+  #sidebar.open { transform: translateX(0); }
+  .sidebar-close-btn { display:flex; }
+
+  /* Main takes full width */
+  #main { width: 100%; }
+
+  /* Stat cards: 2 columns on mobile */
+  .grid-4 { grid-template-columns: repeat(2, 1fr); gap: 0.7rem; }
+
+  /* Panel padding reduced */
+  .panel { padding: 1rem; }
+
+  /* Topbar compact */
+  .topbar { padding: 0 0.875rem; }
+  .status-text { display: none; }
+
+  /* Card body padding */
+  .card-body { padding: 0.875rem 1rem; }
+  .card-header { padding: 0.75rem 1rem; }
+
+  /* Form grid becomes 1 col on small screens */
+  .form-grid-2 { grid-template-columns: 1fr; }
+
+  /* Filter bar stacks */
+  .filter-bar { flex-direction: column; align-items: stretch; }
+  .filter-bar .search-wrap { max-width: 100% !important; }
+  .filter-bar .form-select { width: 100% !important; }
+
+  /* Panel header stacks */
+  .panel-header { flex-direction: column; align-items: stretch; gap: 0.75rem; }
+  .panel-actions { justify-content: flex-start; }
+
+  /* Table scrolls */
+  .data-table { min-width: 560px; }
+
+  /* Modal full width */
+  .modal-overlay { padding: 0.75rem; }
+  .modal { max-height: 95vh; }
+
+  /* Toast */
+  #toast-zone { left: 1rem; right: 1rem; bottom: 1rem; }
+  .toast { max-width: 100%; }
+}
+
+@media (max-width: 400px) {
+  .grid-4 { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .stat-value { font-size: 1.6rem; }
+  .stat-card { padding: 0.875rem 1rem; }
+}
 </style>
 </head>
 <body>
@@ -236,38 +339,44 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 ════════════════════════════════════════════════ -->
 <div id="app" class="hidden">
 
+  <!-- Mobile sidebar overlay -->
+  <div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
   <!-- SIDEBAR -->
   <div id="sidebar">
     <div class="sidebar-logo">
-      <div class="logo-badge">⚓ Admin</div>
-      <div class="logo-title">Nav<span>Path</span></div>
+      <div class="sidebar-logo-left">
+        <div class="logo-badge">⚓ Admin</div>
+        <div class="logo-title">Nav<span>Path</span></div>
+      </div>
+      <button class="sidebar-close-btn" onclick="closeSidebar()" title="Close menu">✕</button>
     </div>
 
     <nav class="sidebar-nav">
       <div class="nav-sep">Overview</div>
       <button class="nav-item active" data-panel="dashboard" onclick="showPanel('dashboard',this)">
-        <span class="nav-icon">📊</span> Dashboard
+        <span class="nav-icon">📊</span><span class="nav-label">Dashboard</span>
       </button>
 
       <div class="nav-sep">Content</div>
       <button class="nav-item" data-panel="questions" onclick="showPanel('questions',this)">
-        <span class="nav-icon">📝</span> Questions
+        <span class="nav-icon">📝</span><span class="nav-label">Questions</span>
       </button>
       <button class="nav-item" data-panel="notes" onclick="showPanel('notes',this)">
-        <span class="nav-icon">📚</span> Study Notes
+        <span class="nav-icon">📚</span><span class="nav-label">Study Notes</span>
       </button>
 
       <div class="nav-sep">Users</div>
       <button class="nav-item" data-panel="users" onclick="showPanel('users',this)">
-        <span class="nav-icon">👥</span> All Users
+        <span class="nav-icon">👥</span><span class="nav-label">All Users</span>
       </button>
       <button class="nav-item" data-panel="payments" onclick="showPanel('payments',this)">
-        <span class="nav-icon">💳</span> Payments
+        <span class="nav-icon">💳</span><span class="nav-label">Payments</span>
       </button>
 
       <div class="nav-sep">Tools</div>
       <button class="nav-item" data-panel="announce" onclick="showPanel('announce',this)">
-        <span class="nav-icon">📣</span> Announce
+        <span class="nav-icon">📣</span><span class="nav-label">Announce</span>
       </button>
     </nav>
 
@@ -286,7 +395,17 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   <!-- MAIN -->
   <div id="main">
     <div class="topbar">
-      <div class="page-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-left">
+        <!-- Hamburger button -->
+        <button class="menu-toggle" onclick="openSidebar()" title="Open menu">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect y="4" width="20" height="2" rx="1" fill="currentColor"/>
+            <rect y="9" width="20" height="2" rx="1" fill="currentColor"/>
+            <rect y="14" width="20" height="2" rx="1" fill="currentColor"/>
+          </svg>
+        </button>
+        <div class="page-title" id="topbar-title">Dashboard</div>
+      </div>
       <div class="topbar-right">
         <div class="status-dot"></div>
         <div class="status-text">LIVE · navpath-19986</div>
@@ -318,7 +437,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
           <div class="stat-icon">⛔</div>
           <div class="stat-label">Expired</div>
           <div class="stat-value" id="stat-expired">—</div>
-          <div class="stat-sub">trial ended, no premium</div>
+          <div class="stat-sub">trial ended</div>
         </div>
       </div>
 
@@ -327,7 +446,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
           <div class="card-title">🕐 Recent Signups</div>
           <button class="btn btn-outline btn-sm" onclick="showPanel('users', document.querySelector('[data-panel=users]'))">View All →</button>
         </div>
-        <div id="recent-users-body">
+        <div class="table-scroll" id="recent-users-body">
           <div class="loader"><div class="spinner"></div> Loading...</div>
         </div>
       </div>
@@ -337,7 +456,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
           <div class="card-title">💳 Recent Payments</div>
           <button class="btn btn-outline btn-sm" onclick="showPanel('payments', document.querySelector('[data-panel=payments]'))">View All →</button>
         </div>
-        <div id="recent-payments-body">
+        <div class="table-scroll" id="recent-payments-body">
           <div class="loader"><div class="spinner"></div> Loading...</div>
         </div>
       </div>
@@ -345,21 +464,23 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
     <!-- ── QUESTIONS PANEL ── -->
     <div class="panel" id="panel-questions">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;gap:1rem;flex-wrap:wrap;">
-        <div>
-          <div style="font-family:var(--display);font-size:1.1rem;font-weight:700;">MCQ Question Bank</div>
-          <div style="font-size:0.75rem;color:var(--text3);font-family:var(--mono);margin-top:0.15rem;">Stored in Firestore · questions collection</div>
+      <div class="panel-header">
+        <div class="panel-header-left">
+          <div class="panel-title">MCQ Question Bank</div>
+          <div class="panel-sub">Stored in Firestore · questions collection</div>
         </div>
-        <button class="btn btn-gold" onclick="openAddQuestionModal()">＋ Add Question</button>
+        <div class="panel-actions">
+          <button class="btn btn-gold" onclick="openAddQuestionModal()">＋ Add Question</button>
+        </div>
       </div>
 
       <div class="card">
         <div class="card-header">
-          <div style="display:flex;align-items:center;gap:0.75rem;flex:1;flex-wrap:wrap;">
-            <div class="search-wrap" style="max-width:280px;">
+          <div class="filter-bar">
+            <div class="search-wrap" style="flex:1;min-width:140px;">
               <input class="search-input" id="q-search" placeholder="Search questions..." oninput="filterQuestions()" />
             </div>
-            <select class="form-select" id="q-filter-chapter" style="width:200px;padding:0.48rem 0.9rem;" onchange="filterQuestions()">
+            <select class="form-select" id="q-filter-chapter" style="flex:1;min-width:140px;max-width:220px;padding:0.48rem 0.9rem;" onchange="filterQuestions()">
               <option value="">All Chapters</option>
             </select>
             <select class="form-select" id="q-filter-diff" style="width:140px;padding:0.48rem 0.9rem;" onchange="filterQuestions()">
@@ -369,9 +490,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
               <option value="hard">Hard</option>
             </select>
           </div>
-          <div style="font-family:var(--mono);font-size:0.72rem;color:var(--text3);margin-left:1rem;white-space:nowrap;" id="q-count-label">— questions</div>
+          <div style="font-family:var(--mono);font-size:0.72rem;color:var(--text3);white-space:nowrap;margin-top:0.25rem;flex-shrink:0;" id="q-count-label">— questions</div>
         </div>
-        <div class="card-body" style="padding:1rem 1.5rem;">
+        <div class="card-body">
           <div id="q-list-body">
             <div class="loader"><div class="spinner"></div> Loading questions...</div>
           </div>
@@ -381,34 +502,34 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
     <!-- ── NOTES PANEL ── -->
     <div class="panel" id="panel-notes">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;gap:1rem;flex-wrap:wrap;">
-        <div>
-          <div style="font-family:var(--display);font-size:1.1rem;font-weight:700;">Study Notes Manager</div>
-          <div style="font-size:0.75rem;color:var(--text3);font-family:var(--mono);margin-top:0.15rem;">Stored in Firestore · notes collection</div>
+      <div class="panel-header">
+        <div class="panel-header-left">
+          <div class="panel-title">Study Notes Manager</div>
+          <div class="panel-sub">Stored in Firestore · notes collection</div>
         </div>
-        <button class="btn btn-gold" onclick="openAddNoteModal()">＋ Add Note</button>
+        <div class="panel-actions">
+          <button class="btn btn-gold" onclick="openAddNoteModal()">＋ Add Note</button>
+        </div>
       </div>
       <div class="card">
-        <div class="card-body">
-          <div id="notes-list-body">
-            <div class="loader"><div class="spinner"></div> Loading notes...</div>
-          </div>
+        <div class="table-scroll" id="notes-list-body">
+          <div class="loader"><div class="spinner"></div> Loading notes...</div>
         </div>
       </div>
     </div>
 
     <!-- ── USERS PANEL ── -->
     <div class="panel" id="panel-users">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;gap:1rem;flex-wrap:wrap;">
-        <div>
-          <div style="font-family:var(--display);font-size:1.1rem;font-weight:700;">User Management</div>
-          <div style="font-size:0.75rem;color:var(--text3);font-family:var(--mono);margin-top:0.15rem;">Live Firestore · users collection</div>
+      <div class="panel-header">
+        <div class="panel-header-left">
+          <div class="panel-title">User Management</div>
+          <div class="panel-sub">Live Firestore · users collection</div>
         </div>
-        <div style="display:flex;gap:0.6rem;align-items:center;flex-wrap:wrap;">
-          <div class="search-wrap" style="max-width:240px;">
+        <div class="panel-actions" style="flex-wrap:wrap;">
+          <div class="search-wrap" style="min-width:160px;flex:1;max-width:240px;">
             <input class="search-input" id="u-search" placeholder="Search name or email..." oninput="filterUsers()" />
           </div>
-          <select class="form-select" id="u-filter" style="width:150px;padding:0.48rem 0.9rem;" onchange="filterUsers()">
+          <select class="form-select" id="u-filter" style="width:140px;padding:0.48rem 0.9rem;" onchange="filterUsers()">
             <option value="">All Users</option>
             <option value="premium">Premium</option>
             <option value="trial">On Trial</option>
@@ -419,7 +540,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       </div>
 
       <div class="card">
-        <div id="users-table-body">
+        <div class="table-scroll" id="users-table-body">
           <div class="loader"><div class="spinner"></div> Loading users...</div>
         </div>
       </div>
@@ -427,10 +548,14 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
     <!-- ── PAYMENTS PANEL ── -->
     <div class="panel" id="panel-payments">
-      <div style="font-family:var(--display);font-size:1.1rem;font-weight:700;margin-bottom:0.4rem;">Payment History</div>
-      <div style="font-size:0.75rem;color:var(--text3);font-family:var(--mono);margin-bottom:1.25rem;">All premium payment records across all users</div>
+      <div class="panel-header">
+        <div class="panel-header-left">
+          <div class="panel-title">Payment History</div>
+          <div class="panel-sub">All premium payment records</div>
+        </div>
+      </div>
       <div class="card">
-        <div id="payments-table-body">
+        <div class="table-scroll" id="payments-table-body">
           <div class="loader"><div class="spinner"></div> Loading payments...</div>
         </div>
       </div>
@@ -438,8 +563,12 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
     <!-- ── ANNOUNCE PANEL ── -->
     <div class="panel" id="panel-announce">
-      <div style="font-family:var(--display);font-size:1.1rem;font-weight:700;margin-bottom:0.4rem;">Announcements</div>
-      <div style="font-size:0.75rem;color:var(--text3);font-family:var(--mono);margin-bottom:1.25rem;">Push a notice to all users — shown on their dashboard</div>
+      <div class="panel-header">
+        <div class="panel-header-left">
+          <div class="panel-title">Announcements</div>
+          <div class="panel-sub">Push a notice to all users — shown on their dashboard</div>
+        </div>
+      </div>
 
       <div class="card" style="max-width:640px;">
         <div class="card-header"><div class="card-title">📣 New Announcement</div></div>
@@ -460,7 +589,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
               <option value="warning">⚠️ Warning / Reminder</option>
             </select>
           </div>
-          <div style="display:flex;gap:0.75rem;margin-top:0.5rem;">
+          <div style="display:flex;gap:0.75rem;margin-top:0.5rem;flex-wrap:wrap;">
             <button class="btn btn-gold" onclick="sendAnnouncement()">📣 Publish Announcement</button>
             <button class="btn btn-outline" onclick="clearAnnouncement()">Clear</button>
           </div>
@@ -626,7 +755,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
      JAVASCRIPT
 ════════════════════════════════════════════════ -->
 <script>
-// ── Firebase config (from firebase.js) ──────────────────────
+// ── Firebase config ──────────────────────────────────────────
 const firebaseConfig = {
   apiKey:            "AIzaSyAr7Tnoq0FrMEx8BZotdOTg7Du-2-wZ0fo",
   authDomain:        "navpath-19986.firebaseapp.com",
@@ -643,46 +772,56 @@ const db   = firebase.firestore();
 // ── Admin credentials lock ───────────────────────────────────
 const ADMIN_EMAIL = 'navpath.admin@gmail.com';
 
-// ── Chapter map (mirrors NEA_SYLLABUS from script.js) ────────
+// ── Chapter map ──────────────────────────────────────────────
 const CHAPTERS = [
-  // Paper I — English
-  { id:'comprehension',     name:'Reading Comprehension',    paper:'Paper I' },
-  { id:'tenses-voices',     name:'Tenses & Voices',          paper:'Paper I' },
-  { id:'applied-grammar',   name:'Applied Grammar',           paper:'Paper I' },
-  { id:'idioms-phrases',    name:'Idioms & Phrases',          paper:'Paper I' },
-  { id:'vocabulary',        name:'Vocabulary',                paper:'Paper I' },
-  // Paper I — GK
-  { id:'indian-constitution', name:'Indian Constitution',     paper:'Paper I' },
-  { id:'military-history',  name:'Military History',          paper:'Paper I' },
-  { id:'current-affairs',   name:'Current Affairs',           paper:'Paper I' },
-  { id:'abbreviations',     name:'Abbreviations',             paper:'Paper I' },
-  { id:'science-tech',      name:'Science & Technology',      paper:'Paper I' },
-  { id:'indian-navy-gk',    name:'Indian Navy GK',            paper:'Paper I' },
-  // Paper II — Maths
-  { id:'trigonometry',      name:'Trigonometry',              paper:'Paper II' },
-  { id:'algebra',           name:'Algebra',                   paper:'Paper II' },
-  { id:'coordinate-geometry', name:'Coordinate Geometry',     paper:'Paper II' },
-  { id:'calculus',          name:'Calculus',                  paper:'Paper II' },
+  { id:'comprehension',        name:'Reading Comprehension',    paper:'Paper I' },
+  { id:'tenses-voices',        name:'Tenses & Voices',          paper:'Paper I' },
+  { id:'applied-grammar',      name:'Applied Grammar',           paper:'Paper I' },
+  { id:'idioms-phrases',       name:'Idioms & Phrases',          paper:'Paper I' },
+  { id:'vocabulary',           name:'Vocabulary',                paper:'Paper I' },
+  { id:'indian-constitution',  name:'Indian Constitution',       paper:'Paper I' },
+  { id:'military-history',     name:'Military History',          paper:'Paper I' },
+  { id:'current-affairs',      name:'Current Affairs',           paper:'Paper I' },
+  { id:'abbreviations',        name:'Abbreviations',             paper:'Paper I' },
+  { id:'science-tech',         name:'Science & Technology',      paper:'Paper I' },
+  { id:'indian-navy-gk',       name:'Indian Navy GK',            paper:'Paper I' },
+  { id:'trigonometry',         name:'Trigonometry',              paper:'Paper II' },
+  { id:'algebra',              name:'Algebra',                   paper:'Paper II' },
+  { id:'coordinate-geometry',  name:'Coordinate Geometry',       paper:'Paper II' },
+  { id:'calculus',             name:'Calculus',                  paper:'Paper II' },
   { id:'statistics-probability', name:'Statistics & Probability', paper:'Paper II' },
-  { id:'matrices-determinants', name:'Matrices & Determinants', paper:'Paper II' },
-  { id:'number-system',     name:'Number System',             paper:'Paper II' },
-  // Paper III — Physics
-  { id:'physical-world',    name:'Physical World & Units',    paper:'Paper III' },
-  { id:'kinematics',        name:'Kinematics',                paper:'Paper III' },
-  { id:'motion-force-work', name:'Motion, Force & Work',      paper:'Paper III' },
-  { id:'gravitation',       name:'Gravitation',               paper:'Paper III' },
-  { id:'oscillations-waves', name:'Oscillations & Waves',     paper:'Paper III' },
-  { id:'optics',            name:'Optics',                    paper:'Paper III' },
-  { id:'current-electricity', name:'Current Electricity',     paper:'Paper III' },
-  { id:'heat',              name:'Heat & Thermodynamics',     paper:'Paper III' },
-  { id:'magnetism',         name:'Magnetism',                 paper:'Paper III' },
-  { id:'communication-systems', name:'Communication Systems', paper:'Paper III' },
+  { id:'matrices-determinants', name:'Matrices & Determinants',  paper:'Paper II' },
+  { id:'number-system',        name:'Number System',             paper:'Paper II' },
+  { id:'physical-world',       name:'Physical World & Units',    paper:'Paper III' },
+  { id:'kinematics',           name:'Kinematics',                paper:'Paper III' },
+  { id:'motion-force-work',    name:'Motion, Force & Work',      paper:'Paper III' },
+  { id:'gravitation',          name:'Gravitation',               paper:'Paper III' },
+  { id:'oscillations-waves',   name:'Oscillations & Waves',      paper:'Paper III' },
+  { id:'optics',               name:'Optics',                    paper:'Paper III' },
+  { id:'current-electricity',  name:'Current Electricity',       paper:'Paper III' },
+  { id:'heat',                 name:'Heat & Thermodynamics',      paper:'Paper III' },
+  { id:'magnetism',            name:'Magnetism',                 paper:'Paper III' },
+  { id:'communication-systems', name:'Communication Systems',    paper:'Paper III' },
 ];
 
 // ── State ────────────────────────────────────────────────────
 let allUsers     = [];
 let allQuestions = [];
 let allNotes     = [];
+
+// ═══════════════════════════════════════════════════════════
+// SIDEBAR TOGGLE (mobile)
+// ═══════════════════════════════════════════════════════════
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebar-overlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
 
 // ═══════════════════════════════════════════════════════════
 // AUTH
@@ -693,7 +832,7 @@ auth.onAuthStateChanged(user => {
     document.getElementById('app').classList.remove('hidden');
     bootstrapAdmin();
   } else {
-    if (user) auth.signOut(); // kick non-admin
+    if (user) auth.signOut();
     document.getElementById('auth-screen').classList.remove('hidden');
     document.getElementById('app').classList.add('hidden');
   }
@@ -707,7 +846,6 @@ async function adminLogin() {
 
   errEl.classList.remove('show');
 
-  // Guard: only our admin email
   if (email !== ADMIN_EMAIL) {
     errEl.textContent = 'Access denied — not an authorised admin account.';
     errEl.classList.add('show');
@@ -719,7 +857,6 @@ async function adminLogin() {
 
   try {
     await auth.signInWithEmailAndPassword(email, pass);
-    // onAuthStateChanged handles the rest
   } catch(e) {
     errEl.textContent = e.code === 'auth/wrong-password'
       ? 'Wrong password. Try again.'
@@ -732,7 +869,6 @@ async function adminLogin() {
   }
 }
 
-// Allow Enter key on auth inputs
 document.getElementById('auth-password').addEventListener('keydown', e => {
   if (e.key === 'Enter') adminLogin();
 });
@@ -743,7 +879,7 @@ function adminLogout() {
 }
 
 // ═══════════════════════════════════════════════════════════
-// BOOTSTRAP — load everything on first entry
+// BOOTSTRAP
 // ═══════════════════════════════════════════════════════════
 function bootstrapAdmin() {
   populateChapterSelects();
@@ -773,6 +909,8 @@ function showPanel(id, btn) {
   document.getElementById('panel-' + id).classList.add('active');
   if (btn) btn.classList.add('active');
   document.getElementById('topbar-title').textContent = PANEL_TITLES[id] || id;
+  // Close sidebar on mobile after navigation
+  closeSidebar();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -798,7 +936,6 @@ async function loadDashboard() {
     document.getElementById('stat-trial').textContent   = trial;
     document.getElementById('stat-expired').textContent = expired;
 
-    // Recent users table
     const recent = users.slice(0, 8);
     document.getElementById('recent-users-body').innerHTML = tableWrap(
       `<tr><th>Name</th><th>Email</th><th>Status</th><th>Joined</th></tr>`,
@@ -889,18 +1026,17 @@ async function openUserModal(uid) {
   document.getElementById('umodal-name').textContent  = u.displayName || 'Unknown';
   document.getElementById('umodal-email').textContent = u.email || uid;
 
-  // Load progress subcollection
   let progressCount = 0;
   try {
     const pSnap = await db.collection('users').doc(uid).collection('progress').get();
     progressCount = pSnap.size;
   } catch(e) {}
 
-  const date = u.trialStartDate?.toDate?.() || new Date(u.trialStartDate || 0);
+  const date   = u.trialStartDate?.toDate?.() || new Date(u.trialStartDate || 0);
   const expiry = u.premiumExpiry?.toDate?.() ? fmtDate(u.premiumExpiry.toDate()) : '—';
 
   document.getElementById('umodal-body').innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.875rem;margin-bottom:1.25rem;">
       <div style="background:var(--bg);border-radius:var(--r);padding:1rem;">
         <div style="font-family:var(--mono);font-size:0.62rem;color:var(--text3);margin-bottom:0.4rem;">STATUS</div>
         <div>${userStatusBadge(u)}</div>
@@ -910,7 +1046,7 @@ async function openUserModal(uid) {
         <div style="font-family:var(--display);font-size:1.4rem;font-weight:800;color:var(--gold);">${u.streak||0} 🔥</div>
       </div>
       <div style="background:var(--bg);border-radius:var(--r);padding:1rem;">
-        <div style="font-family:var(--mono);font-size:0.62rem;color:var(--text3);margin-bottom:0.4rem;">TOPICS COMPLETED</div>
+        <div style="font-family:var(--mono);font-size:0.62rem;color:var(--text3);margin-bottom:0.4rem;">TOPICS DONE</div>
         <div style="font-family:var(--display);font-size:1.4rem;font-weight:800;color:var(--cyan);">${progressCount}</div>
       </div>
       <div style="background:var(--bg);border-radius:var(--r);padding:1rem;">
@@ -919,7 +1055,7 @@ async function openUserModal(uid) {
       </div>
     </div>
     <table style="width:100%;font-size:0.82rem;">
-      <tr><td style="color:var(--text3);padding:0.4rem 0;font-family:var(--mono);font-size:0.72rem;">UID</td><td style="font-family:var(--mono);font-size:0.72rem;color:var(--text2);">${uid}</td></tr>
+      <tr><td style="color:var(--text3);padding:0.4rem 0;font-family:var(--mono);font-size:0.72rem;">UID</td><td style="font-family:var(--mono);font-size:0.68rem;color:var(--text2);word-break:break-all;">${uid}</td></tr>
       <tr><td style="color:var(--text3);padding:0.4rem 0;font-family:var(--mono);font-size:0.72rem;">JOINED</td><td>${fmtDate(date)}</td></tr>
       <tr><td style="color:var(--text3);padding:0.4rem 0;font-family:var(--mono);font-size:0.72rem;">PREMIUM EXPIRY</td><td>${expiry}</td></tr>
       <tr><td style="color:var(--text3);padding:0.4rem 0;font-family:var(--mono);font-size:0.72rem;">IS PREMIUM</td><td>${u.isPremium ? '<span style="color:var(--green)">✓ Yes</span>' : '<span style="color:var(--text3)">No</span>'}</td></tr>
@@ -967,7 +1103,7 @@ async function extendTrial(uid) {
   if (!confirm('Extend this user\'s trial by 3 days?')) return;
   try {
     const u = allUsers.find(x => x.id === uid);
-    const current = u?.trialStartDate?.toDate?.() || new Date();
+    const current  = u?.trialStartDate?.toDate?.() || new Date();
     const newStart = new Date(current.getTime() + 3 * 86400000);
     await db.collection('users').doc(uid).update({
       trialStartDate: firebase.firestore.Timestamp.fromDate(newStart)
@@ -986,7 +1122,6 @@ async function loadQuestions() {
     allQuestions = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     renderQuestions(allQuestions);
   } catch(e) {
-    // Collection may not exist yet
     allQuestions = [];
     renderQuestions([]);
   }
@@ -1077,14 +1212,10 @@ async function saveQuestion() {
   if (!correctEl)          return toast('Select the correct answer', 'error');
 
   const data = {
-    chapterId,
-    q:           question,
-    options:     opts,
-    answer:      parseInt(correctEl.value),
-    difficulty,
-    explanation,
-    marks,
-    updatedAt:   firebase.firestore.Timestamp.now()
+    chapterId, q: question, options: opts,
+    answer: parseInt(correctEl.value),
+    difficulty, explanation, marks,
+    updatedAt: firebase.firestore.Timestamp.now()
   };
 
   try {
@@ -1182,7 +1313,6 @@ async function saveNote() {
   if (!content)   return toast('Content cannot be empty', 'error');
 
   const tags = tagsRaw.split(',').map(t => t.trim()).filter(Boolean);
-
   const data = { chapterId, topicId, title, content, tags, updatedAt: firebase.firestore.Timestamp.now() };
 
   try {
@@ -1214,7 +1344,6 @@ async function deleteNote(id) {
 async function loadPayments() {
   document.getElementById('payments-table-body').innerHTML = '<div class="loader"><div class="spinner"></div> Loading payments...</div>';
   try {
-    // Query all users and get their payments subcollection
     const usersSnap = await db.collection('users').get();
     const allPayments = [];
 
@@ -1287,7 +1416,7 @@ async function loadAnnouncements() {
     document.getElementById('ann-list-body').innerHTML = list.map(a => `
       <div style="display:flex;align-items:flex-start;gap:0.75rem;padding:0.875rem;background:var(--bg);border-radius:var(--r);border:1px solid var(--border2);margin-bottom:0.65rem;">
         <div style="font-size:1.25rem;">${icons[a.type]||'📣'}</div>
-        <div style="flex:1;">
+        <div style="flex:1;min-width:0;">
           <div style="font-weight:700;font-size:0.875rem;color:var(--text);margin-bottom:0.15rem;">${esc(a.title)}</div>
           <div style="font-size:0.8rem;color:var(--text2);margin-bottom:0.35rem;">${esc(a.body)}</div>
           <div style="font-family:var(--mono);font-size:0.65rem;color:var(--text3);">${fmtDate(a.createdAt?.toDate?.())}</div>
@@ -1344,7 +1473,7 @@ function userStatusBadge(u) {
 }
 
 function tableWrap(thead, rows) {
-  return `<table class="data-table"><thead>${thead}</thead><tbody>${rows}</tbody></table>`;
+  return `<div class="table-scroll"><table class="data-table"><thead>${thead}</thead><tbody>${rows}</tbody></table></div>`;
 }
 
 function fmtDate(d) {
@@ -1362,7 +1491,6 @@ function esc(s) {
 function openModal(id)  { document.getElementById(id).classList.add('open');  }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-// Close modal on overlay click
 document.querySelectorAll('.modal-overlay').forEach(el => {
   el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
 });
