@@ -3620,8 +3620,7 @@ window.saveReminderFromModal   = saveReminderFromModal;
 window.disableReminderFromModal = disableReminderFromModal;
 window.toggleStudyReminder     = toggleStudyReminder;
 window.rmSetPeriod             = rmSetPeriod;
-window.rmSetPeriod     = rmSetPeriod;
-window.rmSetPeriod     = rmSetPeriod;
-//       window.rmUpdatePreview = rmUpdatePreview;
-//       window.rmGet24h        = rmGet24h;
+
+     window.rmUpdatePreview = rmUpdatePreview;
+     window.rmGet24h        = rmGet24h;
 
