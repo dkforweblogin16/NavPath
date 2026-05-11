@@ -316,6 +316,29 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   .stat-value { font-size: 1.6rem; }
   .stat-card { padding: 0.875rem 1rem; }
 }
+
+/* ── BACK-TO-APP HOLD BUTTON ── */
+.back-to-app-btn {
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+.back-to-app-btn .hold-fill {
+  position: absolute;
+  inset: 0;
+  background: rgba(56,189,248,0.22);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: none;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.back-to-app-btn.holding .hold-fill {
+  transform: scaleX(1);
+  transition: transform 2s linear;
+}
 </style>
 </head>
 <body>
@@ -387,9 +410,10 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     </nav>
 
     <div class="sidebar-footer">
-      <a class="back-to-app-btn" href="index.html">
+      <button class="back-to-app-btn" id="back-to-app-btn" title="Hold 2 seconds to go back to app">
+        <div class="hold-fill"></div>
         ← Back to App
-      </a>
+      </button>
       <div class="admin-badge">
         <div class="admin-avatar">A</div>
         <div class="admin-info">
@@ -1513,6 +1537,74 @@ function toast(msg, type='info') {
   zone.appendChild(el);
   setTimeout(() => el.remove(), 3200);
 }
+
+// ═══════════════════════════════════════════════════════════
+// BACK-TO-APP PRESS-AND-HOLD
+// ═══════════════════════════════════════════════════════════
+(function setupBackToApp() {
+  const btn = document.getElementById('back-to-app-btn');
+  if (!btn) return;
+
+  let pressTimer = null;
+  let hintEl     = null;
+  const HOLD_MS  = 2000;
+
+  function startPress(e) {
+    if (pressTimer) return;
+
+    // Show floating hint
+    hintEl = document.createElement('div');
+    hintEl.style.cssText = [
+      'position:fixed',
+      'bottom:5.5rem',
+      'left:50%',
+      'transform:translateX(-50%)',
+      'background:rgba(56,189,248,0.13)',
+      'border:1.5px solid rgba(56,189,248,0.4)',
+      'border-radius:50px',
+      'padding:0.4rem 1.2rem',
+      'color:#38bdf8',
+      'font-family:IBM Plex Mono,monospace',
+      'font-size:0.68rem',
+      'font-weight:600',
+      'z-index:9999',
+      'pointer-events:none',
+      'white-space:nowrap',
+      'box-shadow:0 4px 16px rgba(0,0,0,0.4)',
+    ].join(';');
+    hintEl.textContent = '← Hold to return to app…';
+    document.body.appendChild(hintEl);
+
+    // Trigger CSS fill animation
+    btn.classList.add('holding');
+
+    pressTimer = setTimeout(() => {
+      cleanup();
+      window.location.href = 'index.html';
+    }, HOLD_MS);
+  }
+
+  function cancelPress() {
+    if (!pressTimer && !hintEl) return;
+    cleanup();
+  }
+
+  function cleanup() {
+    clearTimeout(pressTimer);
+    pressTimer = null;
+    btn.classList.remove('holding');
+    if (hintEl) { hintEl.remove(); hintEl = null; }
+  }
+
+  btn.addEventListener('mousedown',   startPress);
+  btn.addEventListener('touchstart',  startPress, { passive: true });
+  btn.addEventListener('mouseup',     cancelPress);
+  btn.addEventListener('mouseleave',  cancelPress);
+  btn.addEventListener('touchend',    cancelPress);
+  btn.addEventListener('touchcancel', cancelPress);
+  // Prevent default click navigation (it's a button now, not a link)
+  btn.addEventListener('click', e => e.preventDefault());
+})();
 </script>
 </body>
 </html>
