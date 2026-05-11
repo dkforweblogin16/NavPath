@@ -2234,7 +2234,22 @@ function openReminderModal() {
   const s      = StudyReminder.load();
   const hour   = s.hour   ?? 18;
   const minute = s.minute ?? 0;
-  const timeVal = `${String(hour).padStart(2,'0')}:${String(minute).padStart(2,'0')}`;
+
+  // Convert 24hr to 12hr for display
+  const isPM    = hour >= 12;
+  const h12     = hour % 12 || 12;
+
+  // Build hour options 1-12
+  const hourOpts = Array.from({length:12},(_,i)=>i+1).map(h =>
+    `<option value="${h}" ${h===h12?'selected':''}>${String(h).padStart(2,'0')}</option>`
+  ).join('');
+
+  // Build minute options 00,05,10...55
+  const minOpts = Array.from({length:12},(_,i)=>i*5).map(m =>
+    `<option value="${m}" ${m===Math.round(minute/5)*5?'selected':''}>${String(m).padStart(2,'0')}</option>`
+  ).join('');
+
+  const selStyle = `flex:1;padding:0.75rem 0.5rem;background:#060d1a;border:1.5px solid rgba(201,168,76,0.35);border-radius:0.625rem;color:#e2effd;font-size:1.3rem;font-weight:700;text-align:center;outline:none;cursor:pointer;font-family:inherit;appearance:none;-webkit-appearance:none;`;
 
   const overlay = document.createElement('div');
   overlay.id = 'reminder-modal';
@@ -2244,29 +2259,94 @@ function openReminderModal() {
   overlay.innerHTML = `
     <div style="background:var(--card-bg,#112240);border:1px solid var(--card-border,rgba(201,168,76,0.25));border-radius:1.25rem 1.25rem 0 0;padding:1.5rem 1.25rem 2.5rem;width:100%;max-width:480px;box-shadow:0 -8px 40px rgba(0,0,0,0.5);animation:slideUpModal 0.28s cubic-bezier(.4,0,.2,1);">
       <div style="width:40px;height:4px;background:rgba(255,255,255,0.15);border-radius:99px;margin:0 auto 1.25rem;"></div>
-      <h2 style="text-align:center;font-size:1.1rem;font-weight:700;color:var(--text-primary,#e2effd);margin-bottom:0.35rem;">🔔 Study Reminder</h2>
-      <p style="text-align:center;font-size:0.8rem;color:var(--text-muted,#6b92bc);margin-bottom:1.5rem;">Get a daily notification at your chosen study time.</p>
+      <h2 style="text-align:center;font-size:1.1rem;font-weight:700;color:#e2effd;margin-bottom:0.35rem;">🔔 Study Reminder</h2>
+      <p style="text-align:center;font-size:0.8rem;color:#6b92bc;margin-bottom:1.5rem;">Get a daily notification at your chosen study time.</p>
+
       <div style="background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.2);border-radius:0.875rem;padding:1.25rem;margin-bottom:1.25rem;">
-        <label style="display:block;font-size:0.72rem;font-weight:600;color:var(--text-muted,#6b92bc);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.6rem;">Choose reminder time</label>
-        <input type="time" id="reminder-time-input" value="${timeVal}"
-          style="width:100%;padding:0.75rem 1rem;background:var(--navy-deepest,#060d1a);border:1.5px solid rgba(201,168,76,0.35);border-radius:0.625rem;color:var(--text-primary,#e2effd);font-size:1.2rem;font-weight:600;text-align:center;outline:none;cursor:pointer;font-family:inherit;" />
-        <p style="margin-top:0.6rem;font-size:0.72rem;color:var(--text-muted,#6b92bc);text-align:center;">Daily alarm — works even when app is closed.</p>
+        <label style="display:block;font-size:0.72rem;font-weight:600;color:#6b92bc;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.875rem;text-align:center;">Choose Reminder Time</label>
+
+        <!-- Custom AM/PM Picker -->
+        <div style="display:flex;gap:0.5rem;align-items:center;justify-content:center;">
+
+          <!-- Hour -->
+          <select id="rm-hour" style="${selStyle}">
+            ${hourOpts}
+          </select>
+
+          <span style="font-size:1.6rem;font-weight:700;color:#c9a84c;">:</span>
+
+          <!-- Minute -->
+          <select id="rm-minute" style="${selStyle}">
+            ${minOpts}
+          </select>
+
+          <!-- AM / PM -->
+          <div style="display:flex;flex-direction:column;gap:0.3rem;flex-shrink:0;">
+            <button id="rm-am" onclick="rmSetPeriod('AM')"
+              style="padding:0.4rem 0.75rem;border-radius:0.5rem;border:1.5px solid rgba(201,168,76,0.35);font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.15s;background:${!isPM?'#c9a84c':'transparent'};color:${!isPM?'#0a1628':'#6b92bc'};">AM</button>
+            <button id="rm-pm" onclick="rmSetPeriod('PM')"
+              style="padding:0.4rem 0.75rem;border-radius:0.5rem;border:1.5px solid rgba(201,168,76,0.35);font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.15s;background:${isPM?'#c9a84c':'transparent'};color:${isPM?'#0a1628':'#6b92bc'};">PM</button>
+          </div>
+        </div>
+
+        <!-- Live preview -->
+        <div id="rm-preview" style="margin-top:0.875rem;text-align:center;font-size:1rem;font-weight:700;color:#c9a84c;font-family:'IBM Plex Mono',monospace;letter-spacing:0.05em;">
+          ${StudyReminder.formatTime(hour, minute)} daily
+        </div>
+
+        <p style="margin-top:0.4rem;font-size:0.7rem;color:#6b92bc;text-align:center;">Notification daily — even when app is closed.</p>
       </div>
+
       <div id="reminder-notif-warning" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:0.625rem;padding:0.75rem;margin-bottom:1rem;font-size:0.78rem;color:#ef4444;text-align:center;">
-        ⚠️ Notifications are blocked. Please enable them in browser settings.
+        ⚠️ Notifications blocked. Please enable in browser settings.
       </div>
+
       <button onclick="saveReminderFromModal()" style="width:100%;padding:0.875rem;background:linear-gradient(135deg,#c9a84c,#dab850);color:#0a1628;border:none;border-radius:0.75rem;font-size:0.95rem;font-weight:700;cursor:pointer;margin-bottom:0.75rem;">✅ Set Reminder</button>
-      <button onclick="disableReminderFromModal()" style="width:100%;padding:0.75rem;background:transparent;color:var(--text-muted,#6b92bc);border:1px solid rgba(255,255,255,0.1);border-radius:0.75rem;font-size:0.85rem;font-weight:500;cursor:pointer;">🔕 Turn Off Reminders</button>
+      <button onclick="disableReminderFromModal()" style="width:100%;padding:0.75rem;background:transparent;color:#6b92bc;border:1px solid rgba(255,255,255,0.1);border-radius:0.75rem;font-size:0.85rem;font-weight:500;cursor:pointer;">🔕 Turn Off Reminders</button>
     </div>
     <style>
       @keyframes slideUpModal{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
-      #reminder-time-input:focus{border-color:var(--gold,#c9a84c)!important;box-shadow:0 0 0 3px rgba(201,168,76,0.15)}
+      #rm-hour:focus,#rm-minute:focus{border-color:#c9a84c!important;box-shadow:0 0 0 3px rgba(201,168,76,0.15)}
+      #rm-hour option,#rm-minute option{background:#0d1f35;color:#e2effd;}
     </style>`;
 
   document.body.appendChild(overlay);
+
+  // Live preview update on change
+  const updatePreview = () => {
+    const h   = parseInt(document.getElementById('rm-hour')?.value || 6);
+    const m   = parseInt(document.getElementById('rm-minute')?.value || 0);
+    const pm  = document.getElementById('rm-pm')?.style.background === 'rgb(201, 168, 76)';
+    const h24 = pm ? (h===12?12:h+12) : (h===12?0:h);
+    const prev = document.getElementById('rm-preview');
+    if (prev) prev.textContent = StudyReminder.formatTime(h24, m) + ' daily';
+  };
+  document.getElementById('rm-hour')?.addEventListener('change', updatePreview);
+  document.getElementById('rm-minute')?.addEventListener('change', updatePreview);
+
   if ('Notification' in window && Notification.permission === 'denied') {
     document.getElementById('reminder-notif-warning').style.display = 'block';
   }
+}
+
+// AM/PM toggle helper
+function rmSetPeriod(period) {
+  const amBtn = document.getElementById('rm-am');
+  const pmBtn = document.getElementById('rm-pm');
+  if (!amBtn || !pmBtn) return;
+  if (period === 'AM') {
+    amBtn.style.background = '#c9a84c'; amBtn.style.color = '#0a1628';
+    pmBtn.style.background = 'transparent'; pmBtn.style.color = '#6b92bc';
+  } else {
+    pmBtn.style.background = '#c9a84c'; pmBtn.style.color = '#0a1628';
+    amBtn.style.background = 'transparent'; amBtn.style.color = '#6b92bc';
+  }
+  // Update preview
+  const h  = parseInt(document.getElementById('rm-hour')?.value || 6);
+  const m  = parseInt(document.getElementById('rm-minute')?.value || 0);
+  const h24 = period === 'PM' ? (h===12?12:h+12) : (h===12?0:h);
+  const prev = document.getElementById('rm-preview');
+  if (prev) prev.textContent = StudyReminder.formatTime(h24, m) + ' daily';
 }
 
 function closeReminderModal() {
@@ -2275,12 +2355,20 @@ function closeReminderModal() {
 }
 
 async function saveReminderFromModal() {
-  const timeInput = document.getElementById('reminder-time-input');
-  if (!timeInput || !timeInput.value) { toast('Please select a time.', 'error'); return; }
-  const [h, m] = timeInput.value.split(':').map(Number);
-  const ok = await StudyReminder.enable(h, m);
+  const hSel  = document.getElementById('rm-hour');
+  const mSel  = document.getElementById('rm-minute');
+  const pmBtn = document.getElementById('rm-pm');
+
+  if (!hSel || !mSel) { toast('Please select a time.', 'error'); return; }
+
+  const h12  = parseInt(hSel.value);
+  const m    = parseInt(mSel.value);
+  const isPM = pmBtn?.style.background === 'rgb(201, 168, 76)';
+  const h24  = isPM ? (h12 === 12 ? 12 : h12 + 12) : (h12 === 12 ? 0 : h12);
+
+  const ok = await StudyReminder.enable(h24, m);
   if (ok) {
-    toast(`✅ Reminder set for ${StudyReminder.formatTime(h, m)} daily!`, 'success');
+    toast(`✅ Reminder set for ${StudyReminder.formatTime(h24, m)} daily!`, 'success');
     closeReminderModal();
   } else {
     document.getElementById('reminder-notif-warning').style.display = 'block';
@@ -3496,3 +3584,4 @@ window.closeReminderModal      = closeReminderModal;
 window.saveReminderFromModal   = saveReminderFromModal;
 window.disableReminderFromModal = disableReminderFromModal;
 window.toggleStudyReminder     = toggleStudyReminder;
+window.rmSetPeriod             = rmSetPeriod;
