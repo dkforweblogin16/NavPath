@@ -2114,7 +2114,7 @@ const StudyReminder = {
     }, 30000);
   },
 
-  // ── Enable: permission + FCM token + Firestore + fallback ──
+  // ── Enable ──────────────────────────────────────────────────
   async enable(hour, minute) {
     // 1. Request notification permission
     const granted = await this.requestPermission();
@@ -2126,21 +2126,18 @@ const StudyReminder = {
     // 2. Save locally
     this.save({ enabled: true, hour, minute });
 
-    // 3. Get FCM token (registers firebase-messaging-sw.js)
-    const token = await this.getFCMToken();
-    if (token) {
-      console.log('[NavPath FCM] Token obtained — FCM active');
-    } else {
-      console.warn('[NavPath FCM] No token — fallback interval only');
-    }
+    // 3. Get FCM token — registers firebase-messaging-sw.js
+    //    This token is saved to Firestore so Netlify cron can target this device
+    await this.getFCMToken();
 
     // 4. Save reminder schedule to Firestore
+    //    Netlify cron reads this every minute to know who to notify
     await this.scheduleInFirestore(hour, minute);
 
-    // 5. Start foreground listener
+    // 5. Listen for foreground FCM messages (when app is open)
     this.listenForeground();
 
-    // 6. Start fallback interval (catches when app is open)
+    // 6. Fallback interval — extra safety when app is open
     this._startFallbackInterval();
 
     return true;
@@ -2218,10 +2215,17 @@ const StudyReminder = {
 // Auto-init on load
 (function initReminderOnLoad() {
   const s = StudyReminder.load();
-  if (s.enabled) {
-    StudyReminder.listenForeground();
-    StudyReminder._startFallbackInterval();
-  }
+  if (!s.enabled) return;
+
+  // Re-register firebase-messaging-sw.js and refresh FCM token
+  // This ensures the token in Firestore is always fresh
+  StudyReminder.getFCMToken();
+
+  // Listen for foreground FCM messages (banner when app open)
+  StudyReminder.listenForeground();
+
+  // Fallback interval
+  StudyReminder._startFallbackInterval();
 })();
 
 // ── REMINDER MODAL ──────────────────────────────────────────
@@ -3376,6 +3380,43 @@ function setupAdminLongPress() {
 
   function startPress() {
     const user = App.firebase?.auth?.currentUser;
+    if (!user || user.email !== ADMIN_EMAIL_KEY) return;
+    toastEl = document.createElement('div');
+    toastEl.style.cssText = 'position:fixed;bottom:5.5rem;left:50%;transform:translateX(-50%);background:rgba(201,168,76,0.15);border:1.5px solid rgba(201,168,76,0.45);border-radius:50px;padding:0.4rem 1.2rem;color:#c9a84c;font-family:IBM Plex Mono,monospace;font-size:0.68rem;font-weight:600;z-index:9999;pointer-events:none;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.4);';
+    toastEl.textContent = '⛳ Hold to open Admin Panel…';
+    document.body.appendChild(toastEl);
+    pressTimer = setTimeout(() => {
+      if (toastEl) toastEl.remove();
+      window.location.href = 'admin.html';
+    }, 2000);
+  }
+
+  function cancelPress() {
+    clearTimeout(pressTimer);
+    if (toastEl) { toastEl.remove(); toastEl = null; }
+  }
+
+  logo.addEventListener('mousedown',   startPress);
+  logo.addEventListener('touchstart',  startPress, { passive: true });
+  logo.addEventListener('mouseup',     cancelPress);
+  logo.addEventListener('mouseleave',  cancelPress);
+  logo.addEventListener('touchend',    cancelPress);
+  logo.addEventListener('touchcancel', cancelPress);
+}
+
+// ============================================================
+// ADMIN LONG-PRESS — 2 sec hold on logo → admin.html
+// ============================================================
+const ADMIN_EMAIL_KEY = 'navpath.admin@gmail.com';
+
+function setupAdminLongPress() {
+  const logo = document.querySelector('.nav-logo');
+  if (!logo) return;
+  let pressTimer = null;
+  let toastEl    = null;
+
+  function startPress() {
+    const user = App?.firebase?.auth?.currentUser;
     if (!user || user.email !== ADMIN_EMAIL_KEY) return;
     toastEl = document.createElement('div');
     toastEl.style.cssText = 'position:fixed;bottom:5.5rem;left:50%;transform:translateX(-50%);background:rgba(201,168,76,0.15);border:1.5px solid rgba(201,168,76,0.45);border-radius:50px;padding:0.4rem 1.2rem;color:#c9a84c;font-family:IBM Plex Mono,monospace;font-size:0.68rem;font-weight:600;z-index:9999;pointer-events:none;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.4);';
