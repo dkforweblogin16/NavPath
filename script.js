@@ -205,7 +205,10 @@ async function loadUserData() {
 // TRIAL & PREMIUM CHECKS
 // ============================================================
 function getTrialStatus() {
-  if (!App.userDoc) return { active: true, daysLeft: 3 }; // Default to trial active for new sessions
+  // Admin always gets full premium access — no payment needed
+  if (isAdmin()) return { active: false, isPremium: true, isAdmin: true, daysLeft: 999 };
+
+  if (!App.userDoc) return { active: true, daysLeft: 3 };
   if (App.userDoc.isPremium) return { active: false, isPremium: true, daysLeft: 999 };
 
   const start = App.userDoc.trialStartDate?.toDate?.() || new Date(App.userDoc.trialStartDate || Date.now());
@@ -218,6 +221,8 @@ function getTrialStatus() {
 }
 
 function canAccessTopic(topicId) {
+  // Admin has full access to every topic
+  if (isAdmin()) return true;
   const trial = getTrialStatus();
   if (trial.isPremium || trial.active) return true;
   return App.progress[topicId] === true;
@@ -434,6 +439,18 @@ function renderTrialBanner() {
   const trial = getTrialStatus();
   const banner = $('#trial-banner');
   const premBadge = $('#premium-badge');
+
+  // Admin: show special ADMIN badge, hide trial banner
+  if (trial.isAdmin) {
+    banner?.classList.add('hidden');
+    if (premBadge) {
+      premBadge.classList.remove('hidden');
+      premBadge.innerHTML = '🛡️ ADMIN';
+      premBadge.style.background = 'linear-gradient(135deg,rgba(56,189,248,0.3),rgba(56,189,248,0.6))';
+      premBadge.style.color = '#e2effd';
+    }
+    return;
+  }
 
   if (trial.isPremium) {
     banner?.classList.add('hidden');
@@ -1248,11 +1265,13 @@ function renderProfile() {
   const trial = getTrialStatus();
   const streak = App.userDoc?.streak || 0;
 
-  let statusBadge = trial.isPremium
-    ? `<span style="color:var(--gold)">⭐ Premium Member</span>`
-    : trial.active
-      ? `<span style="color:var(--success)">🟢 Free Trial (${trial.daysLeft} days left)</span>`
-      : `<span style="color:var(--danger)">⚠️ Trial Expired</span>`;
+  let statusBadge = trial.isAdmin
+    ? `<span style="color:#38bdf8">🛡️ Administrator (Full Access)</span>`
+    : trial.isPremium
+      ? `<span style="color:var(--gold)">⭐ Premium Member</span>`
+      : trial.active
+        ? `<span style="color:var(--success)">🟢 Free Trial (${trial.daysLeft} days left)</span>`
+        : `<span style="color:var(--danger)">⚠️ Trial Expired</span>`;
 
   el.innerHTML = `
     <div class="main-content">
@@ -1271,10 +1290,13 @@ function renderProfile() {
       <div class="card mb-2">
         <div class="card-header"><span>Subscription</span></div>
         <div class="card-body">
-          ${trial.isPremium
-            ? `<p style="color:var(--success)">✓ Active premium subscription</p>`
-            : `<button class="btn btn-gold btn-block" onclick="openPremiumModal()">⭐ Upgrade to Premium</button>
-               <p style="text-align:center;font-size:0.75rem;margin-top:0.5rem;color:var(--text-muted)">Plans from ₹99 only</p>`
+          ${trial.isAdmin
+            ? `<p style="color:#38bdf8">🛡️ Admin account — full access enabled</p>
+               <a href="admin.html" style="display:block;margin-top:0.75rem;padding:0.6rem;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:var(--radius);color:#38bdf8;text-align:center;font-size:0.85rem;font-weight:600;text-decoration:none;">⚙️ Open Admin Panel</a>`
+            : trial.isPremium
+              ? `<p style="color:var(--success)">✓ Active premium subscription</p>`
+              : `<button class="btn btn-gold btn-block" onclick="openPremiumModal()">⭐ Upgrade to Premium</button>
+                 <p style="text-align:center;font-size:0.75rem;margin-top:0.5rem;color:var(--text-muted)">Plans from ₹99 only</p>`
           }
         </div>
       </div>
@@ -1857,7 +1879,14 @@ function toggleDarkMode() {
 // ============================================================
 // PREMIUM MODAL
 // ============================================================
-function openPremiumModal()  { show('#premium-modal'); }
+function openPremiumModal() {
+  // Admin never sees the premium paywall
+  if (isAdmin()) {
+    toast('🛡️ Admin account — full access already enabled!', 'success');
+    return;
+  }
+  show('#premium-modal');
+}
 function closePremiumModal() { hide('#premium-modal'); }
 
 function selectPlan(plan) {
@@ -2496,6 +2525,12 @@ mockArea.innerHTML = `
 // ============================================================
 const ADMIN_EMAIL_KEY = 'navpath.admin@gmail.com';
 
+// ── Admin check — used by canAccessTopic & renderTrialBanner
+function isAdmin() {
+  const user = App?.firebase?.auth?.currentUser || App?.user;
+  return !!(user && user.email === ADMIN_EMAIL_KEY);
+}
+
 function setupAdminLongPress() {
   const logo = document.querySelector('.nav-logo');
   if (!logo) return;
@@ -2528,42 +2563,7 @@ function setupAdminLongPress() {
   logo.addEventListener('touchcancel', cancelPress);
 }
 
-// ============================================================
-// ADMIN LONG-PRESS — 2 sec hold on logo → admin.html
-// ============================================================
-const ADMIN_EMAIL_KEY = 'navpath.admin@gmail.com';
-
-function setupAdminLongPress() {
-  const logo = document.querySelector('.nav-logo');
-  if (!logo) return;
-  let pressTimer = null;
-  let toastEl    = null;
-
-  function startPress() {
-    const user = App?.firebase?.auth?.currentUser;
-    if (!user || user.email !== ADMIN_EMAIL_KEY) return;
-    toastEl = document.createElement('div');
-    toastEl.style.cssText = 'position:fixed;bottom:5.5rem;left:50%;transform:translateX(-50%);background:rgba(201,168,76,0.15);border:1.5px solid rgba(201,168,76,0.45);border-radius:50px;padding:0.4rem 1.2rem;color:#c9a84c;font-family:IBM Plex Mono,monospace;font-size:0.68rem;font-weight:600;z-index:9999;pointer-events:none;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.4);';
-    toastEl.textContent = '⛳ Hold to open Admin Panel…';
-    document.body.appendChild(toastEl);
-    pressTimer = setTimeout(() => {
-      if (toastEl) toastEl.remove();
-      window.location.href = 'admin.html';
-    }, 2000);
-  }
-
-  function cancelPress() {
-    clearTimeout(pressTimer);
-    if (toastEl) { toastEl.remove(); toastEl = null; }
-  }
-
-  logo.addEventListener('mousedown',   startPress);
-  logo.addEventListener('touchstart',  startPress, { passive: true });
-  logo.addEventListener('mouseup',     cancelPress);
-  logo.addEventListener('mouseleave',  cancelPress);
-  logo.addEventListener('touchend',    cancelPress);
-  logo.addEventListener('touchcancel', cancelPress);
-}
+// [Duplicate setupAdminLongPress removed — FIX applied]
 
 // FIX #5: renderQuestion and App were not exported to window,
 // breaking the inline override script in index.html
