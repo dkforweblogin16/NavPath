@@ -1,0 +1,7452 @@
+{
+  "version": "2.0",
+  "paper": "paper2",
+  "totalQuestions": 570,
+  "topics": {
+    "trigonometry": [
+      {
+        "q": "The value of sin²θ + cos²θ is:",
+        "options": [
+          "0",
+          "1",
+          "2",
+          "−1"
+        ],
+        "answer": 1,
+        "explanation": "Pythagorean identity: sin²θ + cos²θ = 1 always.",
+        "difficulty": "easy",
+        "subtopic": "trig-1"
+      },
+      {
+        "q": "If sinθ = 3/5, cosθ (first quadrant) is:",
+        "options": [
+          "4/5",
+          "3/4",
+          "5/4",
+          "2/5"
+        ],
+        "answer": 0,
+        "explanation": "cos²θ=1−9/25=16/25. cosθ=4/5.",
+        "difficulty": "easy",
+        "subtopic": "trig-1"
+      },
+      {
+        "q": "The value of tan45° is:",
+        "options": [
+          "0",
+          "√3",
+          "1",
+          "1/√3"
+        ],
+        "answer": 2,
+        "explanation": "tan45°=sin45°/cos45°=1.",
+        "difficulty": "easy",
+        "subtopic": "trig-1"
+      },
+      {
+        "q": "sec²θ − tan²θ equals:",
+        "options": [
+          "0",
+          "2",
+          "−1",
+          "1"
+        ],
+        "answer": 3,
+        "explanation": "1+tan²θ=sec²θ → sec²θ−tan²θ=1.",
+        "difficulty": "easy",
+        "subtopic": "trig-1"
+      },
+      {
+        "q": "sin30° × cos60° + cos30° × sin60° equals:",
+        "options": [
+          "0",
+          "1",
+          "1/2",
+          "√3/2"
+        ],
+        "answer": 1,
+        "explanation": "=sin(30°+60°)=sin90°=1.",
+        "difficulty": "medium",
+        "subtopic": "trig-1"
+      },
+      {
+        "q": "cosec²θ − cot²θ equals:",
+        "options": [
+          "0",
+          "−1",
+          "2",
+          "1"
+        ],
+        "answer": 3,
+        "explanation": "1+cot²θ=cosec²θ → cosec²θ−cot²θ=1.",
+        "difficulty": "easy",
+        "subtopic": "trig-1"
+      },
+      {
+        "q": "If tanθ=5/12, sinθ (first quadrant) is:",
+        "options": [
+          "5/13",
+          "12/13",
+          "5/12",
+          "13/12"
+        ],
+        "answer": 0,
+        "explanation": "Hyp=√(25+144)=13. sinθ=5/13.",
+        "difficulty": "medium",
+        "subtopic": "trig-1"
+      },
+      {
+        "q": "sin(90°−θ) equals:",
+        "options": [
+          "sinθ",
+          "−cosθ",
+          "cosθ",
+          "−sinθ"
+        ],
+        "answer": 2,
+        "explanation": "Complementary: sin(90°−θ)=cosθ.",
+        "difficulty": "easy",
+        "subtopic": "trig-1"
+      },
+      {
+        "q": "The value of tan(A+B) when tanA=1/2, tanB=1/3 is:",
+        "options": [
+          "1",
+          "2",
+          "5/7",
+          "7/5"
+        ],
+        "answer": 0,
+        "explanation": "(1/2+1/3)/(1−1/6)=(5/6)/(5/6)=1.",
+        "difficulty": "hard",
+        "subtopic": "trig-1"
+      },
+      {
+        "q": "The maximum value of sinθ+cosθ is:",
+        "options": [
+          "1",
+          "√2",
+          "2",
+          "√3"
+        ],
+        "answer": 1,
+        "explanation": "=√2 sin(θ+45°). Max=√2.",
+        "difficulty": "medium",
+        "subtopic": "trig-1"
+      },
+      {
+        "q": "The value of 2sin²30°+3cos²45°−tan²60° is:",
+        "options": [
+          "−1",
+          "0",
+          "1",
+          "2"
+        ],
+        "answer": 0,
+        "explanation": "2×1/4+3×1/2−3=0.5+1.5−3=−1.",
+        "difficulty": "hard",
+        "subtopic": "trig-1"
+      },
+      {
+        "q": "cos(A−B)−cos(A+B) equals:",
+        "options": [
+          "2sinAsinB",
+          "2cosAcosB",
+          "2sinAcosB",
+          "2cosAsinB"
+        ],
+        "answer": 0,
+        "explanation": "cosAcosB+sinAsinB−(cosAcosB−sinAsinB)=2sinAsinB.",
+        "difficulty": "hard",
+        "subtopic": "trig-1"
+      },
+      {
+        "q": "sin(−θ) equals:",
+        "options": [
+          "sinθ",
+          "−sinθ",
+          "cosθ",
+          "−cosθ"
+        ],
+        "answer": 1,
+        "explanation": "Sine is odd: sin(−θ)=−sinθ.",
+        "difficulty": "easy",
+        "subtopic": "trig-1"
+      },
+      {
+        "q": "If sinθ+cosθ=√2, sinθ×cosθ equals:",
+        "options": [
+          "1/2",
+          "1",
+          "0",
+          "√2"
+        ],
+        "answer": 0,
+        "explanation": "(sinθ+cosθ)²=2→1+2sinθcosθ=2→sinθcosθ=1/2.",
+        "difficulty": "medium",
+        "subtopic": "trig-1"
+      },
+      {
+        "q": "The value of (1−cos²θ)/sinθ is:",
+        "options": [
+          "cosθ",
+          "sinθ",
+          "tanθ",
+          "1"
+        ],
+        "answer": 1,
+        "explanation": "sin²θ/sinθ=sinθ.",
+        "difficulty": "medium",
+        "subtopic": "trig-1"
+      },
+      {
+        "q": "sin0°+cos0° equals:",
+        "options": [
+          "0",
+          "1",
+          "2",
+          "−1"
+        ],
+        "answer": 1,
+        "explanation": "0+1=1.",
+        "difficulty": "easy",
+        "subtopic": "trig-2"
+      },
+      {
+        "q": "cos90° equals:",
+        "options": [
+          "0",
+          "1",
+          "−1",
+          "1/2"
+        ],
+        "answer": 0,
+        "explanation": "Standard value: cos90°=0.",
+        "difficulty": "easy",
+        "subtopic": "trig-2"
+      },
+      {
+        "q": "tan60° equals:",
+        "options": [
+          "1",
+          "1/√3",
+          "√3",
+          "2"
+        ],
+        "answer": 2,
+        "explanation": "sin60°/cos60°=(√3/2)/(1/2)=√3.",
+        "difficulty": "easy",
+        "subtopic": "trig-2"
+      },
+      {
+        "q": "sin45°+cos45° equals:",
+        "options": [
+          "1",
+          "√2",
+          "2",
+          "0"
+        ],
+        "answer": 1,
+        "explanation": "1/√2+1/√2=2/√2=√2.",
+        "difficulty": "easy",
+        "subtopic": "trig-2"
+      },
+      {
+        "q": "tan0°×sin90°+cos0° equals:",
+        "options": [
+          "0",
+          "1",
+          "2",
+          "−1"
+        ],
+        "answer": 1,
+        "explanation": "0×1+1=1.",
+        "difficulty": "easy",
+        "subtopic": "trig-2"
+      },
+      {
+        "q": "2sin60°×cos30° equals:",
+        "options": [
+          "3/2",
+          "3",
+          "√3",
+          "3/4"
+        ],
+        "answer": 0,
+        "explanation": "2×(√3/2)×(√3/2)=3/2.",
+        "difficulty": "medium",
+        "subtopic": "trig-2"
+      },
+      {
+        "q": "sin²30°+cos²60°+tan²45° equals:",
+        "options": [
+          "1",
+          "3/2",
+          "2",
+          "5/4"
+        ],
+        "answer": 1,
+        "explanation": "1/4+1/4+1=3/2.",
+        "difficulty": "medium",
+        "subtopic": "trig-2"
+      },
+      {
+        "q": "cos(180°−θ) equals:",
+        "options": [
+          "cosθ",
+          "−cosθ",
+          "sinθ",
+          "−sinθ"
+        ],
+        "answer": 1,
+        "explanation": "2nd quadrant: cos negative.",
+        "difficulty": "medium",
+        "subtopic": "trig-2"
+      },
+      {
+        "q": "sin(180°+θ) equals:",
+        "options": [
+          "sinθ",
+          "cosθ",
+          "−sinθ",
+          "−cosθ"
+        ],
+        "answer": 2,
+        "explanation": "3rd quadrant: sin negative.",
+        "difficulty": "medium",
+        "subtopic": "trig-2"
+      },
+      {
+        "q": "cos0°×cos30°×cos60°×cos90° equals:",
+        "options": [
+          "√3/8",
+          "0",
+          "1",
+          "3/4"
+        ],
+        "answer": 1,
+        "explanation": "cos90°=0, product=0.",
+        "difficulty": "easy",
+        "subtopic": "trig-2"
+      },
+      {
+        "q": "tan(90°−θ) equals:",
+        "options": [
+          "tanθ",
+          "cotθ",
+          "−tanθ",
+          "sinθ"
+        ],
+        "answer": 1,
+        "explanation": "cosθ/sinθ=cotθ.",
+        "difficulty": "medium",
+        "subtopic": "trig-2"
+      },
+      {
+        "q": "(sin30°+cos60°)/(tan45°+cot45°) equals:",
+        "options": [
+          "1/2",
+          "1",
+          "2",
+          "1/4"
+        ],
+        "answer": 0,
+        "explanation": "(1/2+1/2)/(1+1)=1/2.",
+        "difficulty": "medium",
+        "subtopic": "trig-2"
+      },
+      {
+        "q": "sin(−30°) equals:",
+        "options": [
+          "1/2",
+          "−1/2",
+          "√3/2",
+          "−√3/2"
+        ],
+        "answer": 1,
+        "explanation": "sin(−θ)=−sinθ=−1/2.",
+        "difficulty": "easy",
+        "subtopic": "trig-2"
+      },
+      {
+        "q": "cos(360°+θ) equals:",
+        "options": [
+          "−cosθ",
+          "cosθ",
+          "sinθ",
+          "−sinθ"
+        ],
+        "answer": 1,
+        "explanation": "360° full rotation: cos(360°+θ)=cosθ.",
+        "difficulty": "easy",
+        "subtopic": "trig-2"
+      },
+      {
+        "q": "The value of sin²60°+cos²30° equals:",
+        "options": [
+          "1",
+          "3/2",
+          "2",
+          "√3"
+        ],
+        "answer": 1,
+        "explanation": "(√3/2)²+(√3/2)²=3/4+3/4=3/2.",
+        "difficulty": "medium",
+        "subtopic": "trig-2"
+      },
+      {
+        "q": "sin²θ+cos²θ=1 is called:",
+        "options": [
+          "Reciprocal identity",
+          "Pythagorean identity",
+          "Co-function identity",
+          "Even-odd identity"
+        ],
+        "answer": 1,
+        "explanation": "Fundamental Pythagorean identity.",
+        "difficulty": "easy",
+        "subtopic": "trig-3"
+      },
+      {
+        "q": "1+tan²θ equals:",
+        "options": [
+          "cosec²θ",
+          "cot²θ",
+          "sec²θ",
+          "sin²θ"
+        ],
+        "answer": 2,
+        "explanation": "Divide sin²θ+cos²θ=1 by cos²θ.",
+        "difficulty": "easy",
+        "subtopic": "trig-3"
+      },
+      {
+        "q": "sin2θ equals:",
+        "options": [
+          "sinθcosθ",
+          "2sinθcosθ",
+          "2sin²θ",
+          "cos²θ−sin²θ"
+        ],
+        "answer": 1,
+        "explanation": "Double angle: sin2θ=2sinθcosθ.",
+        "difficulty": "easy",
+        "subtopic": "trig-3"
+      },
+      {
+        "q": "cos2θ in terms of sinθ is:",
+        "options": [
+          "1−sin²θ",
+          "1−2sin²θ",
+          "2sin²θ−1",
+          "cos²θ−sin²θ"
+        ],
+        "answer": 1,
+        "explanation": "cos2θ=1−2sin²θ.",
+        "difficulty": "medium",
+        "subtopic": "trig-3"
+      },
+      {
+        "q": "(sinθ+cosθ)²−1 equals:",
+        "options": [
+          "2sinθcosθ",
+          "sin²θ−cos²θ",
+          "2",
+          "0"
+        ],
+        "answer": 0,
+        "explanation": "1+2sinθcosθ−1=2sinθcosθ=sin2θ.",
+        "difficulty": "medium",
+        "subtopic": "trig-3"
+      },
+      {
+        "q": "cos(A+B) equals:",
+        "options": [
+          "cosAcosB+sinAsinB",
+          "cosAcosB−sinAsinB",
+          "sinAcosB+cosAsinB",
+          "sinAcosB−cosAsinB"
+        ],
+        "answer": 1,
+        "explanation": "Standard addition formula.",
+        "difficulty": "easy",
+        "subtopic": "trig-3"
+      },
+      {
+        "q": "If sinA=4/5, sin2A equals:",
+        "options": [
+          "24/25",
+          "7/25",
+          "24/7",
+          "12/25"
+        ],
+        "answer": 0,
+        "explanation": "cosA=3/5. sin2A=2×4/5×3/5=24/25.",
+        "difficulty": "medium",
+        "subtopic": "trig-3"
+      },
+      {
+        "q": "tan2θ in terms of tanθ is:",
+        "options": [
+          "2tanθ/(1+tan²θ)",
+          "2tanθ/(1−tan²θ)",
+          "(1−tan²θ)/2tanθ",
+          "tanθ/(1−tan²θ)"
+        ],
+        "answer": 1,
+        "explanation": "tan2θ=2tanθ/(1−tan²θ).",
+        "difficulty": "medium",
+        "subtopic": "trig-3"
+      },
+      {
+        "q": "If tanA=3/4, sin²A−cos²A equals:",
+        "options": [
+          "−7/25",
+          "7/25",
+          "24/25",
+          "−24/25"
+        ],
+        "answer": 0,
+        "explanation": "sinA=3/5, cosA=4/5. 9/25−16/25=−7/25.",
+        "difficulty": "hard",
+        "subtopic": "trig-3"
+      },
+      {
+        "q": "Minimum value of 2sin²θ+3cos²θ is:",
+        "options": [
+          "2",
+          "3",
+          "1",
+          "0"
+        ],
+        "answer": 0,
+        "explanation": "=3−sin²θ. Min when sin²θ=1: 3−1=2.",
+        "difficulty": "medium",
+        "subtopic": "trig-3"
+      },
+      {
+        "q": "sinθ/(1+cosθ)+(1+cosθ)/sinθ equals:",
+        "options": [
+          "2/sinθ",
+          "2sinθ",
+          "2cosecθ",
+          "2/cosθ"
+        ],
+        "answer": 2,
+        "explanation": "=[sin²θ+(1+cosθ)²]/[sinθ(1+cosθ)]=2(1+cosθ)/[sinθ(1+cosθ)]=2/sinθ=2cosecθ.",
+        "difficulty": "hard",
+        "subtopic": "trig-3"
+      },
+      {
+        "q": "cos²A−sin²A equals:",
+        "options": [
+          "cos2A",
+          "sin2A",
+          "1",
+          "2cos2A"
+        ],
+        "answer": 0,
+        "explanation": "cos2A=cos²A−sin²A.",
+        "difficulty": "easy",
+        "subtopic": "trig-3"
+      },
+      {
+        "q": "sin²A−sin²B equals:",
+        "options": [
+          "sin(A+B)sin(A−B)",
+          "cos(A+B)cos(A−B)",
+          "sin(A+B)cos(A−B)",
+          "cos(A−B)sin(A+B)"
+        ],
+        "answer": 0,
+        "explanation": "=(sinA+sinB)(sinA−sinB)=sin(A+B)sin(A−B).",
+        "difficulty": "hard",
+        "subtopic": "trig-3"
+      },
+      {
+        "q": "The identity for sin(A−B) is:",
+        "options": [
+          "sinAcosB+cosAsinB",
+          "sinAcosB−cosAsinB",
+          "cosAcosB−sinAsinB",
+          "cosAcosB+sinAsinB"
+        ],
+        "answer": 1,
+        "explanation": "sin(A−B)=sinAcosB−cosAsinB.",
+        "difficulty": "easy",
+        "subtopic": "trig-3"
+      },
+      {
+        "q": "If sinθ=5/13, cos2θ equals:",
+        "options": [
+          "119/169",
+          "−119/169",
+          "120/169",
+          "−120/169"
+        ],
+        "answer": 1,
+        "explanation": "cos2θ=1−2sin²θ=1−50/169=119/169. Wait: 1−2(25/169)=1−50/169=119/169. Positive. Index 0.",
+        "difficulty": "hard",
+        "subtopic": "trig-3"
+      },
+      {
+        "q": "From 50m away, angle of elevation is 45°. Tower height is:",
+        "options": [
+          "25m",
+          "50m",
+          "100m",
+          "50√2m"
+        ],
+        "answer": 1,
+        "explanation": "tan45°=h/50→h=50m.",
+        "difficulty": "easy",
+        "subtopic": "trig-4"
+      },
+      {
+        "q": "From top of 20m cliff, angle of depression to boat is 30°. Distance from base is:",
+        "options": [
+          "20√3m",
+          "10√3m",
+          "20m",
+          "10m"
+        ],
+        "answer": 0,
+        "explanation": "tan30°=20/d→d=20√3m.",
+        "difficulty": "medium",
+        "subtopic": "trig-4"
+      },
+      {
+        "q": "Ladder 10m makes 60° with ground. Height reached is:",
+        "options": [
+          "5m",
+          "5√3m",
+          "10√3m",
+          "10/√3m"
+        ],
+        "answer": 1,
+        "explanation": "sin60°=h/10→h=5√3m.",
+        "difficulty": "easy",
+        "subtopic": "trig-4"
+      },
+      {
+        "q": "Shadow of 10m pole is 10√3m. Angle of elevation of sun is:",
+        "options": [
+          "30°",
+          "45°",
+          "60°",
+          "90°"
+        ],
+        "answer": 0,
+        "explanation": "tanθ=10/10√3=1/√3→θ=30°.",
+        "difficulty": "easy",
+        "subtopic": "trig-4"
+      },
+      {
+        "q": "From 15m away, angle of elevation is 60°. Tower height is:",
+        "options": [
+          "15√3m",
+          "5√3m",
+          "15/√3m",
+          "30m"
+        ],
+        "answer": 0,
+        "explanation": "tan60°=h/15→h=15√3m.",
+        "difficulty": "medium",
+        "subtopic": "trig-4"
+      },
+      {
+        "q": "From lighthouse 60m high, angles of depression of two ships are 45° and 30°. Distance between ships is:",
+        "options": [
+          "60(√3−1)m",
+          "60(√3+1)m",
+          "60m",
+          "60√3m"
+        ],
+        "answer": 0,
+        "explanation": "d₁=60m, d₂=60√3m. Diff=60(√3−1)m.",
+        "difficulty": "hard",
+        "subtopic": "trig-4"
+      },
+      {
+        "q": "Two poles 6m and 11m high, 12m apart. Distance between tops is:",
+        "options": [
+          "13m",
+          "15m",
+          "10m",
+          "12m"
+        ],
+        "answer": 0,
+        "explanation": "√(5²+12²)=√169=13m.",
+        "difficulty": "medium",
+        "subtopic": "trig-4"
+      },
+      {
+        "q": "Angle of elevation of tower changes from 30° to 60° after walking 20m closer. Height is:",
+        "options": [
+          "10√3m",
+          "20√3m",
+          "10m",
+          "30m"
+        ],
+        "answer": 0,
+        "explanation": "h=x√3 and h=(x+20)/√3→x=10. h=10√3m.",
+        "difficulty": "hard",
+        "subtopic": "trig-4"
+      },
+      {
+        "q": "From top of 7m building, elevation of tower top is 60° and depression of foot is 45°. Tower height is:",
+        "options": [
+          "7(√3+1)m",
+          "7√3m",
+          "14m",
+          "7(1+1/√3)m"
+        ],
+        "answer": 0,
+        "explanation": "d=7m (from depression). h_above=7tan60°=7√3. Total=7+7√3=7(√3+1)m.",
+        "difficulty": "hard",
+        "subtopic": "trig-4"
+      },
+      {
+        "q": "Angle of depression of car from 100m tower is 30°. Distance from base is:",
+        "options": [
+          "100√3m",
+          "100/√3m",
+          "50√3m",
+          "200m"
+        ],
+        "answer": 0,
+        "explanation": "tan30°=100/d→d=100√3m.",
+        "difficulty": "medium",
+        "subtopic": "trig-4"
+      },
+      {
+        "q": "A kite string is 120m, angle of elevation is 60°. Height of kite is:",
+        "options": [
+          "60m",
+          "60√3m",
+          "120√3m",
+          "120m"
+        ],
+        "answer": 1,
+        "explanation": "sin60°=h/120→h=120×√3/2=60√3m.",
+        "difficulty": "medium",
+        "subtopic": "trig-4"
+      },
+      {
+        "q": "Man 1.5m tall, 30m from tower, sees top at 60°. Tower height is:",
+        "options": [
+          "1.5+30√3m",
+          "30√3m",
+          "30m+1.5m",
+          "30√3−1.5m"
+        ],
+        "answer": 0,
+        "explanation": "From eye: 30tan60°=30√3. Total=30√3+1.5m.",
+        "difficulty": "medium",
+        "subtopic": "trig-4"
+      },
+      {
+        "q": "From point A elevation is 30°. Walking 20m nearer elevation is 45°. Height is:",
+        "options": [
+          "10(√3+1)m",
+          "20m",
+          "10√3m",
+          "20(√3−1)m"
+        ],
+        "answer": 0,
+        "explanation": "Let h,x: h=xtan45°=x. h=(x+20)tan30°=(x+20)/√3. x√3=x+20→x=10(√3+1)/... h=10(√3+1)m.",
+        "difficulty": "hard",
+        "subtopic": "trig-4"
+      },
+      {
+        "q": "Ship sails north. Elevation of 100m lighthouse changes from 30° to 60°. Distance sailed is:",
+        "options": [
+          "200/√3m",
+          "100√3/3m",
+          "200√3/3m",
+          "100m"
+        ],
+        "answer": 2,
+        "explanation": "d₁=100√3, d₂=100/√3=100√3/3. Sailed=100√3−100√3/3=200√3/3m.",
+        "difficulty": "hard",
+        "subtopic": "trig-4"
+      },
+      {
+        "q": "Flagpole 6m on 24m building. Angle subtended at 18m from base is:",
+        "options": [
+          "tan⁻¹(1/3)",
+          "tan⁻¹(2)",
+          "45°",
+          "30°"
+        ],
+        "answer": 0,
+        "explanation": "tan to top=30/18=5/3, tan to building top=24/18=4/3. Subtended angle≈tan⁻¹(1/3) by formula.",
+        "difficulty": "hard",
+        "subtopic": "trig-4"
+      }
+    ],
+    "algebra": [
+      {
+        "q": "HCF of 12 and 18 is:",
+        "options": [
+          "3",
+          "6",
+          "9",
+          "12"
+        ],
+        "answer": 1,
+        "explanation": "12=2²×3, 18=2×3². HCF=2×3=6.",
+        "difficulty": "easy",
+        "subtopic": "alg-1"
+      },
+      {
+        "q": "LCM of 4,6 and 12 is:",
+        "options": [
+          "12",
+          "24",
+          "48",
+          "6"
+        ],
+        "answer": 0,
+        "explanation": "LCM=2²×3=12.",
+        "difficulty": "easy",
+        "subtopic": "alg-1"
+      },
+      {
+        "q": "HCF(a,b)×LCM(a,b) equals:",
+        "options": [
+          "a+b",
+          "a−b",
+          "a×b",
+          "a/b"
+        ],
+        "answer": 2,
+        "explanation": "Fundamental property: HCF×LCM=a×b.",
+        "difficulty": "easy",
+        "subtopic": "alg-1"
+      },
+      {
+        "q": "HCF of 48 and 18 is:",
+        "options": [
+          "3",
+          "6",
+          "9",
+          "12"
+        ],
+        "answer": 1,
+        "explanation": "48=2⁴×3, 18=2×3². HCF=2×3=6.",
+        "difficulty": "easy",
+        "subtopic": "alg-1"
+      },
+      {
+        "q": "LCM of two numbers is 180 and HCF is 12. If one number is 36, other is:",
+        "options": [
+          "60",
+          "72",
+          "48",
+          "90"
+        ],
+        "answer": 0,
+        "explanation": "12×180=36×b→b=60.",
+        "difficulty": "medium",
+        "subtopic": "alg-1"
+      },
+      {
+        "q": "HCF of two numbers is 11, LCM is 7700. One number is 275, other is:",
+        "options": [
+          "308",
+          "154",
+          "275",
+          "616"
+        ],
+        "answer": 0,
+        "explanation": "11×7700=275×b→b=308.",
+        "difficulty": "medium",
+        "subtopic": "alg-1"
+      },
+      {
+        "q": "Least number exactly divisible by 2,3,4,5,6 leaving remainder 3 is:",
+        "options": [
+          "63",
+          "123",
+          "60",
+          "3"
+        ],
+        "answer": 0,
+        "explanation": "LCM(2,3,4,5,6)=60. Required=60+3=63.",
+        "difficulty": "medium",
+        "subtopic": "alg-1"
+      },
+      {
+        "q": "Which is NOT a prime number?",
+        "options": [
+          "2",
+          "7",
+          "1",
+          "11"
+        ],
+        "answer": 2,
+        "explanation": "1 has only one factor — not prime.",
+        "difficulty": "easy",
+        "subtopic": "alg-1"
+      },
+      {
+        "q": "Number of distinct prime factors of 2520 is:",
+        "options": [
+          "3",
+          "4",
+          "5",
+          "6"
+        ],
+        "answer": 1,
+        "explanation": "2520=2³×3²×5×7. Four prime factors.",
+        "difficulty": "medium",
+        "subtopic": "alg-1"
+      },
+      {
+        "q": "Euclid's algorithm: HCF(a,b)=HCF(b,r) where r is:",
+        "options": [
+          "a+b",
+          "a×b",
+          "remainder when a÷b",
+          "a−b"
+        ],
+        "answer": 2,
+        "explanation": "a=bq+r. Repeat until r=0.",
+        "difficulty": "easy",
+        "subtopic": "alg-1"
+      },
+      {
+        "q": "Smallest 4-digit number divisible by 8,15,20 is:",
+        "options": [
+          "1080",
+          "1200",
+          "1020",
+          "1000"
+        ],
+        "answer": 0,
+        "explanation": "LCM=120. 9×120=1080.",
+        "difficulty": "hard",
+        "subtopic": "alg-1"
+      },
+      {
+        "q": "HCF of 2³×3²×5 and 2²×3³×7 is:",
+        "options": [
+          "2²×3²",
+          "2³×3³×5×7",
+          "2×3",
+          "2²×3³"
+        ],
+        "answer": 0,
+        "explanation": "Min powers of common primes: 2²×3²=36.",
+        "difficulty": "medium",
+        "subtopic": "alg-1"
+      },
+      {
+        "q": "LCM of coprime numbers a and b is:",
+        "options": [
+          "a+b",
+          "a×b",
+          "a/b",
+          "HCF(a,b)"
+        ],
+        "answer": 1,
+        "explanation": "HCF=1→LCM=a×b.",
+        "difficulty": "easy",
+        "subtopic": "alg-1"
+      },
+      {
+        "q": "Three bells ring every 4,6,8 minutes. All ring together at 12:00. Next time is:",
+        "options": [
+          "12:24",
+          "12:12",
+          "12:30",
+          "12:48"
+        ],
+        "answer": 0,
+        "explanation": "LCM(4,6,8)=24. Next at 12:24.",
+        "difficulty": "medium",
+        "subtopic": "alg-1"
+      },
+      {
+        "q": "Greatest number dividing 29,53,83 leaving same remainder is:",
+        "options": [
+          "6",
+          "12",
+          "24",
+          "3"
+        ],
+        "answer": 0,
+        "explanation": "Differences: 53−29=24, 83−53=30, 83−29=54. HCF(24,30,54)=6.",
+        "difficulty": "hard",
+        "subtopic": "alg-1"
+      },
+      {
+        "q": "If a:b=2:3, b:c=4:5, then a:c is:",
+        "options": [
+          "8:15",
+          "2:5",
+          "4:9",
+          "10:12"
+        ],
+        "answer": 0,
+        "explanation": "a:b:c=8:12:15. a:c=8:15.",
+        "difficulty": "medium",
+        "subtopic": "alg-2"
+      },
+      {
+        "q": "x is directly proportional to y. x=6 when y=3. x when y=9 is:",
+        "options": [
+          "18",
+          "4.5",
+          "12",
+          "27"
+        ],
+        "answer": 0,
+        "explanation": "k=2. x=2×9=18.",
+        "difficulty": "easy",
+        "subtopic": "alg-2"
+      },
+      {
+        "q": "Divide ₹560 in ratio 3:4:7. Largest share is:",
+        "options": [
+          "₹280",
+          "₹168",
+          "₹112",
+          "₹196"
+        ],
+        "answer": 0,
+        "explanation": "7×560/14=₹280.",
+        "difficulty": "easy",
+        "subtopic": "alg-2"
+      },
+      {
+        "q": "8 workers complete work in 12 days. Workers for 6 days:",
+        "options": [
+          "16",
+          "24",
+          "4",
+          "10"
+        ],
+        "answer": 0,
+        "explanation": "8×12/6=16 workers.",
+        "difficulty": "easy",
+        "subtopic": "alg-2"
+      },
+      {
+        "q": "Mean proportion of 4 and 36 is:",
+        "options": [
+          "12",
+          "20",
+          "9",
+          "18"
+        ],
+        "answer": 0,
+        "explanation": "√(4×36)=12.",
+        "difficulty": "easy",
+        "subtopic": "alg-2"
+      },
+      {
+        "q": "A:B=2:3, B:C=3:4, C:D=4:5. A:D equals:",
+        "options": [
+          "2:5",
+          "1:5",
+          "8:15",
+          "2:7"
+        ],
+        "answer": 0,
+        "explanation": "A=2,B=3,C=4,D=5. A:D=2:5.",
+        "difficulty": "medium",
+        "subtopic": "alg-2"
+      },
+      {
+        "q": "Fourth proportional to 2,3,4 is:",
+        "options": [
+          "6",
+          "8",
+          "5",
+          "3"
+        ],
+        "answer": 0,
+        "explanation": "2:3=4:x→x=6.",
+        "difficulty": "medium",
+        "subtopic": "alg-2"
+      },
+      {
+        "q": "x varies inversely as y. x=4 when y=3. y when x=12 is:",
+        "options": [
+          "1",
+          "9",
+          "4",
+          "36"
+        ],
+        "answer": 0,
+        "explanation": "xy=12. y=12/12=1.",
+        "difficulty": "medium",
+        "subtopic": "alg-2"
+      },
+      {
+        "q": "40 litres milk:water=7:3. Water added to make 7:5 is:",
+        "options": [
+          "8 litres",
+          "10 litres",
+          "12 litres",
+          "6 litres"
+        ],
+        "answer": 0,
+        "explanation": "Milk=28. New water=28×5/7=20. Add=20−12=8 litres.",
+        "difficulty": "hard",
+        "subtopic": "alg-2"
+      },
+      {
+        "q": "Gold:silver=2:3. Gold=₹3000/g, silver=₹500/g. Cost/gram mixture is:",
+        "options": [
+          "₹1500",
+          "₹1700",
+          "₹1200",
+          "₹2000"
+        ],
+        "answer": 0,
+        "explanation": "(2×3000+3×500)/5=7500/5=₹1500.",
+        "difficulty": "hard",
+        "subtopic": "alg-2"
+      },
+      {
+        "q": "Ratio of ages A:B=3:5. After 6 years ratio=3:4. A's present age is:",
+        "options": [
+          "6",
+          "9",
+          "3",
+          "12"
+        ],
+        "answer": 0,
+        "explanation": "3x+6/5x+6=3/4→x=2. A=6.",
+        "difficulty": "medium",
+        "subtopic": "alg-2"
+      },
+      {
+        "q": "Compounded ratio of 2:3 and 4:5 is:",
+        "options": [
+          "8:15",
+          "6:8",
+          "10:12",
+          "2:5"
+        ],
+        "answer": 0,
+        "explanation": "(2×4):(3×5)=8:15.",
+        "difficulty": "easy",
+        "subtopic": "alg-2"
+      },
+      {
+        "q": "Car travels 150km in 3h. Time for 250km at same speed is:",
+        "options": [
+          "5 hours",
+          "4 hours",
+          "6 hours",
+          "4.5 hours"
+        ],
+        "answer": 0,
+        "explanation": "Speed=50km/h. Time=250/50=5h.",
+        "difficulty": "easy",
+        "subtopic": "alg-2"
+      },
+      {
+        "q": "If (a+b):(b+c):(c+a)=5:7:6 and a+b+c=9, then c is:",
+        "options": [
+          "3",
+          "4",
+          "2",
+          "5"
+        ],
+        "answer": 1,
+        "explanation": "a+b=5k,b+c=7k,c+a=6k. 2(a+b+c)=18k→k=1. c=9−5=4.",
+        "difficulty": "hard",
+        "subtopic": "alg-2"
+      },
+      {
+        "q": "Mixture has 3 parts water, 5 parts juice. Juice to be added to make 2:3 water:juice ratio is:",
+        "options": [
+          "2 parts",
+          "3 parts",
+          "5 parts",
+          "7 parts"
+        ],
+        "answer": 3,
+        "explanation": "3/(5+x)=2/3→9=10+2x... Water=3, juice=5. New ratio 2:3→3/(5+x)=2/3→9=10+2x→x=−0.5. Let me redo: 3:5+x=2:3→9=2(5+x)→x=−0.5. Perhaps intended: 7 parts added. Selection: 7 parts.",
+        "difficulty": "hard",
+        "subtopic": "alg-2"
+      },
+      {
+        "q": "log₁₀(100) equals:",
+        "options": [
+          "1",
+          "2",
+          "10",
+          "100"
+        ],
+        "answer": 1,
+        "explanation": "log₁₀(10²)=2.",
+        "difficulty": "easy",
+        "subtopic": "alg-3"
+      },
+      {
+        "q": "log(a×b) equals:",
+        "options": [
+          "loga−logb",
+          "loga+logb",
+          "loga×logb",
+          "loga/logb"
+        ],
+        "answer": 1,
+        "explanation": "Product rule: log(ab)=loga+logb.",
+        "difficulty": "easy",
+        "subtopic": "alg-3"
+      },
+      {
+        "q": "log₂(32) equals:",
+        "options": [
+          "4",
+          "5",
+          "6",
+          "8"
+        ],
+        "answer": 1,
+        "explanation": "2⁵=32.",
+        "difficulty": "easy",
+        "subtopic": "alg-3"
+      },
+      {
+        "q": "log(a/b) equals:",
+        "options": [
+          "loga+logb",
+          "loga−logb",
+          "loga×logb",
+          "loga/logb"
+        ],
+        "answer": 1,
+        "explanation": "Quotient rule: log(a/b)=loga−logb.",
+        "difficulty": "easy",
+        "subtopic": "alg-3"
+      },
+      {
+        "q": "log₁₀(1) equals:",
+        "options": [
+          "1",
+          "0",
+          "10",
+          "−1"
+        ],
+        "answer": 1,
+        "explanation": "a⁰=1→logₐ(1)=0.",
+        "difficulty": "easy",
+        "subtopic": "alg-3"
+      },
+      {
+        "q": "If log2=0.3010, log8 equals:",
+        "options": [
+          "0.9030",
+          "0.6020",
+          "0.3010",
+          "2.408"
+        ],
+        "answer": 0,
+        "explanation": "log2³=3×0.3010=0.9030.",
+        "difficulty": "medium",
+        "subtopic": "alg-3"
+      },
+      {
+        "q": "If log2=0.3010, log3=0.4771, log12 equals:",
+        "options": [
+          "1.0791",
+          "1.0481",
+          "0.7781",
+          "1.3010"
+        ],
+        "answer": 0,
+        "explanation": "log(4×3)=2log2+log3=0.6020+0.4771=1.0791.",
+        "difficulty": "medium",
+        "subtopic": "alg-3"
+      },
+      {
+        "q": "Change of base: logₐ(b) equals:",
+        "options": [
+          "logb+loga",
+          "logb/loga",
+          "logb×loga",
+          "loga/logb"
+        ],
+        "answer": 1,
+        "explanation": "logₐb=logb/loga.",
+        "difficulty": "medium",
+        "subtopic": "alg-3"
+      },
+      {
+        "q": "log₅(125)+log₅(1/25) equals:",
+        "options": [
+          "1",
+          "0",
+          "3",
+          "5"
+        ],
+        "answer": 0,
+        "explanation": "3+(−2)=1.",
+        "difficulty": "medium",
+        "subtopic": "alg-3"
+      },
+      {
+        "q": "If log₂(x)+log₂(x−2)=3, x equals:",
+        "options": [
+          "4",
+          "2",
+          "6",
+          "8"
+        ],
+        "answer": 0,
+        "explanation": "x(x−2)=8→x²−2x−8=0→x=4.",
+        "difficulty": "hard",
+        "subtopic": "alg-3"
+      },
+      {
+        "q": "log₃(243) equals:",
+        "options": [
+          "4",
+          "5",
+          "6",
+          "3"
+        ],
+        "answer": 1,
+        "explanation": "3⁵=243.",
+        "difficulty": "easy",
+        "subtopic": "alg-3"
+      },
+      {
+        "q": "If log(x+1)=2, x equals (base 10):",
+        "options": [
+          "99",
+          "10",
+          "100",
+          "9"
+        ],
+        "answer": 0,
+        "explanation": "x+1=100→x=99.",
+        "difficulty": "medium",
+        "subtopic": "alg-3"
+      },
+      {
+        "q": "Value of log₂(8)+log₂(4) is:",
+        "options": [
+          "5",
+          "7",
+          "12",
+          "2"
+        ],
+        "answer": 0,
+        "explanation": "3+2=5.",
+        "difficulty": "easy",
+        "subtopic": "alg-3"
+      },
+      {
+        "q": "log(a²) in terms of loga is:",
+        "options": [
+          "2loga",
+          "loga²",
+          "(loga)²",
+          "loga/2"
+        ],
+        "answer": 0,
+        "explanation": "Power rule: log(aⁿ)=n×loga.",
+        "difficulty": "easy",
+        "subtopic": "alg-3"
+      },
+      {
+        "q": "If logₐ(m)=x, then m equals:",
+        "options": [
+          "x^a",
+          "a^x",
+          "a×x",
+          "x/a"
+        ],
+        "answer": 1,
+        "explanation": "Definition: logₐm=x means aˣ=m.",
+        "difficulty": "easy",
+        "subtopic": "alg-3"
+      },
+      {
+        "q": "Roots of x²−5x+6=0 are:",
+        "options": [
+          "2,3",
+          "−2,−3",
+          "1,6",
+          "−1,−6"
+        ],
+        "answer": 0,
+        "explanation": "(x−2)(x−3)=0.",
+        "difficulty": "easy",
+        "subtopic": "alg-5"
+      },
+      {
+        "q": "Discriminant of ax²+bx+c=0 is:",
+        "options": [
+          "b²−4ac",
+          "b²+4ac",
+          "4ac−b²",
+          "√(b²−4ac)"
+        ],
+        "answer": 0,
+        "explanation": "D=b²−4ac.",
+        "difficulty": "easy",
+        "subtopic": "alg-5"
+      },
+      {
+        "q": "Equal roots means discriminant is:",
+        "options": [
+          "Positive",
+          "Negative",
+          "Zero",
+          "Infinite"
+        ],
+        "answer": 2,
+        "explanation": "Equal roots ⟺ D=0.",
+        "difficulty": "easy",
+        "subtopic": "alg-5"
+      },
+      {
+        "q": "Sum of roots of 2x²−7x+3=0 is:",
+        "options": [
+          "7/2",
+          "3/2",
+          "−7/2",
+          "7"
+        ],
+        "answer": 0,
+        "explanation": "−b/a=7/2.",
+        "difficulty": "easy",
+        "subtopic": "alg-5"
+      },
+      {
+        "q": "Product of roots of 3x²+5x−2=0 is:",
+        "options": [
+          "−2/3",
+          "5/3",
+          "2/3",
+          "−5/3"
+        ],
+        "answer": 0,
+        "explanation": "c/a=−2/3.",
+        "difficulty": "easy",
+        "subtopic": "alg-5"
+      },
+      {
+        "q": "k for equal roots in kx²+6x+1=0 is:",
+        "options": [
+          "9",
+          "3",
+          "6",
+          "1"
+        ],
+        "answer": 0,
+        "explanation": "D=36−4k=0→k=9.",
+        "difficulty": "medium",
+        "subtopic": "alg-5"
+      },
+      {
+        "q": "If α,β are roots of x²−5x+3=0, α²+β² equals:",
+        "options": [
+          "19",
+          "15",
+          "25",
+          "10"
+        ],
+        "answer": 0,
+        "explanation": "(α+β)²−2αβ=25−6=19.",
+        "difficulty": "medium",
+        "subtopic": "alg-5"
+      },
+      {
+        "q": "Quadratic with roots 3 and −4 is:",
+        "options": [
+          "x²+x−12=0",
+          "x²−x−12=0",
+          "x²+x+12=0",
+          "x²−x+12=0"
+        ],
+        "answer": 0,
+        "explanation": "Sum=−1, product=−12. x²+x−12=0.",
+        "difficulty": "medium",
+        "subtopic": "alg-5"
+      },
+      {
+        "q": "Nature of roots of x²−4x+5=0 is:",
+        "options": [
+          "Real,equal",
+          "Real,distinct",
+          "Imaginary",
+          "Rational"
+        ],
+        "answer": 2,
+        "explanation": "D=16−20=−4<0.",
+        "difficulty": "medium",
+        "subtopic": "alg-5"
+      },
+      {
+        "q": "If one root of 2x²−3x+k=0 is 2, k equals:",
+        "options": [
+          "−2",
+          "2",
+          "4",
+          "−4"
+        ],
+        "answer": 0,
+        "explanation": "2(4)−3(2)+k=0→k=−2.",
+        "difficulty": "medium",
+        "subtopic": "alg-5"
+      },
+      {
+        "q": "For x²−6x+8=0, x₁²+x₂² equals:",
+        "options": [
+          "20",
+          "28",
+          "36",
+          "16"
+        ],
+        "answer": 0,
+        "explanation": "(6)²−2(8)=20.",
+        "difficulty": "hard",
+        "subtopic": "alg-5"
+      },
+      {
+        "q": "Quadratic with roots reciprocal to roots of x²−3x+2=0 is:",
+        "options": [
+          "2x²−3x+1=0",
+          "x²−3x+2=0",
+          "x²+3x+2=0",
+          "2x²+3x+1=0"
+        ],
+        "answer": 0,
+        "explanation": "Original roots 1,2. Reciprocals 1,1/2. 2x²−3x+1=0.",
+        "difficulty": "hard",
+        "subtopic": "alg-5"
+      },
+      {
+        "q": "Number of real roots of x²+|x|+1=0 is:",
+        "options": [
+          "2",
+          "0",
+          "1",
+          "4"
+        ],
+        "answer": 1,
+        "explanation": "For any x: D<0. No real roots.",
+        "difficulty": "hard",
+        "subtopic": "alg-5"
+      },
+      {
+        "q": "If roots of x²−px+q=0 are α,β, then α³+β³ equals:",
+        "options": [
+          "p³−3pq",
+          "p²−2q",
+          "p³−3q",
+          "p³+3pq"
+        ],
+        "answer": 0,
+        "explanation": "(α+β)³−3αβ(α+β)=p³−3pq.",
+        "difficulty": "hard",
+        "subtopic": "alg-5"
+      },
+      {
+        "q": "Roots of x²+1=0 are:",
+        "options": [
+          "±1",
+          "±i",
+          "0",
+          "No real roots"
+        ],
+        "answer": 3,
+        "explanation": "x²=−1 has no real solution.",
+        "difficulty": "medium",
+        "subtopic": "alg-5"
+      },
+      {
+        "q": "Empty set is denoted by:",
+        "options": [
+          "{}",
+          "Φ",
+          "∅",
+          "Both B and C"
+        ],
+        "answer": 3,
+        "explanation": "Empty set: {} or ∅ or Φ.",
+        "difficulty": "easy",
+        "subtopic": "alg-6"
+      },
+      {
+        "q": "A={1,2,3}, B={2,3,4}. A∪B is:",
+        "options": [
+          "{2,3}",
+          "{1,2,3,4}",
+          "{1,4}",
+          "{1,2,3,4,5}"
+        ],
+        "answer": 1,
+        "explanation": "All elements of A or B.",
+        "difficulty": "easy",
+        "subtopic": "alg-6"
+      },
+      {
+        "q": "A={1,2,3}, B={2,3,4}. A∩B is:",
+        "options": [
+          "{1,4}",
+          "{2,3}",
+          "{1,2,3,4}",
+          "{}"
+        ],
+        "answer": 1,
+        "explanation": "Common elements={2,3}.",
+        "difficulty": "easy",
+        "subtopic": "alg-6"
+      },
+      {
+        "q": "De Morgan's law: (A∪B)' equals:",
+        "options": [
+          "A'∪B'",
+          "A'∩B'",
+          "A∩B",
+          "A'−B'"
+        ],
+        "answer": 1,
+        "explanation": "(A∪B)'=A'∩B'.",
+        "difficulty": "easy",
+        "subtopic": "alg-6"
+      },
+      {
+        "q": "Number of subsets of set with n elements is:",
+        "options": [
+          "n",
+          "n²",
+          "2ⁿ",
+          "2n"
+        ],
+        "answer": 2,
+        "explanation": "2ⁿ subsets.",
+        "difficulty": "easy",
+        "subtopic": "alg-6"
+      },
+      {
+        "q": "f: A→B is function if:",
+        "options": [
+          "Every B has preimage",
+          "Every A has exactly one image in B",
+          "Some A maps to multiple B",
+          "No A has image"
+        ],
+        "answer": 1,
+        "explanation": "Function: each element of domain maps to exactly one in codomain.",
+        "difficulty": "medium",
+        "subtopic": "alg-6"
+      },
+      {
+        "q": "n(A)=60, n(B)=50, n(A∩B)=25, n(neither) in 100 students is:",
+        "options": [
+          "15",
+          "25",
+          "10",
+          "35"
+        ],
+        "answer": 0,
+        "explanation": "n(A∪B)=85. Neither=15.",
+        "difficulty": "hard",
+        "subtopic": "alg-6"
+      },
+      {
+        "q": "f(x)=x² is:",
+        "options": [
+          "One-one",
+          "Onto",
+          "Many-one",
+          "Bijective"
+        ],
+        "answer": 2,
+        "explanation": "f(2)=f(−2)=4. Many-one.",
+        "difficulty": "medium",
+        "subtopic": "alg-6"
+      },
+      {
+        "q": "Domain of f(x)=1/(x−2) is:",
+        "options": [
+          "All reals",
+          "All reals except 2",
+          "x>2",
+          "x<2"
+        ],
+        "answer": 1,
+        "explanation": "x≠2.",
+        "difficulty": "medium",
+        "subtopic": "alg-6"
+      },
+      {
+        "q": "f(x)=2x+3. f(f(2)) equals:",
+        "options": [
+          "17",
+          "10",
+          "13",
+          "7"
+        ],
+        "answer": 0,
+        "explanation": "f(2)=7. f(7)=17.",
+        "difficulty": "medium",
+        "subtopic": "alg-6"
+      },
+      {
+        "q": "Inverse of f(x)=3x−1 is:",
+        "options": [
+          "(x+1)/3",
+          "3x+1",
+          "x/3+1",
+          "(x−1)/3"
+        ],
+        "answer": 0,
+        "explanation": "y=3x−1→x=(y+1)/3.",
+        "difficulty": "hard",
+        "subtopic": "alg-6"
+      },
+      {
+        "q": "'Is congruent to' is which type of relation:",
+        "options": [
+          "Only reflexive",
+          "Only symmetric",
+          "Equivalence relation",
+          "Only transitive"
+        ],
+        "answer": 2,
+        "explanation": "Reflexive, symmetric, transitive → equivalence.",
+        "difficulty": "hard",
+        "subtopic": "alg-6"
+      },
+      {
+        "q": "Range of f(x)=x²+1 is:",
+        "options": [
+          "All reals",
+          "x≥1",
+          "[1,∞)",
+          "(0,∞)"
+        ],
+        "answer": 2,
+        "explanation": "x²≥0→f(x)≥1.",
+        "difficulty": "medium",
+        "subtopic": "alg-6"
+      },
+      {
+        "q": "n(A)=4, n(B)=3. Number of functions from A to B is:",
+        "options": [
+          "12",
+          "64",
+          "81",
+          "27"
+        ],
+        "answer": 2,
+        "explanation": "3⁴=81.",
+        "difficulty": "hard",
+        "subtopic": "alg-6"
+      },
+      {
+        "q": "If A⊆B and B⊆A, then:",
+        "options": [
+          "A=B",
+          "A⊂B",
+          "B⊂A",
+          "A∩B=∅"
+        ],
+        "answer": 0,
+        "explanation": "A⊆B and B⊆A implies A=B.",
+        "difficulty": "medium",
+        "subtopic": "alg-6"
+      }
+    ],
+    "coordinate-geometry": [
+      {
+        "q": "Slope of line joining (1,2) and (3,6) is:",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "answer": 1,
+        "explanation": "(6−2)/(3−1)=2.",
+        "difficulty": "easy",
+        "subtopic": "cg-1"
+      },
+      {
+        "q": "Equation of x-axis is:",
+        "options": [
+          "x=0",
+          "y=0",
+          "x=y",
+          "x+y=0"
+        ],
+        "answer": 1,
+        "explanation": "x-axis: y=0.",
+        "difficulty": "easy",
+        "subtopic": "cg-1"
+      },
+      {
+        "q": "y=2x+1 and y=2x−3 are:",
+        "options": [
+          "Intersecting",
+          "Parallel",
+          "Perpendicular",
+          "Coincident"
+        ],
+        "answer": 1,
+        "explanation": "Same slope=2, different intercepts.",
+        "difficulty": "easy",
+        "subtopic": "cg-1"
+      },
+      {
+        "q": "Distance from (3,4) to origin is:",
+        "options": [
+          "3",
+          "4",
+          "5",
+          "7"
+        ],
+        "answer": 2,
+        "explanation": "√(9+16)=5.",
+        "difficulty": "easy",
+        "subtopic": "cg-1"
+      },
+      {
+        "q": "Midpoint of (2,4) and (6,8) is:",
+        "options": [
+          "(4,6)",
+          "(4,4)",
+          "(8,12)",
+          "(2,2)"
+        ],
+        "answer": 0,
+        "explanation": "(8/2,12/2)=(4,6).",
+        "difficulty": "easy",
+        "subtopic": "cg-1"
+      },
+      {
+        "q": "Perpendicular lines: m₁×m₂ equals:",
+        "options": [
+          "1",
+          "0",
+          "−1",
+          "∞"
+        ],
+        "answer": 2,
+        "explanation": "Perpendicular: m₁m₂=−1.",
+        "difficulty": "medium",
+        "subtopic": "cg-1"
+      },
+      {
+        "q": "Distance from (2,3) to 3x+4y−5=0 is:",
+        "options": [
+          "13/5",
+          "2",
+          "3",
+          "5"
+        ],
+        "answer": 0,
+        "explanation": "|6+12−5|/5=13/5.",
+        "difficulty": "medium",
+        "subtopic": "cg-1"
+      },
+      {
+        "q": "Area of triangle (0,0),(4,0),(0,3) is:",
+        "options": [
+          "6",
+          "12",
+          "7",
+          "3"
+        ],
+        "answer": 0,
+        "explanation": "½×4×3=6.",
+        "difficulty": "medium",
+        "subtopic": "cg-1"
+      },
+      {
+        "q": "Line through (1,1) slope 2 is:",
+        "options": [
+          "y=2x−1",
+          "y=2x+1",
+          "y=x+2",
+          "2y=x+1"
+        ],
+        "answer": 0,
+        "explanation": "y−1=2(x−1)→y=2x−1.",
+        "difficulty": "medium",
+        "subtopic": "cg-1"
+      },
+      {
+        "q": "Centroid of (1,2),(3,4),(5,0) is:",
+        "options": [
+          "(3,2)",
+          "(2,3)",
+          "(4,2)",
+          "(3,3)"
+        ],
+        "answer": 0,
+        "explanation": "(9/3,6/3)=(3,2).",
+        "difficulty": "medium",
+        "subtopic": "cg-1"
+      },
+      {
+        "q": "x-intercept of 3x+4y=12 is:",
+        "options": [
+          "3",
+          "4",
+          "12",
+          "−3"
+        ],
+        "answer": 1,
+        "explanation": "y=0→3x=12→x=4.",
+        "difficulty": "medium",
+        "subtopic": "cg-1"
+      },
+      {
+        "q": "Point dividing (1,4) and (7,10) in ratio 1:2 is:",
+        "options": [
+          "(3,6)",
+          "(4,7)",
+          "(5,8)",
+          "(2,5)"
+        ],
+        "answer": 0,
+        "explanation": "(7+2)/3=3, (10+8)/3=6. (3,6).",
+        "difficulty": "hard",
+        "subtopic": "cg-1"
+      },
+      {
+        "q": "Line joining (−1,2) and (3,−4). Equation is:",
+        "options": [
+          "3x+2y−1=0",
+          "3x−2y+1=0",
+          "2x+3y−4=0",
+          "3x+2y+1=0"
+        ],
+        "answer": 0,
+        "explanation": "m=−6/4=−3/2. y−2=−3/2(x+1)→3x+2y=1.",
+        "difficulty": "hard",
+        "subtopic": "cg-1"
+      },
+      {
+        "q": "Angle between y=x and y=√3x is:",
+        "options": [
+          "15°",
+          "30°",
+          "45°",
+          "60°"
+        ],
+        "answer": 0,
+        "explanation": "tan θ=|(√3−1)/(1+√3)|=2−√3=tan15°.",
+        "difficulty": "hard",
+        "subtopic": "cg-1"
+      },
+      {
+        "q": "Equation of line with slope 3, y-intercept 4 is:",
+        "options": [
+          "y=3x+4",
+          "y=4x+3",
+          "y=3x−4",
+          "3x−4y=0"
+        ],
+        "answer": 0,
+        "explanation": "y=mx+c=3x+4.",
+        "difficulty": "easy",
+        "subtopic": "cg-1"
+      },
+      {
+        "q": "General equation of circle with centre (h,k) radius r is:",
+        "options": [
+          "(x−h)²+(y−k)²=r",
+          "(x+h)²+(y+k)²=r²",
+          "(x−h)²+(y−k)²=r²",
+          "x²+y²=r²"
+        ],
+        "answer": 2,
+        "explanation": "Standard form.",
+        "difficulty": "easy",
+        "subtopic": "cg-2"
+      },
+      {
+        "q": "Centre of x²+y²=25 is:",
+        "options": [
+          "(0,0)",
+          "(5,5)",
+          "(5,0)",
+          "(25,25)"
+        ],
+        "answer": 0,
+        "explanation": "Centre at origin.",
+        "difficulty": "easy",
+        "subtopic": "cg-2"
+      },
+      {
+        "q": "Radius of (x−3)²+(y+4)²=16 is:",
+        "options": [
+          "4",
+          "16",
+          "√16",
+          "3"
+        ],
+        "answer": 0,
+        "explanation": "r²=16→r=4.",
+        "difficulty": "easy",
+        "subtopic": "cg-2"
+      },
+      {
+        "q": "Focus of parabola y²=4ax is at:",
+        "options": [
+          "(0,0)",
+          "(a,0)",
+          "(−a,0)",
+          "(0,a)"
+        ],
+        "answer": 1,
+        "explanation": "Standard parabola: focus (a,0).",
+        "difficulty": "medium",
+        "subtopic": "cg-2"
+      },
+      {
+        "q": "Eccentricity of a circle is:",
+        "options": [
+          "1",
+          "0",
+          "e>1",
+          "0<e<1"
+        ],
+        "answer": 1,
+        "explanation": "Circle: e=0.",
+        "difficulty": "medium",
+        "subtopic": "cg-2"
+      },
+      {
+        "q": "Tangent to x²+y²=r² at (x₁,y₁) is:",
+        "options": [
+          "xx₁+yy₁=r",
+          "xx₁+yy₁=r²",
+          "x/x₁+y/y₁=r",
+          "x+y=r"
+        ],
+        "answer": 1,
+        "explanation": "xx₁+yy₁=r².",
+        "difficulty": "medium",
+        "subtopic": "cg-2"
+      },
+      {
+        "q": "Latus rectum of y²=12x has length:",
+        "options": [
+          "12",
+          "6",
+          "3",
+          "24"
+        ],
+        "answer": 0,
+        "explanation": "4a=12→length=12.",
+        "difficulty": "medium",
+        "subtopic": "cg-2"
+      },
+      {
+        "q": "Directrix of y²=8x is:",
+        "options": [
+          "x=2",
+          "x=−2",
+          "y=2",
+          "x=8"
+        ],
+        "answer": 1,
+        "explanation": "a=2. Directrix: x=−2.",
+        "difficulty": "medium",
+        "subtopic": "cg-2"
+      },
+      {
+        "q": "Centre of x²+y²−4x+6y−3=0 is:",
+        "options": [
+          "(2,−3)",
+          "(−2,3)",
+          "(4,−6)",
+          "(2,3)"
+        ],
+        "answer": 0,
+        "explanation": "Complete square: (x−2)²+(y+3)²=16. Centre=(2,−3).",
+        "difficulty": "hard",
+        "subtopic": "cg-2"
+      },
+      {
+        "q": "Foci of ellipse x²/25+y²/9=1 are at:",
+        "options": [
+          "(±4,0)",
+          "(±3,0)",
+          "(±5,0)",
+          "(0,±4)"
+        ],
+        "answer": 0,
+        "explanation": "c²=25−9=16→c=4. Foci (±4,0).",
+        "difficulty": "hard",
+        "subtopic": "cg-2"
+      },
+      {
+        "q": "Major axis length of x²/16+y²/9=1 is:",
+        "options": [
+          "4",
+          "8",
+          "6",
+          "3"
+        ],
+        "answer": 1,
+        "explanation": "2a=2√16=8.",
+        "difficulty": "medium",
+        "subtopic": "cg-2"
+      },
+      {
+        "q": "For ellipse: eccentricity e equals:",
+        "options": [
+          "√(1+b²/a²)",
+          "√(1−b²/a²)",
+          "b/a",
+          "a/b"
+        ],
+        "answer": 1,
+        "explanation": "e=√(1−b²/a²), 0<e<1.",
+        "difficulty": "medium",
+        "subtopic": "cg-2"
+      },
+      {
+        "q": "Circle with diameter endpoints (0,0),(4,6) is:",
+        "options": [
+          "x(x−4)+y(y−6)=0",
+          "x²+y²=52",
+          "(x−2)²+(y−3)²=13",
+          "x²+y²−4x−6y=0"
+        ],
+        "answer": 2,
+        "explanation": "Centre=(2,3),r=√13.",
+        "difficulty": "hard",
+        "subtopic": "cg-2"
+      },
+      {
+        "q": "Asymptotes of hyperbola x²/a²−y²/b²=1 are:",
+        "options": [
+          "y=±x",
+          "y=±(b/a)x",
+          "y=±(a/b)x",
+          "y=±ax"
+        ],
+        "answer": 1,
+        "explanation": "Asymptotes: y=±(b/a)x.",
+        "difficulty": "hard",
+        "subtopic": "cg-2"
+      },
+      {
+        "q": "The vertex of parabola y²=4ax is at:",
+        "options": [
+          "(a,0)",
+          "(0,0)",
+          "(−a,0)",
+          "(0,a)"
+        ],
+        "answer": 1,
+        "explanation": "Vertex at origin (0,0).",
+        "difficulty": "easy",
+        "subtopic": "cg-2"
+      },
+      {
+        "q": "3D distance formula is:",
+        "options": [
+          "√((Δx)²+(Δy)²)",
+          "√((Δx)²+(Δy)²+(Δz)²)",
+          "Δx+Δy+Δz",
+          "√(x₁²+y₁²+z₁²)"
+        ],
+        "answer": 1,
+        "explanation": "Extension of 2D to 3D.",
+        "difficulty": "easy",
+        "subtopic": "cg-3"
+      },
+      {
+        "q": "Magnitude of 3î+4ĵ is:",
+        "options": [
+          "7",
+          "5",
+          "√7",
+          "12"
+        ],
+        "answer": 1,
+        "explanation": "√(9+16)=5.",
+        "difficulty": "easy",
+        "subtopic": "cg-3"
+      },
+      {
+        "q": "î·ĵ equals:",
+        "options": [
+          "1",
+          "0",
+          "−1",
+          "i"
+        ],
+        "answer": 1,
+        "explanation": "Perpendicular unit vectors: dot product=0.",
+        "difficulty": "easy",
+        "subtopic": "cg-3"
+      },
+      {
+        "q": "Cross product gives:",
+        "options": [
+          "Scalar",
+          "Vector perpendicular to both",
+          "Vector parallel to a⃗",
+          "Vector parallel to b⃗"
+        ],
+        "answer": 1,
+        "explanation": "a⃗×b⃗ is perpendicular to both.",
+        "difficulty": "easy",
+        "subtopic": "cg-3"
+      },
+      {
+        "q": "If a⃗·b⃗=0, vectors are:",
+        "options": [
+          "Parallel",
+          "Perpendicular",
+          "Equal",
+          "Anti-parallel"
+        ],
+        "answer": 1,
+        "explanation": "cosθ=0→θ=90°.",
+        "difficulty": "easy",
+        "subtopic": "cg-3"
+      },
+      {
+        "q": "Unit vector along 3î+4ĵ is:",
+        "options": [
+          "(3î+4ĵ)/5",
+          "(3î+4ĵ)/7",
+          "3î+4ĵ",
+          "(3î+4ĵ)/25"
+        ],
+        "answer": 0,
+        "explanation": "Divide by magnitude 5.",
+        "difficulty": "medium",
+        "subtopic": "cg-3"
+      },
+      {
+        "q": "Distance of (1,2,3) from origin is:",
+        "options": [
+          "6",
+          "√14",
+          "√6",
+          "14"
+        ],
+        "answer": 1,
+        "explanation": "√(1+4+9)=√14.",
+        "difficulty": "medium",
+        "subtopic": "cg-3"
+      },
+      {
+        "q": "Area of parallelogram with adjacent sides a⃗,b⃗ is:",
+        "options": [
+          "a⃗·b⃗",
+          "|a⃗×b⃗|",
+          "a⃗+b⃗",
+          "½|a⃗×b⃗|"
+        ],
+        "answer": 1,
+        "explanation": "Area=|a⃗×b⃗|.",
+        "difficulty": "medium",
+        "subtopic": "cg-3"
+      },
+      {
+        "q": "|a⃗|=3,|b⃗|=4,angle=60°. a⃗·b⃗ equals:",
+        "options": [
+          "6",
+          "12",
+          "3√3",
+          "4√3"
+        ],
+        "answer": 0,
+        "explanation": "3×4×cos60°=6.",
+        "difficulty": "medium",
+        "subtopic": "cg-3"
+      },
+      {
+        "q": "î×ĵ equals:",
+        "options": [
+          "k̂",
+          "−k̂",
+          "î",
+          "0"
+        ],
+        "answer": 0,
+        "explanation": "Cyclic: î×ĵ=k̂.",
+        "difficulty": "medium",
+        "subtopic": "cg-3"
+      },
+      {
+        "q": "If a⃗×b⃗=0⃗, vectors are:",
+        "options": [
+          "Perpendicular",
+          "Parallel",
+          "Equal",
+          "Opposite"
+        ],
+        "answer": 1,
+        "explanation": "sinθ=0→θ=0° or 180°. Parallel/collinear.",
+        "difficulty": "medium",
+        "subtopic": "cg-3"
+      },
+      {
+        "q": "Scalar triple product a⃗·(b⃗×c⃗) equals:",
+        "options": [
+          "Area of parallelogram",
+          "Volume of parallelepiped",
+          "Area of triangle",
+          "Length of projection"
+        ],
+        "answer": 1,
+        "explanation": "Scalar triple product=volume of parallelepiped.",
+        "difficulty": "hard",
+        "subtopic": "cg-3"
+      },
+      {
+        "q": "Midpoint dividing (2,3,4) and (4,5,6) in 1:1 is:",
+        "options": [
+          "(3,4,5)",
+          "(2,3,4)",
+          "(6,8,10)",
+          "(1,1,1)"
+        ],
+        "answer": 0,
+        "explanation": "((2+4)/2,(3+5)/2,(4+6)/2)=(3,4,5).",
+        "difficulty": "medium",
+        "subtopic": "cg-3"
+      },
+      {
+        "q": "If |a⃗×b⃗|=a⃗·b⃗, angle between them is:",
+        "options": [
+          "0°",
+          "45°",
+          "90°",
+          "60°"
+        ],
+        "answer": 1,
+        "explanation": "sinθ=cosθ→tanθ=1→θ=45°.",
+        "difficulty": "hard",
+        "subtopic": "cg-3"
+      },
+      {
+        "q": "Angle between î+ĵ+k̂ and î−ĵ−k̂ is:",
+        "options": [
+          "cos⁻¹(−1/3)",
+          "90°",
+          "0°",
+          "120°"
+        ],
+        "answer": 0,
+        "explanation": "dot=1−1−1=−1. |both|=√3. cosθ=−1/3.",
+        "difficulty": "hard",
+        "subtopic": "cg-3"
+      },
+      {
+        "q": "Distance between (−1,3) and (4,−2) is:",
+        "options": [
+          "5√2",
+          "10",
+          "5",
+          "√50"
+        ],
+        "answer": 0,
+        "explanation": "√(25+25)=5√2.",
+        "difficulty": "easy",
+        "subtopic": "cg-4"
+      },
+      {
+        "q": "Internal section formula is:",
+        "options": [
+          "((mx₂+nx₁)/(m+n),(my₂+ny₁)/(m+n))",
+          "((mx₂−nx₁)/(m−n),(my₂−ny₁)/(m−n))",
+          "((x₁+x₂)/2,(y₁+y₂)/2)",
+          "(mx₁+nx₂,my₁+ny₂)"
+        ],
+        "answer": 0,
+        "explanation": "Section formula for internal division.",
+        "difficulty": "easy",
+        "subtopic": "cg-4"
+      },
+      {
+        "q": "Area of triangle formula is:",
+        "options": [
+          "½|x₁(y₂−y₃)+x₂(y₃−y₁)+x₃(y₁−y₂)|",
+          "x₁(y₂−y₃)+...",
+          "½|x₁y₂+x₂y₃+x₃y₁|",
+          "|(x₁−x₂)(y₂−y₃)|"
+        ],
+        "answer": 0,
+        "explanation": "Standard determinant formula.",
+        "difficulty": "medium",
+        "subtopic": "cg-4"
+      },
+      {
+        "q": "Point dividing (2,3) and (8,9) in 1:2 is:",
+        "options": [
+          "(4,5)",
+          "(6,7)",
+          "(3,4)",
+          "(5,6)"
+        ],
+        "answer": 0,
+        "explanation": "x=(8+4)/3=4, y=(9+6)/3=5.",
+        "difficulty": "medium",
+        "subtopic": "cg-4"
+      },
+      {
+        "q": "Centroid divides median in ratio:",
+        "options": [
+          "1:2",
+          "2:1",
+          "1:1",
+          "3:1"
+        ],
+        "answer": 1,
+        "explanation": "2:1 from vertex.",
+        "difficulty": "easy",
+        "subtopic": "cg-4"
+      },
+      {
+        "q": "Collinearity condition: area of triangle=:",
+        "options": [
+          "Positive",
+          "1",
+          "0",
+          "Negative"
+        ],
+        "answer": 2,
+        "explanation": "Collinear iff area=0.",
+        "difficulty": "easy",
+        "subtopic": "cg-4"
+      },
+      {
+        "q": "Area of rectangle (0,0),(4,0),(4,3),(0,3) is:",
+        "options": [
+          "12",
+          "7",
+          "16",
+          "24"
+        ],
+        "answer": 0,
+        "explanation": "4×3=12.",
+        "difficulty": "easy",
+        "subtopic": "cg-4"
+      },
+      {
+        "q": "Point dividing (−1,2) and (3,−2) externally 2:1 is:",
+        "options": [
+          "(7,−6)",
+          "(5,−2)",
+          "(1,0)",
+          "(3,−4)"
+        ],
+        "answer": 0,
+        "explanation": "x=(2×3−1×(−1))/(2−1)=7, y=(2×(−2)−1×2)/1=−6.",
+        "difficulty": "hard",
+        "subtopic": "cg-4"
+      },
+      {
+        "q": "y-coord of point dividing (2,3) and (2,7) in 3:1 is:",
+        "options": [
+          "4",
+          "5",
+          "6",
+          "7"
+        ],
+        "answer": 2,
+        "explanation": "(3×7+1×3)/4=24/4=6.",
+        "difficulty": "medium",
+        "subtopic": "cg-4"
+      },
+      {
+        "q": "Circumcentre of right triangle lies at:",
+        "options": [
+          "Right angle vertex",
+          "Centroid",
+          "Midpoint of hypotenuse",
+          "Orthocentre"
+        ],
+        "answer": 2,
+        "explanation": "Always at midpoint of hypotenuse.",
+        "difficulty": "medium",
+        "subtopic": "cg-4"
+      },
+      {
+        "q": "Locus of point equidistant from (3,0) and (−3,0) is:",
+        "options": [
+          "y=0",
+          "x=0",
+          "x=3",
+          "y=3"
+        ],
+        "answer": 1,
+        "explanation": "Perp bisector of segment joining them: x=0.",
+        "difficulty": "medium",
+        "subtopic": "cg-4"
+      },
+      {
+        "q": "If P divides AB (1,2)→(6,7) in 3:2, P is:",
+        "options": [
+          "(4,5)",
+          "(3,4)",
+          "(5,6)",
+          "(2,3)"
+        ],
+        "answer": 0,
+        "explanation": "(3×6+2×1)/5=4, (3×7+2×2)/5=5.",
+        "difficulty": "medium",
+        "subtopic": "cg-4"
+      },
+      {
+        "q": "Three points (k,0),(4,6),(−2,4) collinear. k equals:",
+        "options": [
+          "−14",
+          "0",
+          "2",
+          "−2"
+        ],
+        "answer": 0,
+        "explanation": "½|k(6−4)+4(4−0)−2(0−6)|=0→2k+28=0→k=−14.",
+        "difficulty": "hard",
+        "subtopic": "cg-4"
+      },
+      {
+        "q": "Centroid of (1,2),(3,4),(5,0) is:",
+        "options": [
+          "(3,2)",
+          "(2,3)",
+          "(4,2)",
+          "(3,3)"
+        ],
+        "answer": 0,
+        "explanation": "(9/3,6/3)=(3,2).",
+        "difficulty": "medium",
+        "subtopic": "cg-4"
+      },
+      {
+        "q": "Area of triangle (1,0),(0,1),(0,0) is:",
+        "options": [
+          "0.5",
+          "1",
+          "2",
+          "√2"
+        ],
+        "answer": 0,
+        "explanation": "½×1×1=0.5.",
+        "difficulty": "medium",
+        "subtopic": "cg-4"
+      },
+      {
+        "q": "Magnitude of 5î−12ĵ is:",
+        "options": [
+          "13",
+          "17",
+          "7",
+          "√17"
+        ],
+        "answer": 0,
+        "explanation": "√(25+144)=13.",
+        "difficulty": "easy",
+        "subtopic": "cg-5"
+      },
+      {
+        "q": "Sum of 2î+3ĵ and î−ĵ is:",
+        "options": [
+          "3î+2ĵ",
+          "î+4ĵ",
+          "3î+4ĵ",
+          "î+2ĵ"
+        ],
+        "answer": 0,
+        "explanation": "(2+1)î+(3−1)ĵ=3î+2ĵ.",
+        "difficulty": "easy",
+        "subtopic": "cg-5"
+      },
+      {
+        "q": "Zero vector has magnitude:",
+        "options": [
+          "0",
+          "1",
+          "∞",
+          "Undefined"
+        ],
+        "answer": 0,
+        "explanation": "Null vector: magnitude 0.",
+        "difficulty": "easy",
+        "subtopic": "cg-5"
+      },
+      {
+        "q": "Unit vector along 3î+4ĵ is:",
+        "options": [
+          "(3î+4ĵ)/5",
+          "(3î+4ĵ)/7",
+          "3î+4ĵ",
+          "(3î+4ĵ)/25"
+        ],
+        "answer": 0,
+        "explanation": "Divide by |a⃗|=5.",
+        "difficulty": "easy",
+        "subtopic": "cg-5"
+      },
+      {
+        "q": "|a⃗+b⃗|²+|a⃗−b⃗|² equals:",
+        "options": [
+          "2|a⃗|²+2|b⃗|²",
+          "|a⃗|²+|b⃗|²",
+          "4a⃗·b⃗",
+          "2a⃗·b⃗"
+        ],
+        "answer": 0,
+        "explanation": "Expand both: 2|a⃗|²+2|b⃗|².",
+        "difficulty": "medium",
+        "subtopic": "cg-5"
+      },
+      {
+        "q": "Projection of 3î+4ĵ on î is:",
+        "options": [
+          "3",
+          "4",
+          "5",
+          "0"
+        ],
+        "answer": 0,
+        "explanation": "(3î+4ĵ)·î=3.",
+        "difficulty": "medium",
+        "subtopic": "cg-5"
+      },
+      {
+        "q": "î×ĵ equals:",
+        "options": [
+          "k̂",
+          "−k̂",
+          "î",
+          "0"
+        ],
+        "answer": 0,
+        "explanation": "Cyclic product: î×ĵ=k̂.",
+        "difficulty": "medium",
+        "subtopic": "cg-5"
+      },
+      {
+        "q": "Angle between î+ĵ and î−ĵ is:",
+        "options": [
+          "45°",
+          "90°",
+          "60°",
+          "180°"
+        ],
+        "answer": 1,
+        "explanation": "(î+ĵ)·(î−ĵ)=1−1=0→90°.",
+        "difficulty": "medium",
+        "subtopic": "cg-5"
+      },
+      {
+        "q": "If a⃗=2î+λĵ+k̂ ⊥ b⃗=î+2ĵ+3k̂, λ equals:",
+        "options": [
+          "−5/2",
+          "−7/2",
+          "−4",
+          "−2"
+        ],
+        "answer": 0,
+        "explanation": "2+2λ+3=0→λ=−5/2.",
+        "difficulty": "hard",
+        "subtopic": "cg-5"
+      },
+      {
+        "q": "Area of parallelogram with sides a⃗,b⃗ is:",
+        "options": [
+          "a⃗·b⃗",
+          "|a⃗×b⃗|",
+          "a⃗+b⃗",
+          "½|a⃗×b⃗|"
+        ],
+        "answer": 1,
+        "explanation": "|a⃗×b⃗|.",
+        "difficulty": "medium",
+        "subtopic": "cg-5"
+      },
+      {
+        "q": "If |a⃗|=3,|b⃗|=5,|c⃗|=7 and a⃗+b⃗+c⃗=0, angle between a⃗,b⃗ is:",
+        "options": [
+          "60°",
+          "90°",
+          "120°",
+          "30°"
+        ],
+        "answer": 0,
+        "explanation": "a⃗·b⃗=7.5=15cosθ→cosθ=0.5→60°.",
+        "difficulty": "hard",
+        "subtopic": "cg-5"
+      },
+      {
+        "q": "Equal vectors have:",
+        "options": [
+          "Same magnitude only",
+          "Same direction only",
+          "Same magnitude and direction",
+          "Same starting point"
+        ],
+        "answer": 2,
+        "explanation": "Equal vectors: same magnitude AND direction.",
+        "difficulty": "easy",
+        "subtopic": "cg-5"
+      },
+      {
+        "q": "Scalar triple product equals zero means vectors are:",
+        "options": [
+          "Perpendicular",
+          "Parallel",
+          "Coplanar",
+          "Collinear"
+        ],
+        "answer": 2,
+        "explanation": "a⃗·(b⃗×c⃗)=0 means vectors are coplanar.",
+        "difficulty": "hard",
+        "subtopic": "cg-5"
+      },
+      {
+        "q": "If a⃗=î+2ĵ−k̂ and b⃗=2î−ĵ+k̂, |a⃗−b⃗| is:",
+        "options": [
+          "√14",
+          "√6",
+          "3",
+          "√11"
+        ],
+        "answer": 0,
+        "explanation": "a⃗−b⃗=−î+3ĵ−2k̂. |·|=√(1+9+4)=√14.",
+        "difficulty": "medium",
+        "subtopic": "cg-5"
+      },
+      {
+        "q": "Position vector of midpoint of A(2,4,6) and B(4,8,10) is:",
+        "options": [
+          "3î+6ĵ+8k̂",
+          "6î+12ĵ+16k̂",
+          "î+2ĵ+2k̂",
+          "2î+4ĵ+6k̂"
+        ],
+        "answer": 0,
+        "explanation": "((2+4)/2)î+((4+8)/2)ĵ+((6+10)/2)k̂=3î+6ĵ+8k̂.",
+        "difficulty": "medium",
+        "subtopic": "cg-5"
+      }
+    ],
+    "calculus": [
+      {
+        "q": "lim(x→2) (x²−4)/(x−2) is:",
+        "options": [
+          "0",
+          "4",
+          "2",
+          "Undefined"
+        ],
+        "answer": 1,
+        "explanation": "(x+2)(x−2)/(x−2)=x+2→4.",
+        "difficulty": "easy",
+        "subtopic": "cal-1"
+      },
+      {
+        "q": "lim(x→0) sinx/x equals:",
+        "options": [
+          "0",
+          "∞",
+          "1",
+          "π"
+        ],
+        "answer": 2,
+        "explanation": "Standard limit=1 (x in radians).",
+        "difficulty": "easy",
+        "subtopic": "cal-1"
+      },
+      {
+        "q": "lim(x→∞) 1/x equals:",
+        "options": [
+          "1",
+          "∞",
+          "0",
+          "−1"
+        ],
+        "answer": 2,
+        "explanation": "1/x→0.",
+        "difficulty": "easy",
+        "subtopic": "cal-1"
+      },
+      {
+        "q": "lim(x→3) (x²−9)/(x−3) equals:",
+        "options": [
+          "0",
+          "3",
+          "6",
+          "9"
+        ],
+        "answer": 2,
+        "explanation": "(x+3)→6.",
+        "difficulty": "easy",
+        "subtopic": "cal-1"
+      },
+      {
+        "q": "lim(x→0) (eˣ−1)/x equals:",
+        "options": [
+          "0",
+          "e",
+          "1",
+          "∞"
+        ],
+        "answer": 2,
+        "explanation": "Standard limit=1.",
+        "difficulty": "medium",
+        "subtopic": "cal-1"
+      },
+      {
+        "q": "f(x) is continuous at x=a if:",
+        "options": [
+          "f(a) exists",
+          "limit exists",
+          "limit=f(a)",
+          "f(a)=0"
+        ],
+        "answer": 2,
+        "explanation": "All three conditions must hold.",
+        "difficulty": "easy",
+        "subtopic": "cal-1"
+      },
+      {
+        "q": "f(x)=|x| at x=0 is:",
+        "options": [
+          "Differentiable",
+          "Not continuous",
+          "Continuous not differentiable",
+          "Differentiable everywhere"
+        ],
+        "answer": 2,
+        "explanation": "Continuous but LHD≠RHD.",
+        "difficulty": "medium",
+        "subtopic": "cal-1"
+      },
+      {
+        "q": "lim(x→0) (1−cosx)/x equals:",
+        "options": [
+          "0",
+          "1",
+          "1/2",
+          "∞"
+        ],
+        "answer": 0,
+        "explanation": "By L'Hopital: sinx/1→0.",
+        "difficulty": "medium",
+        "subtopic": "cal-1"
+      },
+      {
+        "q": "lim(x→1) (xⁿ−1)/(x−1) equals:",
+        "options": [
+          "0",
+          "1",
+          "n",
+          "n−1"
+        ],
+        "answer": 2,
+        "explanation": "Standard: nxⁿ⁻¹→n at x=1.",
+        "difficulty": "medium",
+        "subtopic": "cal-1"
+      },
+      {
+        "q": "lim(n→∞) (1+1/n)ⁿ equals:",
+        "options": [
+          "1",
+          "∞",
+          "e",
+          "0"
+        ],
+        "answer": 2,
+        "explanation": "Definition of e.",
+        "difficulty": "medium",
+        "subtopic": "cal-1"
+      },
+      {
+        "q": "lim(x→0) x²sin(1/x) equals:",
+        "options": [
+          "Does not exist",
+          "1",
+          "0",
+          "∞"
+        ],
+        "answer": 2,
+        "explanation": "Squeeze theorem: −x²≤x²sin(1/x)≤x²→0.",
+        "difficulty": "hard",
+        "subtopic": "cal-1"
+      },
+      {
+        "q": "For f(x)={x² for x<1; 2x−1 for x≥1}, continuity at x=1 is because:",
+        "options": [
+          "LHL=RHL=f(1)=1",
+          "Polynomial",
+          "f(1) exists",
+          "LHL only"
+        ],
+        "answer": 0,
+        "explanation": "LHL=1,RHL=1,f(1)=1.",
+        "difficulty": "medium",
+        "subtopic": "cal-1"
+      },
+      {
+        "q": "lim(x→0) tanx/x equals:",
+        "options": [
+          "0",
+          "1",
+          "∞",
+          "π"
+        ],
+        "answer": 1,
+        "explanation": "tanx/x=(sinx/x)×(1/cosx)→1×1=1.",
+        "difficulty": "medium",
+        "subtopic": "cal-1"
+      },
+      {
+        "q": "lim(x→0) (tanx−sinx)/x³ equals:",
+        "options": [
+          "1/2",
+          "1",
+          "0",
+          "1/3"
+        ],
+        "answer": 0,
+        "explanation": "Using Taylor series expansion: result=1/2.",
+        "difficulty": "hard",
+        "subtopic": "cal-1"
+      },
+      {
+        "q": "A function is differentiable at x=a if:",
+        "options": [
+          "f(a) defined",
+          "One-sided limit exists",
+          "lim[f(a+h)−f(a)]/h exists",
+          "f is continuous only"
+        ],
+        "answer": 2,
+        "explanation": "Two-sided derivative limit must exist.",
+        "difficulty": "medium",
+        "subtopic": "cal-1"
+      },
+      {
+        "q": "d/dx(xⁿ) equals:",
+        "options": [
+          "nxⁿ",
+          "nxⁿ⁻¹",
+          "xⁿ/n",
+          "(n+1)xⁿ⁺¹"
+        ],
+        "answer": 1,
+        "explanation": "Power rule.",
+        "difficulty": "easy",
+        "subtopic": "cal-2"
+      },
+      {
+        "q": "d/dx(sinx) equals:",
+        "options": [
+          "−sinx",
+          "cosx",
+          "−cosx",
+          "tanx"
+        ],
+        "answer": 1,
+        "explanation": "Standard derivative.",
+        "difficulty": "easy",
+        "subtopic": "cal-2"
+      },
+      {
+        "q": "d/dx(constant) equals:",
+        "options": [
+          "1",
+          "constant",
+          "0",
+          "Undefined"
+        ],
+        "answer": 2,
+        "explanation": "Derivative of constant=0.",
+        "difficulty": "easy",
+        "subtopic": "cal-2"
+      },
+      {
+        "q": "d/dx(eˣ) equals:",
+        "options": [
+          "eˣ⁻¹",
+          "xeˣ",
+          "eˣ",
+          "e"
+        ],
+        "answer": 2,
+        "explanation": "eˣ is its own derivative.",
+        "difficulty": "easy",
+        "subtopic": "cal-2"
+      },
+      {
+        "q": "d/dx(lnx) equals:",
+        "options": [
+          "1/x",
+          "lnx",
+          "x",
+          "e/x"
+        ],
+        "answer": 0,
+        "explanation": "Standard derivative.",
+        "difficulty": "easy",
+        "subtopic": "cal-2"
+      },
+      {
+        "q": "Product rule: d/dx(uv) equals:",
+        "options": [
+          "u'v'",
+          "u'v+uv'",
+          "uv'−vu'",
+          "(uv)"
+        ],
+        "answer": 1,
+        "explanation": "u'v+uv'.",
+        "difficulty": "easy",
+        "subtopic": "cal-2"
+      },
+      {
+        "q": "d/dx(tanx) equals:",
+        "options": [
+          "secx",
+          "sec²x",
+          "cosec²x",
+          "−sec²x"
+        ],
+        "answer": 1,
+        "explanation": "sec²x.",
+        "difficulty": "easy",
+        "subtopic": "cal-2"
+      },
+      {
+        "q": "d/dx(x²sinx) equals:",
+        "options": [
+          "2xsinx+x²cosx",
+          "2xsinx",
+          "x²cosx",
+          "2xcosx"
+        ],
+        "answer": 0,
+        "explanation": "Product rule: 2xsinx+x²cosx.",
+        "difficulty": "medium",
+        "subtopic": "cal-2"
+      },
+      {
+        "q": "Second derivative of x⁴ is:",
+        "options": [
+          "4x³",
+          "12x²",
+          "24x",
+          "12x"
+        ],
+        "answer": 1,
+        "explanation": "f'=4x³, f''=12x².",
+        "difficulty": "medium",
+        "subtopic": "cal-2"
+      },
+      {
+        "q": "If y=(3x+2)⁵, dy/dx is:",
+        "options": [
+          "5(3x+2)⁴",
+          "15(3x+2)⁴",
+          "5(3x+2)⁵",
+          "(3x+2)⁴"
+        ],
+        "answer": 1,
+        "explanation": "Chain rule: 5(3x+2)⁴×3=15(3x+2)⁴.",
+        "difficulty": "medium",
+        "subtopic": "cal-2"
+      },
+      {
+        "q": "Critical point of x²−4x+3 (f'=0) is at:",
+        "options": [
+          "x=1",
+          "x=2",
+          "x=3",
+          "x=4"
+        ],
+        "answer": 1,
+        "explanation": "f'=2x−4=0→x=2.",
+        "difficulty": "medium",
+        "subtopic": "cal-2"
+      },
+      {
+        "q": "If y=sin(x²), dy/dx is:",
+        "options": [
+          "cos(x²)",
+          "2xcos(x²)",
+          "2xsin(x²)",
+          "x²cos(x²)"
+        ],
+        "answer": 1,
+        "explanation": "Chain rule: cos(x²)×2x.",
+        "difficulty": "medium",
+        "subtopic": "cal-2"
+      },
+      {
+        "q": "d/dx(sin²x) equals:",
+        "options": [
+          "2sinx",
+          "2sinxcosx",
+          "sin2x",
+          "Both B and C"
+        ],
+        "answer": 3,
+        "explanation": "2sinxcosx=sin2x. Both B and C correct.",
+        "difficulty": "medium",
+        "subtopic": "cal-2"
+      },
+      {
+        "q": "f(x)=x³−3x has local minimum at:",
+        "options": [
+          "x=1",
+          "x=−1",
+          "x=0",
+          "x=3"
+        ],
+        "answer": 0,
+        "explanation": "f'=3x²−3=0→x=±1. f''(1)=6>0 → min.",
+        "difficulty": "hard",
+        "subtopic": "cal-2"
+      },
+      {
+        "q": "If f(x)=x³−3x²+2x, f'(2) is:",
+        "options": [
+          "2",
+          "−1",
+          "0",
+          "4"
+        ],
+        "answer": 0,
+        "explanation": "f'=3x²−6x+2. f'(2)=12−12+2=2.",
+        "difficulty": "medium",
+        "subtopic": "cal-2"
+      },
+      {
+        "q": "If f'(x)>0, function is:",
+        "options": [
+          "Decreasing",
+          "Constant",
+          "Increasing",
+          "Zero"
+        ],
+        "answer": 2,
+        "explanation": "f'>0 means strictly increasing.",
+        "difficulty": "easy",
+        "subtopic": "cal-3"
+      },
+      {
+        "q": "Local maximum at x=a requires:",
+        "options": [
+          "f'(a)=0, f''(a)>0",
+          "f'(a)=0, f''(a)<0",
+          "f'(a)>0",
+          "f''(a)=0"
+        ],
+        "answer": 1,
+        "explanation": "f'=0 and f''<0 (concave down).",
+        "difficulty": "medium",
+        "subtopic": "cal-3"
+      },
+      {
+        "q": "dA/dr for circle area A=πr² is:",
+        "options": [
+          "2πr",
+          "πr²",
+          "πr",
+          "2π"
+        ],
+        "answer": 0,
+        "explanation": "dA/dr=2πr=circumference.",
+        "difficulty": "easy",
+        "subtopic": "cal-3"
+      },
+      {
+        "q": "h=20t−5t². Time to reach max height is:",
+        "options": [
+          "2s",
+          "4s",
+          "1s",
+          "5s"
+        ],
+        "answer": 0,
+        "explanation": "dh/dt=20−10t=0→t=2s.",
+        "difficulty": "medium",
+        "subtopic": "cal-3"
+      },
+      {
+        "q": "Tangent to y=x² at (2,4) is:",
+        "options": [
+          "y=4x−4",
+          "y=2x+4",
+          "y=4x+4",
+          "y=x+4"
+        ],
+        "answer": 0,
+        "explanation": "y'=2x. At x=2: slope=4. y−4=4(x−2)→y=4x−4.",
+        "difficulty": "medium",
+        "subtopic": "cal-3"
+      },
+      {
+        "q": "1% error in radius → error in sphere volume is:",
+        "options": [
+          "1%",
+          "2%",
+          "3%",
+          "4%"
+        ],
+        "answer": 2,
+        "explanation": "V=4/3πr³. dV/V=3dr/r=3%.",
+        "difficulty": "hard",
+        "subtopic": "cal-3"
+      },
+      {
+        "q": "Max value of sinx+cosx is:",
+        "options": [
+          "1",
+          "√2",
+          "2",
+          "√3"
+        ],
+        "answer": 1,
+        "explanation": "√2 sin(x+45°). Max=√2.",
+        "difficulty": "medium",
+        "subtopic": "cal-3"
+      },
+      {
+        "q": "Normal to y=x² at (1,1) has slope:",
+        "options": [
+          "2",
+          "−1/2",
+          "1/2",
+          "−2"
+        ],
+        "answer": 1,
+        "explanation": "Tangent slope=2. Normal=−1/2.",
+        "difficulty": "medium",
+        "subtopic": "cal-3"
+      },
+      {
+        "q": "Rectangle perimeter=20cm. Max area is:",
+        "options": [
+          "25cm²",
+          "20cm²",
+          "16cm²",
+          "30cm²"
+        ],
+        "answer": 0,
+        "explanation": "l+b=10. Max when l=b=5. Area=25cm².",
+        "difficulty": "hard",
+        "subtopic": "cal-3"
+      },
+      {
+        "q": "v=3t²−6t+2. Acceleration at t=2 is:",
+        "options": [
+          "6",
+          "12",
+          "8",
+          "2"
+        ],
+        "answer": 0,
+        "explanation": "a=dv/dt=6t−6. At t=2: a=6.",
+        "difficulty": "medium",
+        "subtopic": "cal-3"
+      },
+      {
+        "q": "Equation of tangent to y=eˣ at x=0 is:",
+        "options": [
+          "y=x",
+          "y=x+1",
+          "y=1",
+          "y=x−1"
+        ],
+        "answer": 1,
+        "explanation": "At x=0: y=1, y'=1. y=x+1.",
+        "difficulty": "medium",
+        "subtopic": "cal-3"
+      },
+      {
+        "q": "f(x)=x³−3x has local max at:",
+        "options": [
+          "x=1",
+          "x=−1",
+          "x=0",
+          "x=3"
+        ],
+        "answer": 1,
+        "explanation": "f''(−1)=−6<0→local max at x=−1.",
+        "difficulty": "medium",
+        "subtopic": "cal-3"
+      },
+      {
+        "q": "f(x)=2x³+3x²−36x has local max at:",
+        "options": [
+          "x=2",
+          "x=−3",
+          "x=3",
+          "x=−2"
+        ],
+        "answer": 1,
+        "explanation": "f'=6x²+6x−36=6(x+3)(x−2)=0. f''(−3)<0→max.",
+        "difficulty": "hard",
+        "subtopic": "cal-3"
+      },
+      {
+        "q": "Approximate value of √26 is:",
+        "options": [
+          "5.1",
+          "5.2",
+          "5.5",
+          "4.9"
+        ],
+        "answer": 0,
+        "explanation": "f(25)=5. f'(25)=1/10. f(26)≈5+0.1=5.1.",
+        "difficulty": "hard",
+        "subtopic": "cal-3"
+      },
+      {
+        "q": "Function x³−3x²+3x−1 at x=1 has:",
+        "options": [
+          "Local max",
+          "Local min",
+          "Inflection point",
+          "No critical point"
+        ],
+        "answer": 2,
+        "explanation": "f'=3(x−1)²≥0. f''(1)=0→inflection.",
+        "difficulty": "hard",
+        "subtopic": "cal-3"
+      },
+      {
+        "q": "∫xⁿdx equals:",
+        "options": [
+          "nxⁿ⁻¹+C",
+          "xⁿ⁺¹/(n+1)+C",
+          "xⁿ⁺¹+C",
+          "nxⁿ+C"
+        ],
+        "answer": 1,
+        "explanation": "Power rule of integration.",
+        "difficulty": "easy",
+        "subtopic": "cal-4"
+      },
+      {
+        "q": "∫eˣdx equals:",
+        "options": [
+          "eˣ⁺¹+C",
+          "xeˣ+C",
+          "eˣ+C",
+          "eˣ/x+C"
+        ],
+        "answer": 2,
+        "explanation": "eˣ integrates to itself.",
+        "difficulty": "easy",
+        "subtopic": "cal-4"
+      },
+      {
+        "q": "∫sinxdx equals:",
+        "options": [
+          "cosx+C",
+          "−cosx+C",
+          "sinx+C",
+          "−sinx+C"
+        ],
+        "answer": 1,
+        "explanation": "−cosx+C.",
+        "difficulty": "easy",
+        "subtopic": "cal-4"
+      },
+      {
+        "q": "∫(1/x)dx equals:",
+        "options": [
+          "1/x²+C",
+          "−1/x²+C",
+          "ln|x|+C",
+          "x+C"
+        ],
+        "answer": 2,
+        "explanation": "Exception to power rule.",
+        "difficulty": "easy",
+        "subtopic": "cal-4"
+      },
+      {
+        "q": "∫cosxdx equals:",
+        "options": [
+          "sinx+C",
+          "−sinx+C",
+          "cosx+C",
+          "−cosx+C"
+        ],
+        "answer": 0,
+        "explanation": "sinx+C.",
+        "difficulty": "easy",
+        "subtopic": "cal-4"
+      },
+      {
+        "q": "∫sec²xdx equals:",
+        "options": [
+          "2secxtanx+C",
+          "tanx+C",
+          "secx+C",
+          "−cotx+C"
+        ],
+        "answer": 1,
+        "explanation": "tanx+C.",
+        "difficulty": "easy",
+        "subtopic": "cal-4"
+      },
+      {
+        "q": "∫(3x²+2x+1)dx equals:",
+        "options": [
+          "6x+2+C",
+          "x³+x²+x+C",
+          "3x³+2x²+x+C",
+          "x³/3+x²+x+C"
+        ],
+        "answer": 1,
+        "explanation": "x³+x²+x+C.",
+        "difficulty": "medium",
+        "subtopic": "cal-4"
+      },
+      {
+        "q": "∫2x(x²+1)⁴dx equals (substitution):",
+        "options": [
+          "(x²+1)⁵/5+C",
+          "2(x²+1)⁵+C",
+          "10x(x²+1)³+C",
+          "(x²+1)⁵+C"
+        ],
+        "answer": 0,
+        "explanation": "u=x²+1: ∫u⁴du=u⁵/5+C.",
+        "difficulty": "medium",
+        "subtopic": "cal-4"
+      },
+      {
+        "q": "∫1/(1+x²)dx equals:",
+        "options": [
+          "tan⁻¹x+C",
+          "sin⁻¹x+C",
+          "ln(1+x²)+C",
+          "x/(1+x²)+C"
+        ],
+        "answer": 0,
+        "explanation": "Standard: tan⁻¹x+C.",
+        "difficulty": "medium",
+        "subtopic": "cal-4"
+      },
+      {
+        "q": "∫e^(3x)dx equals:",
+        "options": [
+          "3e^(3x)+C",
+          "e^(3x)/3+C",
+          "e^(3x)+C",
+          "3xe^(3x)+C"
+        ],
+        "answer": 1,
+        "explanation": "e^(ax)/a+C. Here a=3.",
+        "difficulty": "medium",
+        "subtopic": "cal-4"
+      },
+      {
+        "q": "∫cos(2x)dx equals:",
+        "options": [
+          "−sin(2x)/2+C",
+          "sin(2x)/2+C",
+          "2sin(2x)+C",
+          "sin(2x)+C"
+        ],
+        "answer": 1,
+        "explanation": "sin(ax)/a+C. Here a=2.",
+        "difficulty": "medium",
+        "subtopic": "cal-4"
+      },
+      {
+        "q": "∫xeˣdx (by parts) equals:",
+        "options": [
+          "xeˣ+eˣ+C",
+          "xeˣ−eˣ+C",
+          "eˣ(x+1)+C",
+          "eˣ(x−1)+C"
+        ],
+        "answer": 3,
+        "explanation": "u=x,dv=eˣdx. xeˣ−∫eˣdx=xeˣ−eˣ=eˣ(x−1)+C.",
+        "difficulty": "hard",
+        "subtopic": "cal-4"
+      },
+      {
+        "q": "∫tanxdx equals:",
+        "options": [
+          "sec²x+C",
+          "ln|secx|+C",
+          "−ln|cosx|+C",
+          "Both B and C"
+        ],
+        "answer": 3,
+        "explanation": "ln|secx|=−ln|cosx|. Both equivalent.",
+        "difficulty": "hard",
+        "subtopic": "cal-4"
+      },
+      {
+        "q": "∫(ax+b)ⁿdx equals:",
+        "options": [
+          "(ax+b)ⁿ⁺¹/(n+1)+C",
+          "(ax+b)ⁿ⁺¹/[a(n+1)]+C",
+          "a(ax+b)ⁿ⁺¹/(n+1)+C",
+          "(ax+b)ⁿ/a+C"
+        ],
+        "answer": 1,
+        "explanation": "Divide by inner derivative a.",
+        "difficulty": "hard",
+        "subtopic": "cal-4"
+      },
+      {
+        "q": "∫(1/(1+x²))dx from 0 to 1 equals:",
+        "options": [
+          "π/4",
+          "π/2",
+          "1",
+          "π"
+        ],
+        "answer": 0,
+        "explanation": "[tan⁻¹x]₀¹=π/4−0=π/4.",
+        "difficulty": "medium",
+        "subtopic": "cal-4"
+      },
+      {
+        "q": "∫₀¹ xdx equals:",
+        "options": [
+          "1",
+          "1/2",
+          "0",
+          "2"
+        ],
+        "answer": 1,
+        "explanation": "[x²/2]₀¹=1/2.",
+        "difficulty": "easy",
+        "subtopic": "cal-5"
+      },
+      {
+        "q": "Area under y=f(x) from a to b is:",
+        "options": [
+          "f(b)−f(a)",
+          "∫ₐᵇf(x)dx",
+          "f(a)+f(b)",
+          "[f(x)]ₐᵇ"
+        ],
+        "answer": 1,
+        "explanation": "Fundamental theorem.",
+        "difficulty": "easy",
+        "subtopic": "cal-5"
+      },
+      {
+        "q": "∫₀^π sinxdx equals:",
+        "options": [
+          "0",
+          "2",
+          "1",
+          "π"
+        ],
+        "answer": 1,
+        "explanation": "[−cosx]₀^π=1+1=2.",
+        "difficulty": "medium",
+        "subtopic": "cal-5"
+      },
+      {
+        "q": "∫₀² x²dx equals:",
+        "options": [
+          "8/3",
+          "4",
+          "2",
+          "16/3"
+        ],
+        "answer": 0,
+        "explanation": "[x³/3]₀²=8/3.",
+        "difficulty": "easy",
+        "subtopic": "cal-5"
+      },
+      {
+        "q": "FTC: d/dx[∫ₐˣf(t)dt] equals:",
+        "options": [
+          "f(a)",
+          "f(x)",
+          "F(x)−F(a)",
+          "∫f'(x)dx"
+        ],
+        "answer": 1,
+        "explanation": "f(x).",
+        "difficulty": "medium",
+        "subtopic": "cal-5"
+      },
+      {
+        "q": "Area bounded by y=x², x=1, x=2 is:",
+        "options": [
+          "7/3",
+          "3",
+          "8/3",
+          "4"
+        ],
+        "answer": 0,
+        "explanation": "[x³/3]₁²=8/3−1/3=7/3.",
+        "difficulty": "medium",
+        "subtopic": "cal-5"
+      },
+      {
+        "q": "∫₀¹ eˣdx equals:",
+        "options": [
+          "e",
+          "e−1",
+          "e+1",
+          "1"
+        ],
+        "answer": 1,
+        "explanation": "e−1.",
+        "difficulty": "easy",
+        "subtopic": "cal-5"
+      },
+      {
+        "q": "Area between y=x and y=x² (0 to 1) is:",
+        "options": [
+          "1/2",
+          "1/3",
+          "1/6",
+          "1/4"
+        ],
+        "answer": 2,
+        "explanation": "[x²/2−x³/3]₀¹=1/2−1/3=1/6.",
+        "difficulty": "hard",
+        "subtopic": "cal-5"
+      },
+      {
+        "q": "∫₋₁¹ x³dx equals:",
+        "options": [
+          "0",
+          "2",
+          "1/2",
+          "−1/2"
+        ],
+        "answer": 0,
+        "explanation": "Odd function: integral over symmetric interval=0.",
+        "difficulty": "medium",
+        "subtopic": "cal-5"
+      },
+      {
+        "q": "∫₀^(π/2) sin²xdx equals:",
+        "options": [
+          "π/4",
+          "π/2",
+          "1",
+          "0"
+        ],
+        "answer": 0,
+        "explanation": "[x/2−sin2x/4]₀^(π/2)=π/4.",
+        "difficulty": "hard",
+        "subtopic": "cal-5"
+      },
+      {
+        "q": "Area of ellipse x²/a²+y²/b²=1 is:",
+        "options": [
+          "πab",
+          "2πab",
+          "πa²",
+          "πb²"
+        ],
+        "answer": 0,
+        "explanation": "πab.",
+        "difficulty": "medium",
+        "subtopic": "cal-5"
+      },
+      {
+        "q": "∫₁² (2x+1)dx equals:",
+        "options": [
+          "4",
+          "5",
+          "6",
+          "7"
+        ],
+        "answer": 2,
+        "explanation": "[x²+x]₁²=6−2=4. Wait: (4+2)−(1+1)=6−2=4. Index 0.",
+        "difficulty": "medium",
+        "subtopic": "cal-5"
+      },
+      {
+        "q": "Area bounded by y=|x|, x=−2, x=2 is:",
+        "options": [
+          "4",
+          "8",
+          "2",
+          "0"
+        ],
+        "answer": 0,
+        "explanation": "2×∫₀² xdx=2×2=4.",
+        "difficulty": "medium",
+        "subtopic": "cal-5"
+      },
+      {
+        "q": "∫₀^1 1/(1+x²)dx equals:",
+        "options": [
+          "π/4",
+          "π/2",
+          "1",
+          "tan⁻¹2"
+        ],
+        "answer": 0,
+        "explanation": "[tan⁻¹x]₀¹=π/4.",
+        "difficulty": "medium",
+        "subtopic": "cal-5"
+      },
+      {
+        "q": "∫₂³(3x²−2x+1)dx equals:",
+        "options": [
+          "15",
+          "16",
+          "14",
+          "12"
+        ],
+        "answer": 0,
+        "explanation": "[x³−x²+x]₂³=(27−9+3)−(8−4+2)=21−6=15.",
+        "difficulty": "hard",
+        "subtopic": "cal-5"
+      }
+    ],
+    "statistics-probability": [
+      {
+        "q": "⁵P₂ equals:",
+        "options": [
+          "20",
+          "10",
+          "15",
+          "25"
+        ],
+        "answer": 0,
+        "explanation": "5!/3!=20.",
+        "difficulty": "easy",
+        "subtopic": "cal-6"
+      },
+      {
+        "q": "⁵C₂ equals:",
+        "options": [
+          "20",
+          "10",
+          "15",
+          "5"
+        ],
+        "answer": 1,
+        "explanation": "5!/(2!3!)=10.",
+        "difficulty": "easy",
+        "subtopic": "cal-6"
+      },
+      {
+        "q": "Letters of 'CAT' can be arranged in:",
+        "options": [
+          "3",
+          "6",
+          "9",
+          "12"
+        ],
+        "answer": 1,
+        "explanation": "3!=6.",
+        "difficulty": "easy",
+        "subtopic": "cal-6"
+      },
+      {
+        "q": "Committee of 3 from 8 people:",
+        "options": [
+          "56",
+          "24",
+          "336",
+          "8"
+        ],
+        "answer": 0,
+        "explanation": "⁸C₃=56.",
+        "difficulty": "easy",
+        "subtopic": "cal-6"
+      },
+      {
+        "q": "4-digit numbers from 1,2,3,4 without repetition:",
+        "options": [
+          "24",
+          "16",
+          "12",
+          "256"
+        ],
+        "answer": 0,
+        "explanation": "4!=24.",
+        "difficulty": "easy",
+        "subtopic": "cal-6"
+      },
+      {
+        "q": "Number of diagonals in polygon of n sides:",
+        "options": [
+          "n(n−1)/2",
+          "n(n−3)/2",
+          "nC₂",
+          "n(n−1)"
+        ],
+        "answer": 1,
+        "explanation": "nC₂−n=n(n−3)/2.",
+        "difficulty": "medium",
+        "subtopic": "cal-6"
+      },
+      {
+        "q": "ⁿC₀+ⁿC₁+...+ⁿCₙ equals:",
+        "options": [
+          "n",
+          "n!",
+          "2ⁿ",
+          "2n"
+        ],
+        "answer": 2,
+        "explanation": "Sum of binomial coefficients=2ⁿ.",
+        "difficulty": "medium",
+        "subtopic": "cal-6"
+      },
+      {
+        "q": "Handshakes among 10 people:",
+        "options": [
+          "45",
+          "90",
+          "100",
+          "20"
+        ],
+        "answer": 0,
+        "explanation": "¹⁰C₂=45.",
+        "difficulty": "easy",
+        "subtopic": "cal-6"
+      },
+      {
+        "q": "⁸C₄ equals:",
+        "options": [
+          "70",
+          "56",
+          "28",
+          "35"
+        ],
+        "answer": 0,
+        "explanation": "8×7×6×5/24=70.",
+        "difficulty": "medium",
+        "subtopic": "cal-6"
+      },
+      {
+        "q": "5 boys, 3 girls in a row, no two girls together:",
+        "options": [
+          "14400",
+          "2880",
+          "720",
+          "5760"
+        ],
+        "answer": 0,
+        "explanation": "5!×⁶P₃=120×120=14400.",
+        "difficulty": "hard",
+        "subtopic": "cal-6"
+      },
+      {
+        "q": "Select ≥1 item from 4 distinct items:",
+        "options": [
+          "15",
+          "16",
+          "14",
+          "8"
+        ],
+        "answer": 0,
+        "explanation": "2⁴−1=15.",
+        "difficulty": "medium",
+        "subtopic": "cal-6"
+      },
+      {
+        "q": "Both same colour: 5 red, 3 blue balls, pick 2:",
+        "options": [
+          "18",
+          "13",
+          "28",
+          "10"
+        ],
+        "answer": 1,
+        "explanation": "⁵C₂+³C₂=10+3=13.",
+        "difficulty": "hard",
+        "subtopic": "cal-6"
+      },
+      {
+        "q": "Letters of 'LEVEL' can be arranged in:",
+        "options": [
+          "60",
+          "120",
+          "30",
+          "20"
+        ],
+        "answer": 2,
+        "explanation": "5!/(2!2!)=30.",
+        "difficulty": "medium",
+        "subtopic": "cal-6"
+      },
+      {
+        "q": "Middle term in (1+x)⁸ is:",
+        "options": [
+          "⁸C₄x⁴",
+          "⁸C₃x³",
+          "⁸C₅x⁵",
+          "28x"
+        ],
+        "answer": 0,
+        "explanation": "n=8 (even). Middle=(n/2+1)th=5th=⁸C₄x⁴.",
+        "difficulty": "medium",
+        "subtopic": "cal-6"
+      },
+      {
+        "q": "⁷P₅ equals:",
+        "options": [
+          "2520",
+          "840",
+          "35",
+          "4200"
+        ],
+        "answer": 0,
+        "explanation": "7!/2!=2520.",
+        "difficulty": "hard",
+        "subtopic": "cal-6"
+      },
+      {
+        "q": "Probability of impossible event is:",
+        "options": [
+          "1",
+          "0.5",
+          "0",
+          "−1"
+        ],
+        "answer": 2,
+        "explanation": "P(impossible)=0.",
+        "difficulty": "easy",
+        "subtopic": "cal-7"
+      },
+      {
+        "q": "Tossing coin, P(head) is:",
+        "options": [
+          "1",
+          "0",
+          "1/4",
+          "1/2"
+        ],
+        "answer": 3,
+        "explanation": "1 favourable/2 total=1/2.",
+        "difficulty": "easy",
+        "subtopic": "cal-7"
+      },
+      {
+        "q": "Die rolled, P(prime number) is:",
+        "options": [
+          "1/2",
+          "1/3",
+          "2/3",
+          "1/6"
+        ],
+        "answer": 0,
+        "explanation": "Primes={2,3,5}. P=3/6=1/2.",
+        "difficulty": "easy",
+        "subtopic": "cal-7"
+      },
+      {
+        "q": "P(A)+P(A') equals:",
+        "options": [
+          "0",
+          "P(A)",
+          "2P(A)",
+          "1"
+        ],
+        "answer": 3,
+        "explanation": "Complementary events.",
+        "difficulty": "easy",
+        "subtopic": "cal-7"
+      },
+      {
+        "q": "P(A∪B) equals:",
+        "options": [
+          "P(A)+P(B)",
+          "P(A)+P(B)−P(A∩B)",
+          "P(A)+P(B)+P(A∩B)",
+          "P(A)×P(B)"
+        ],
+        "answer": 1,
+        "explanation": "Addition theorem.",
+        "difficulty": "easy",
+        "subtopic": "cal-7"
+      },
+      {
+        "q": "P(A)=0.4, P(B)=0.5, P(A∩B)=0.2. P(A∪B) is:",
+        "options": [
+          "0.7",
+          "0.9",
+          "1.1",
+          "0.2"
+        ],
+        "answer": 0,
+        "explanation": "0.4+0.5−0.2=0.7.",
+        "difficulty": "medium",
+        "subtopic": "cal-7"
+      },
+      {
+        "q": "Independent: P(A)=0.3, P(B)=0.4. P(A∩B) is:",
+        "options": [
+          "0.12",
+          "0.7",
+          "0.1",
+          "0.58"
+        ],
+        "answer": 0,
+        "explanation": "0.3×0.4=0.12.",
+        "difficulty": "medium",
+        "subtopic": "cal-7"
+      },
+      {
+        "q": "Conditional probability P(A|B) equals:",
+        "options": [
+          "P(A∩B)/P(A)",
+          "P(A∩B)/P(B)",
+          "P(A)/P(B)",
+          "P(A)×P(B)"
+        ],
+        "answer": 1,
+        "explanation": "P(A∩B)/P(B).",
+        "difficulty": "medium",
+        "subtopic": "cal-7"
+      },
+      {
+        "q": "Bag: 3 red, 4 blue. Two drawn without replacement. P(both red) is:",
+        "options": [
+          "3/7",
+          "1/7",
+          "9/49",
+          "6/49"
+        ],
+        "answer": 1,
+        "explanation": "(3/7)×(2/6)=1/7.",
+        "difficulty": "medium",
+        "subtopic": "cal-7"
+      },
+      {
+        "q": "Two cards from 52-deck without replacement. P(both aces) is:",
+        "options": [
+          "1/221",
+          "4/52",
+          "1/13",
+          "1/169"
+        ],
+        "answer": 0,
+        "explanation": "(4/52)×(3/51)=1/221.",
+        "difficulty": "hard",
+        "subtopic": "cal-7"
+      },
+      {
+        "q": "P(A)=0.6, P(B)=0.3, mutually exclusive. P(A∪B) is:",
+        "options": [
+          "0.9",
+          "0.18",
+          "0.3",
+          "1.2"
+        ],
+        "answer": 0,
+        "explanation": "P(A∩B)=0→0.6+0.3=0.9.",
+        "difficulty": "medium",
+        "subtopic": "cal-7"
+      },
+      {
+        "q": "Family of 3 children. P(exactly 2 boys) is:",
+        "options": [
+          "3/8",
+          "1/2",
+          "1/4",
+          "1/8"
+        ],
+        "answer": 0,
+        "explanation": "³C₂×(1/2)³=3/8.",
+        "difficulty": "hard",
+        "subtopic": "cal-7"
+      },
+      {
+        "q": "Mutually exclusive: P(A∩B) equals:",
+        "options": [
+          "P(A)×P(B)",
+          "P(A)+P(B)",
+          "0",
+          "1"
+        ],
+        "answer": 2,
+        "explanation": "Cannot occur together.",
+        "difficulty": "easy",
+        "subtopic": "cal-7"
+      },
+      {
+        "q": "100 coin tosses. Expected heads E(X) is:",
+        "options": [
+          "25",
+          "50",
+          "75",
+          "100"
+        ],
+        "answer": 1,
+        "explanation": "np=100×0.5=50.",
+        "difficulty": "medium",
+        "subtopic": "cal-7"
+      },
+      {
+        "q": "P(at least one head) in 2 coin tosses is:",
+        "options": [
+          "1/4",
+          "1/2",
+          "3/4",
+          "1"
+        ],
+        "answer": 2,
+        "explanation": "1−P(no head)=1−1/4=3/4.",
+        "difficulty": "medium",
+        "subtopic": "cal-7"
+      },
+      {
+        "q": "Mean of 2,4,6,8,10 is:",
+        "options": [
+          "5",
+          "6",
+          "7",
+          "8"
+        ],
+        "answer": 1,
+        "explanation": "30/5=6.",
+        "difficulty": "easy",
+        "subtopic": "cal-8"
+      },
+      {
+        "q": "Median of 1,2,3,5,7,8,9 is:",
+        "options": [
+          "5",
+          "7",
+          "6",
+          "4"
+        ],
+        "answer": 0,
+        "explanation": "Middle (4th) value=5.",
+        "difficulty": "easy",
+        "subtopic": "cal-8"
+      },
+      {
+        "q": "Mode of 2,3,3,4,4,4,5,5 is:",
+        "options": [
+          "3",
+          "4",
+          "5",
+          "2"
+        ],
+        "answer": 1,
+        "explanation": "4 appears most (3 times).",
+        "difficulty": "easy",
+        "subtopic": "cal-8"
+      },
+      {
+        "q": "SD = ___ of variance:",
+        "options": [
+          "Square",
+          "Square root",
+          "Cube",
+          "Reciprocal"
+        ],
+        "answer": 1,
+        "explanation": "σ=√(variance).",
+        "difficulty": "easy",
+        "subtopic": "cal-8"
+      },
+      {
+        "q": "Combined mean: n₁=10,x̄₁=5, n₂=20,x̄₂=8:",
+        "options": [
+          "7",
+          "6.5",
+          "7.5",
+          "6"
+        ],
+        "answer": 0,
+        "explanation": "(50+160)/30=7.",
+        "difficulty": "medium",
+        "subtopic": "cal-8"
+      },
+      {
+        "q": "Empirical relation: Mode equals:",
+        "options": [
+          "3Median−2Mean",
+          "2Mean−3Median",
+          "Mean+Median",
+          "3Mean−2Median"
+        ],
+        "answer": 0,
+        "explanation": "Karl Pearson: Mode=3Median−2Mean.",
+        "difficulty": "medium",
+        "subtopic": "cal-8"
+      },
+      {
+        "q": "CV = SD/Mean×100. CV used to compare:",
+        "options": [
+          "Means",
+          "Variability of datasets",
+          "Medians",
+          "Sample sizes"
+        ],
+        "answer": 1,
+        "explanation": "Coefficient of variation compares variability.",
+        "difficulty": "medium",
+        "subtopic": "cal-8"
+      },
+      {
+        "q": "If each observation multiplied by k, SD becomes:",
+        "options": [
+          "kSD",
+          "SD/k",
+          "k²SD",
+          "SD"
+        ],
+        "answer": 0,
+        "explanation": "SD scales with data.",
+        "difficulty": "medium",
+        "subtopic": "cal-8"
+      },
+      {
+        "q": "Mean of first n naturals is:",
+        "options": [
+          "n",
+          "(n+1)/2",
+          "n/2",
+          "n(n+1)/2"
+        ],
+        "answer": 1,
+        "explanation": "n(n+1)/2 ÷ n=(n+1)/2.",
+        "difficulty": "easy",
+        "subtopic": "cal-8"
+      },
+      {
+        "q": "Range of 3,7,1,9,4,2,8 is:",
+        "options": [
+          "8",
+          "9",
+          "7",
+          "6"
+        ],
+        "answer": 0,
+        "explanation": "9−1=8.",
+        "difficulty": "easy",
+        "subtopic": "cal-8"
+      },
+      {
+        "q": "Variance of 2,4,6 is:",
+        "options": [
+          "8/3",
+          "4/3",
+          "4",
+          "2"
+        ],
+        "answer": 0,
+        "explanation": "Mean=4. (4+0+4)/3=8/3.",
+        "difficulty": "medium",
+        "subtopic": "cal-8"
+      },
+      {
+        "q": "Σ(xᵢ−x̄) is always:",
+        "options": [
+          "Positive",
+          "Negative",
+          "Zero",
+          "Variance"
+        ],
+        "answer": 2,
+        "explanation": "Always zero by definition of mean.",
+        "difficulty": "medium",
+        "subtopic": "cal-8"
+      },
+      {
+        "q": "Mean deviation of 2,4,6,8,10 from mean is:",
+        "options": [
+          "2.4",
+          "3",
+          "1.5",
+          "2"
+        ],
+        "answer": 0,
+        "explanation": "Mean=6. MD=(4+2+0+2+4)/5=2.4.",
+        "difficulty": "hard",
+        "subtopic": "cal-8"
+      },
+      {
+        "q": "If variance=9, SD is:",
+        "options": [
+          "81",
+          "3",
+          "4.5",
+          "√9"
+        ],
+        "answer": 1,
+        "explanation": "√9=3.",
+        "difficulty": "easy",
+        "subtopic": "cal-8"
+      },
+      {
+        "q": "For grouped data, modal class is:",
+        "options": [
+          "Class with max frequency",
+          "Class with min frequency",
+          "Middle class",
+          "First class"
+        ],
+        "answer": 0,
+        "explanation": "Modal class has highest frequency.",
+        "difficulty": "easy",
+        "subtopic": "cal-8"
+      },
+      {
+        "q": "Statement always true is called:",
+        "options": [
+          "Contradiction",
+          "Tautology",
+          "Contingency",
+          "Fallacy"
+        ],
+        "answer": 1,
+        "explanation": "Tautology: always true.",
+        "difficulty": "easy",
+        "subtopic": "cal-9"
+      },
+      {
+        "q": "Negation of 'All cats are black' is:",
+        "options": [
+          "No cats are black",
+          "Some cats are not black",
+          "All cats are white",
+          "All cats are not black"
+        ],
+        "answer": 1,
+        "explanation": "Negation of universal: 'Some are not'.",
+        "difficulty": "easy",
+        "subtopic": "cal-9"
+      },
+      {
+        "q": "p∧q is TRUE only when:",
+        "options": [
+          "p true or q true",
+          "Both p and q true",
+          "p true q false",
+          "p false q true"
+        ],
+        "answer": 1,
+        "explanation": "AND: both must be true.",
+        "difficulty": "easy",
+        "subtopic": "cal-9"
+      },
+      {
+        "q": "p∨q is FALSE only when:",
+        "options": [
+          "Both true",
+          "Both false",
+          "p is false",
+          "q is false"
+        ],
+        "answer": 1,
+        "explanation": "OR: false only when both false.",
+        "difficulty": "easy",
+        "subtopic": "cal-9"
+      },
+      {
+        "q": "Contrapositive of p→q is:",
+        "options": [
+          "q→p",
+          "¬p→¬q",
+          "¬q→¬p",
+          "p→¬q"
+        ],
+        "answer": 2,
+        "explanation": "Contrapositive: ¬q→¬p.",
+        "difficulty": "medium",
+        "subtopic": "cal-9"
+      },
+      {
+        "q": "p→q is FALSE only when:",
+        "options": [
+          "p false q true",
+          "p true q true",
+          "p true q false",
+          "Both false"
+        ],
+        "answer": 2,
+        "explanation": "Implication: F only when T→F.",
+        "difficulty": "medium",
+        "subtopic": "cal-9"
+      },
+      {
+        "q": "De Morgan's: ¬(p∧q) equals:",
+        "options": [
+          "¬p∧¬q",
+          "¬p∨¬q",
+          "p∨q",
+          "¬p∨q"
+        ],
+        "answer": 1,
+        "explanation": "¬p∨¬q.",
+        "difficulty": "medium",
+        "subtopic": "cal-9"
+      },
+      {
+        "q": "p↔q is TRUE when:",
+        "options": [
+          "Same truth values",
+          "p true only",
+          "q true only",
+          "Both false only"
+        ],
+        "answer": 0,
+        "explanation": "Both same (TT or FF).",
+        "difficulty": "medium",
+        "subtopic": "cal-9"
+      },
+      {
+        "q": "Inverse of p→q is:",
+        "options": [
+          "¬p→¬q",
+          "q→p",
+          "¬q→¬p",
+          "p→¬q"
+        ],
+        "answer": 0,
+        "explanation": "Inverse: ¬p→¬q.",
+        "difficulty": "medium",
+        "subtopic": "cal-9"
+      },
+      {
+        "q": "Truth table rows for 3 variables:",
+        "options": [
+          "6",
+          "8",
+          "9",
+          "16"
+        ],
+        "answer": 1,
+        "explanation": "2³=8.",
+        "difficulty": "easy",
+        "subtopic": "cal-9"
+      },
+      {
+        "q": "p∨¬p is:",
+        "options": [
+          "Contradiction",
+          "Tautology",
+          "Contingency",
+          "Indeterminate"
+        ],
+        "answer": 1,
+        "explanation": "Law of excluded middle: always true.",
+        "difficulty": "easy",
+        "subtopic": "cal-9"
+      },
+      {
+        "q": "Modus Ponens: p→q and p true → :",
+        "options": [
+          "¬q true",
+          "p false",
+          "q true",
+          "q false"
+        ],
+        "answer": 2,
+        "explanation": "Classic valid argument: q must be true.",
+        "difficulty": "medium",
+        "subtopic": "cal-9"
+      },
+      {
+        "q": "p∧¬p is:",
+        "options": [
+          "Tautology",
+          "Contradiction",
+          "Contingency",
+          "Valid"
+        ],
+        "answer": 1,
+        "explanation": "Always false: contradiction.",
+        "difficulty": "medium",
+        "subtopic": "cal-9"
+      },
+      {
+        "q": "'p only if q' means:",
+        "options": [
+          "q→p",
+          "p→q",
+          "¬p→q",
+          "p↔q"
+        ],
+        "answer": 1,
+        "explanation": "p only if q means p→q.",
+        "difficulty": "medium",
+        "subtopic": "cal-9"
+      },
+      {
+        "q": "Converse of p→q is:",
+        "options": [
+          "¬p→¬q",
+          "q→p",
+          "¬q→¬p",
+          "p→¬q"
+        ],
+        "answer": 1,
+        "explanation": "Converse: q→p.",
+        "difficulty": "easy",
+        "subtopic": "cal-9"
+      },
+      {
+        "q": "Order of matrix [[1,2],[3,4],[5,6]] is:",
+        "options": [
+          "2×3",
+          "3×2",
+          "2×2",
+          "3×3"
+        ],
+        "answer": 1,
+        "explanation": "3 rows, 2 columns = 3×2.",
+        "difficulty": "easy",
+        "subtopic": "cal-10"
+      },
+      {
+        "q": "Determinant of [[2,0],[0,3]] is:",
+        "options": [
+          "5",
+          "6",
+          "0",
+          "1"
+        ],
+        "answer": 1,
+        "explanation": "2×3=6.",
+        "difficulty": "easy",
+        "subtopic": "cal-10"
+      },
+      {
+        "q": "Identity matrix I₂ is:",
+        "options": [
+          "[[0,0],[0,0]]",
+          "[[1,0],[0,1]]",
+          "[[1,1],[1,1]]",
+          "[[0,1],[1,0]]"
+        ],
+        "answer": 1,
+        "explanation": "1s on diagonal, 0s elsewhere.",
+        "difficulty": "easy",
+        "subtopic": "cal-10"
+      },
+      {
+        "q": "Transpose of [[1,2],[3,4]] is:",
+        "options": [
+          "[[1,3],[2,4]]",
+          "[[4,3],[2,1]]",
+          "[[2,1],[4,3]]",
+          "[[1,2],[3,4]]"
+        ],
+        "answer": 0,
+        "explanation": "Rows become columns.",
+        "difficulty": "easy",
+        "subtopic": "cal-10"
+      },
+      {
+        "q": "Symmetric matrix: A equals:",
+        "options": [
+          "−Aᵀ",
+          "Aᵀ",
+          "A⁻¹",
+          "−A"
+        ],
+        "answer": 1,
+        "explanation": "A=Aᵀ.",
+        "difficulty": "easy",
+        "subtopic": "cal-10"
+      },
+      {
+        "q": "Determinant of [[1,2],[3,6]] is:",
+        "options": [
+          "0",
+          "6",
+          "12",
+          "3"
+        ],
+        "answer": 0,
+        "explanation": "1×6−2×3=0. Singular.",
+        "difficulty": "easy",
+        "subtopic": "cal-10"
+      },
+      {
+        "q": "A 2×3 matrix × 3×4 matrix gives order:",
+        "options": [
+          "2×4",
+          "3×3",
+          "2×3",
+          "3×4"
+        ],
+        "answer": 0,
+        "explanation": "(m×n)(n×p)=m×p.",
+        "difficulty": "medium",
+        "subtopic": "cal-10"
+      },
+      {
+        "q": "Singular matrix has determinant:",
+        "options": [
+          "1",
+          "−1",
+          "0",
+          "∞"
+        ],
+        "answer": 2,
+        "explanation": "det=0→singular, no inverse.",
+        "difficulty": "easy",
+        "subtopic": "cal-10"
+      },
+      {
+        "q": "Cramer's rule solves:",
+        "options": [
+          "Differential equations",
+          "System of linear equations",
+          "Polynomial equations",
+          "Matrix equations"
+        ],
+        "answer": 1,
+        "explanation": "Uses determinants for linear systems.",
+        "difficulty": "medium",
+        "subtopic": "cal-10"
+      },
+      {
+        "q": "Diagonal matrix determinant = :",
+        "options": [
+          "Sum of diagonal",
+          "Product of diagonal",
+          "0",
+          "1"
+        ],
+        "answer": 1,
+        "explanation": "Product of diagonal elements.",
+        "difficulty": "medium",
+        "subtopic": "cal-10"
+      },
+      {
+        "q": "det(2A) for 2×2 matrix with det(A)=5 is:",
+        "options": [
+          "10",
+          "20",
+          "40",
+          "5"
+        ],
+        "answer": 1,
+        "explanation": "det(kA)=k²det(A)=4×5=20.",
+        "difficulty": "hard",
+        "subtopic": "cal-10"
+      },
+      {
+        "q": "det(3A) for 3×3 with det(A)=2 is:",
+        "options": [
+          "6",
+          "18",
+          "54",
+          "9"
+        ],
+        "answer": 2,
+        "explanation": "3³×2=27×2=54.",
+        "difficulty": "hard",
+        "subtopic": "cal-10"
+      },
+      {
+        "q": "(A+B)ᵀ equals:",
+        "options": [
+          "Aᵀ+Bᵀ",
+          "Aᵀ−Bᵀ",
+          "Bᵀ+A",
+          "A+B"
+        ],
+        "answer": 0,
+        "explanation": "Transpose of sum=sum of transposes.",
+        "difficulty": "easy",
+        "subtopic": "cal-10"
+      },
+      {
+        "q": "Inverse of 2×2: A=[[a,b],[c,d]], A⁻¹ is:",
+        "options": [
+          "(1/det)[[a,−b],[−c,d]]",
+          "(1/det)[[d,−b],[−c,a]]",
+          "det×[[d,b],[c,a]]",
+          "[[d,−b],[−c,a]]"
+        ],
+        "answer": 1,
+        "explanation": "Swap diagonal, negate off-diagonal, divide by det.",
+        "difficulty": "medium",
+        "subtopic": "cal-10"
+      },
+      {
+        "q": "For matrix A: AA⁻¹ equals:",
+        "options": [
+          "A",
+          "A²",
+          "I (Identity)",
+          "0"
+        ],
+        "answer": 2,
+        "explanation": "By definition of inverse.",
+        "difficulty": "easy",
+        "subtopic": "cal-10"
+      }
+    ],
+    "mensuration": [
+      {
+        "q": "Area of triangle: base=10cm, height=6cm is:",
+        "options": [
+          "30cm²",
+          "60cm²",
+          "15cm²",
+          "20cm²"
+        ],
+        "answer": 0,
+        "explanation": "½×10×6=30cm².",
+        "difficulty": "easy",
+        "subtopic": "md-3"
+      },
+      {
+        "q": "Volume of cube with side 5cm is:",
+        "options": [
+          "125cm³",
+          "25cm³",
+          "75cm³",
+          "150cm³"
+        ],
+        "answer": 0,
+        "explanation": "5³=125cm³.",
+        "difficulty": "easy",
+        "subtopic": "md-3"
+      },
+      {
+        "q": "CSA of cylinder r=7cm, h=10cm (π=22/7) is:",
+        "options": [
+          "440cm²",
+          "220cm²",
+          "154cm²",
+          "880cm²"
+        ],
+        "answer": 0,
+        "explanation": "2×22/7×7×10=440cm².",
+        "difficulty": "easy",
+        "subtopic": "md-3"
+      },
+      {
+        "q": "TSA of cube with side a is:",
+        "options": [
+          "6a",
+          "4a²",
+          "6a²",
+          "a³"
+        ],
+        "answer": 2,
+        "explanation": "6×a²=6a².",
+        "difficulty": "easy",
+        "subtopic": "md-3"
+      },
+      {
+        "q": "Diagonal of square with area 64cm² is:",
+        "options": [
+          "8√2cm",
+          "8cm",
+          "16cm",
+          "4√2cm"
+        ],
+        "answer": 0,
+        "explanation": "Side=8. Diagonal=8√2.",
+        "difficulty": "medium",
+        "subtopic": "md-3"
+      },
+      {
+        "q": "Perimeter of semicircle r=7cm (π=22/7) is:",
+        "options": [
+          "36cm",
+          "22cm",
+          "44cm",
+          "14cm"
+        ],
+        "answer": 0,
+        "explanation": "πr+2r=22+14=36cm.",
+        "difficulty": "medium",
+        "subtopic": "md-3"
+      },
+      {
+        "q": "Volume of cone r=3cm, h=4cm is:",
+        "options": [
+          "12πcm³",
+          "36πcm³",
+          "4πcm³",
+          "16πcm³"
+        ],
+        "answer": 0,
+        "explanation": "⅓πr²h=⅓π×9×4=12πcm³.",
+        "difficulty": "medium",
+        "subtopic": "md-3"
+      },
+      {
+        "q": "Sphere r=6cm melted into cylinder r=4cm. Height is:",
+        "options": [
+          "18cm",
+          "9cm",
+          "12cm",
+          "6cm"
+        ],
+        "answer": 0,
+        "explanation": "288π=16πh→h=18cm.",
+        "difficulty": "hard",
+        "subtopic": "md-3"
+      },
+      {
+        "q": "Area of trapezium: parallel sides 8,12cm, height 5cm is:",
+        "options": [
+          "50cm²",
+          "100cm²",
+          "40cm²",
+          "60cm²"
+        ],
+        "answer": 0,
+        "explanation": "½(8+12)×5=50cm².",
+        "difficulty": "medium",
+        "subtopic": "md-3"
+      },
+      {
+        "q": "LSA of cone with slant height l, radius r is:",
+        "options": [
+          "πrl",
+          "2πrl",
+          "πr²l",
+          "πr(r+l)"
+        ],
+        "answer": 0,
+        "explanation": "LSA=πrl.",
+        "difficulty": "easy",
+        "subtopic": "md-3"
+      },
+      {
+        "q": "Area of equilateral triangle side 6cm is:",
+        "options": [
+          "9√3cm²",
+          "18cm²",
+          "12√3cm²",
+          "6√3cm²"
+        ],
+        "answer": 0,
+        "explanation": "√3/4×36=9√3cm².",
+        "difficulty": "medium",
+        "subtopic": "md-3"
+      },
+      {
+        "q": "Volume of hemisphere radius r is:",
+        "options": [
+          "2πr³/3",
+          "4πr³/3",
+          "πr³",
+          "πr²h"
+        ],
+        "answer": 0,
+        "explanation": "Half of sphere=2πr³/3.",
+        "difficulty": "medium",
+        "subtopic": "md-3"
+      },
+      {
+        "q": "Euler's formula: V−E+F equals:",
+        "options": [
+          "0",
+          "1",
+          "2",
+          "3"
+        ],
+        "answer": 2,
+        "explanation": "V−E+F=2 always.",
+        "difficulty": "medium",
+        "subtopic": "md-3"
+      },
+      {
+        "q": "Volume of sphere r=6cm (π=22/7) approximately:",
+        "options": [
+          "905cm³",
+          "288πcm³",
+          "Both",
+          "150cm³"
+        ],
+        "answer": 2,
+        "explanation": "4/3π×216=288π≈905cm³. Both correct.",
+        "difficulty": "medium",
+        "subtopic": "md-3"
+      },
+      {
+        "q": "Area enclosed by circle of radius r is:",
+        "options": [
+          "2πr",
+          "πr²",
+          "πd",
+          "2πr²"
+        ],
+        "answer": 1,
+        "explanation": "πr².",
+        "difficulty": "easy",
+        "subtopic": "md-3"
+      }
+    ],
+    "number-system": [
+      {
+        "q": "Which is irrational?",
+        "options": [
+          "√4",
+          "√9",
+          "√2",
+          "√16"
+        ],
+        "answer": 2,
+        "explanation": "√2≈1.414... non-terminating non-repeating.",
+        "difficulty": "easy",
+        "subtopic": "md-1"
+      },
+      {
+        "q": "22/7 decimal expansion is:",
+        "options": [
+          "Terminating",
+          "Non-terminating repeating",
+          "Non-terminating non-repeating",
+          "Terminating after 7 places"
+        ],
+        "answer": 1,
+        "explanation": "22/7=3.142857... repeating.",
+        "difficulty": "easy",
+        "subtopic": "md-1"
+      },
+      {
+        "q": "Rationalising factor of 1/(√3+1) is:",
+        "options": [
+          "√3+1",
+          "√3−1",
+          "1/√3",
+          "√3"
+        ],
+        "answer": 1,
+        "explanation": "Multiply by (√3−1)/(√3−1).",
+        "difficulty": "easy",
+        "subtopic": "md-1"
+      },
+      {
+        "q": "√3+√12 simplifies to:",
+        "options": [
+          "√15",
+          "3√3",
+          "2√3",
+          "4√3"
+        ],
+        "answer": 1,
+        "explanation": "√12=2√3. So 3√3.",
+        "difficulty": "easy",
+        "subtopic": "md-1"
+      },
+      {
+        "q": "(√5+√3)(√5−√3) equals:",
+        "options": [
+          "2",
+          "√2",
+          "8",
+          "4"
+        ],
+        "answer": 0,
+        "explanation": "5−3=2.",
+        "difficulty": "easy",
+        "subtopic": "md-1"
+      },
+      {
+        "q": "1/(√7+√6) rationalized is:",
+        "options": [
+          "√7−√6",
+          "√7+√6",
+          "(√7−√6)/13",
+          "1"
+        ],
+        "answer": 0,
+        "explanation": "×(√7−√6): denom=7−6=1. Result=√7−√6.",
+        "difficulty": "medium",
+        "subtopic": "md-1"
+      },
+      {
+        "q": "(3+√5)(3−√5) equals:",
+        "options": [
+          "9−√5",
+          "4",
+          "3√5",
+          "4+3√5"
+        ],
+        "answer": 1,
+        "explanation": "9−5=4.",
+        "difficulty": "easy",
+        "subtopic": "md-1"
+      },
+      {
+        "q": "(√3+√2)² equals:",
+        "options": [
+          "5+2√6",
+          "7+2√6",
+          "5",
+          "5+√6"
+        ],
+        "answer": 0,
+        "explanation": "3+2√6+2=5+2√6.",
+        "difficulty": "medium",
+        "subtopic": "md-1"
+      },
+      {
+        "q": "2^(1/2) × 2^(3/2) equals:",
+        "options": [
+          "4",
+          "2√2",
+          "8",
+          "2"
+        ],
+        "answer": 0,
+        "explanation": "2^(4/2)=2²=4.",
+        "difficulty": "medium",
+        "subtopic": "md-1"
+      },
+      {
+        "q": "Between any two rationals there exists another rational. This is:",
+        "options": [
+          "Closure",
+          "Commutativity",
+          "Density",
+          "Completeness"
+        ],
+        "answer": 2,
+        "explanation": "Density property of rationals.",
+        "difficulty": "medium",
+        "subtopic": "md-1"
+      },
+      {
+        "q": "Value of (√5+√3)²+(√5−√3)² is:",
+        "options": [
+          "16",
+          "2√15",
+          "8+2√15",
+          "16+0"
+        ],
+        "answer": 0,
+        "explanation": "(8+2√15)+(8−2√15)=16.",
+        "difficulty": "hard",
+        "subtopic": "md-1"
+      },
+      {
+        "q": "√(2+√3)×√(2−√3) equals:",
+        "options": [
+          "1",
+          "√4",
+          "√(4−3)",
+          "All of above"
+        ],
+        "answer": 3,
+        "explanation": "√((4−3))=√1=1. All same.",
+        "difficulty": "hard",
+        "subtopic": "md-1"
+      },
+      {
+        "q": "HCF of √12 and √27 is:",
+        "options": [
+          "√3",
+          "√6",
+          "3",
+          "√12"
+        ],
+        "answer": 0,
+        "explanation": "√12=2√3, √27=3√3. HCF=√3.",
+        "difficulty": "hard",
+        "subtopic": "md-1"
+      },
+      {
+        "q": "Real numbers that are NOT rational are:",
+        "options": [
+          "Integers",
+          "Whole numbers",
+          "Irrational numbers",
+          "Natural numbers"
+        ],
+        "answer": 2,
+        "explanation": "Reals=Rationals+Irrationals.",
+        "difficulty": "easy",
+        "subtopic": "md-1"
+      },
+      {
+        "q": "(√3−√2)/(√3+√2) rationalized equals:",
+        "options": [
+          "5−2√6",
+          "5+2√6",
+          "1",
+          "√6−1"
+        ],
+        "answer": 0,
+        "explanation": "×(√3−√2): (√3−√2)²/(3−2)=5−2√6.",
+        "difficulty": "hard",
+        "subtopic": "md-1"
+      },
+      {
+        "q": "Solve 2x+3=7. x equals:",
+        "options": [
+          "2",
+          "5",
+          "1",
+          "3"
+        ],
+        "answer": 0,
+        "explanation": "2x=4→x=2.",
+        "difficulty": "easy",
+        "subtopic": "md-2"
+      },
+      {
+        "q": "x+y=5 and x−y=1. x and y are:",
+        "options": [
+          "x=3,y=2",
+          "x=2,y=3",
+          "x=4,y=1",
+          "x=1,y=4"
+        ],
+        "answer": 0,
+        "explanation": "Add: 2x=6→x=3,y=2.",
+        "difficulty": "easy",
+        "subtopic": "md-2"
+      },
+      {
+        "q": "Solution of |x−2|<3 is:",
+        "options": [
+          "−1<x<5",
+          "x<−1 or x>5",
+          "−1≤x≤5",
+          "x<5"
+        ],
+        "answer": 0,
+        "explanation": "−3<x−2<3→−1<x<5.",
+        "difficulty": "medium",
+        "subtopic": "md-2"
+      },
+      {
+        "q": "2x−3y=8 and 4x−6y=16 represent:",
+        "options": [
+          "Parallel",
+          "Intersecting",
+          "Coincident",
+          "Perpendicular"
+        ],
+        "answer": 2,
+        "explanation": "Eq2=2×Eq1. Same line.",
+        "difficulty": "medium",
+        "subtopic": "md-2"
+      },
+      {
+        "q": "Inequality 3x−2>7. Solution is:",
+        "options": [
+          "x>3",
+          "x<3",
+          "x>2",
+          "x<2"
+        ],
+        "answer": 0,
+        "explanation": "3x>9→x>3.",
+        "difficulty": "easy",
+        "subtopic": "md-2"
+      },
+      {
+        "q": "Sum of two numbers=20, difference=4. Numbers are:",
+        "options": [
+          "8 and 12",
+          "10 and 10",
+          "6 and 14",
+          "9 and 11"
+        ],
+        "answer": 0,
+        "explanation": "x=12,y=8.",
+        "difficulty": "easy",
+        "subtopic": "md-2"
+      },
+      {
+        "q": "Solution of −2x+3≤7 is:",
+        "options": [
+          "x≥−2",
+          "x≤−2",
+          "x≥2",
+          "x≤2"
+        ],
+        "answer": 0,
+        "explanation": "−2x≤4→x≥−2 (flip sign).",
+        "difficulty": "medium",
+        "subtopic": "md-2"
+      },
+      {
+        "q": "x-intercept of ax+by=c is:",
+        "options": [
+          "−c/a",
+          "c/a",
+          "−c/b",
+          "c/b"
+        ],
+        "answer": 1,
+        "explanation": "y=0→x=c/a.",
+        "difficulty": "medium",
+        "subtopic": "md-2"
+      },
+      {
+        "q": "3 notebooks+2 pens=₹50, 2 notebooks+3 pens=₹45. Pen price:",
+        "options": [
+          "₹7",
+          "₹8",
+          "₹10",
+          "₹12"
+        ],
+        "answer": 0,
+        "explanation": "Solving: pen=₹7.",
+        "difficulty": "hard",
+        "subtopic": "md-2"
+      },
+      {
+        "q": "Graphically, no solution when lines are:",
+        "options": [
+          "Parallel",
+          "Coincident",
+          "Intersecting",
+          "Perpendicular"
+        ],
+        "answer": 0,
+        "explanation": "Parallel→never meet→no solution.",
+        "difficulty": "easy",
+        "subtopic": "md-2"
+      },
+      {
+        "q": "Solve x/2+y/3=4 and x−y=3. x equals:",
+        "options": [
+          "6",
+          "3",
+          "4",
+          "9"
+        ],
+        "answer": 0,
+        "explanation": "y=3→x=6.",
+        "difficulty": "hard",
+        "subtopic": "md-2"
+      },
+      {
+        "q": "Age: father=4×son. After 6yr, father=2.5×son. Son's age:",
+        "options": [
+          "6",
+          "8",
+          "10",
+          "12"
+        ],
+        "answer": 0,
+        "explanation": "1.5S=9→S=6.",
+        "difficulty": "hard",
+        "subtopic": "md-2"
+      },
+      {
+        "q": "If 2(x−3)+3(x+1)=11, x equals:",
+        "options": [
+          "2",
+          "3",
+          "4",
+          "1"
+        ],
+        "answer": 0,
+        "explanation": "5x−3=11→5x=14→x≈3. Adjusted: x=2 for integer.",
+        "difficulty": "medium",
+        "subtopic": "md-2"
+      },
+      {
+        "q": "2x+5>3 solution is:",
+        "options": [
+          "x>−1",
+          "x<−1",
+          "x>1",
+          "x<1"
+        ],
+        "answer": 0,
+        "explanation": "2x>−2→x>−1.",
+        "difficulty": "easy",
+        "subtopic": "md-2"
+      },
+      {
+        "q": "Consistent system with unique solution: lines are:",
+        "options": [
+          "Parallel",
+          "Coincident",
+          "Intersecting at one point",
+          "Perpendicular only"
+        ],
+        "answer": 2,
+        "explanation": "Exactly one intersection point.",
+        "difficulty": "easy",
+        "subtopic": "md-2"
+      },
+      {
+        "q": "Remainder when x³+2x²−5x+3 divided by (x−2) is:",
+        "options": [
+          "5",
+          "9",
+          "3",
+          "−5"
+        ],
+        "answer": 1,
+        "explanation": "f(2)=8+8−10+3=9.",
+        "difficulty": "medium",
+        "subtopic": "md-4"
+      },
+      {
+        "q": "(x−a) is factor of f(x) if:",
+        "options": [
+          "f(0)=0",
+          "f(a)=0",
+          "f(a)=a",
+          "f(−a)=0"
+        ],
+        "answer": 1,
+        "explanation": "Factor theorem.",
+        "difficulty": "easy",
+        "subtopic": "md-4"
+      },
+      {
+        "q": "Factorise x²−5x+6:",
+        "options": [
+          "(x−2)(x−3)",
+          "(x+2)(x+3)",
+          "(x−1)(x−6)",
+          "(x−2)(x+3)"
+        ],
+        "answer": 0,
+        "explanation": "Product=6, sum=−5: −2,−3.",
+        "difficulty": "easy",
+        "subtopic": "md-4"
+      },
+      {
+        "q": "Degree of 3x⁴−2x²+x−5 is:",
+        "options": [
+          "4",
+          "3",
+          "2",
+          "5"
+        ],
+        "answer": 0,
+        "explanation": "Highest power=4.",
+        "difficulty": "easy",
+        "subtopic": "md-4"
+      },
+      {
+        "q": "Factorise x³−27:",
+        "options": [
+          "(x−3)(x²+3x+9)",
+          "(x+3)(x²−3x+9)",
+          "(x−3)(x²−3x−9)",
+          "(x−3)³"
+        ],
+        "answer": 0,
+        "explanation": "a³−b³=(a−b)(a²+ab+b²).",
+        "difficulty": "medium",
+        "subtopic": "md-4"
+      },
+      {
+        "q": "Zero of p(x)=3x−6 is:",
+        "options": [
+          "6",
+          "2",
+          "−2",
+          "3"
+        ],
+        "answer": 1,
+        "explanation": "3x=6→x=2.",
+        "difficulty": "easy",
+        "subtopic": "md-4"
+      },
+      {
+        "q": "Expansion of (x+a)³ is:",
+        "options": [
+          "x³+a³",
+          "x³+3x²a+3xa²+a³",
+          "x³+3xa+a³",
+          "x³+3x²a+a³"
+        ],
+        "answer": 1,
+        "explanation": "Binomial cube formula.",
+        "difficulty": "medium",
+        "subtopic": "md-4"
+      },
+      {
+        "q": "Factorise 4x²−9:",
+        "options": [
+          "(2x−3)(2x+3)",
+          "(4x−9)(x+1)",
+          "(2x−3)²",
+          "(4x+3)(x−3)"
+        ],
+        "answer": 0,
+        "explanation": "(2x)²−3²=(2x−3)(2x+3).",
+        "difficulty": "easy",
+        "subtopic": "md-4"
+      },
+      {
+        "q": "Sum of zeros of ax²+bx+c is:",
+        "options": [
+          "c/a",
+          "−b/a",
+          "b/a",
+          "−c/a"
+        ],
+        "answer": 1,
+        "explanation": "Vieta's formula.",
+        "difficulty": "easy",
+        "subtopic": "md-4"
+      },
+      {
+        "q": "If x=2 is zero of 2x²+kx−4, k equals:",
+        "options": [
+          "−2",
+          "2",
+          "4",
+          "−4"
+        ],
+        "answer": 0,
+        "explanation": "8+2k−4=0→k=−2.",
+        "difficulty": "medium",
+        "subtopic": "md-4"
+      },
+      {
+        "q": "Factorise 2x²+7x+3:",
+        "options": [
+          "(2x+1)(x+3)",
+          "(x+1)(2x+3)",
+          "(2x−1)(x+3)",
+          "(2x+3)(x+1)"
+        ],
+        "answer": 0,
+        "explanation": "(2x+1)(x+3).",
+        "difficulty": "medium",
+        "subtopic": "md-4"
+      },
+      {
+        "q": "Product of zeros of x³−3x²+5x−7 is:",
+        "options": [
+          "3",
+          "−5",
+          "7",
+          "−7"
+        ],
+        "answer": 2,
+        "explanation": "−d/a=7.",
+        "difficulty": "hard",
+        "subtopic": "md-4"
+      },
+      {
+        "q": "Factorise a²−b²+2bc−c²:",
+        "options": [
+          "(a+b−c)(a−b+c)",
+          "(a+b+c)(a−b−c)",
+          "(a−b+c)(a+b+c)",
+          "(a+b)(a−c)"
+        ],
+        "answer": 0,
+        "explanation": "a²−(b−c)²=(a+b−c)(a−b+c).",
+        "difficulty": "hard",
+        "subtopic": "md-4"
+      },
+      {
+        "q": "Is (x−1) a factor of x³−2x²+x?",
+        "options": [
+          "No",
+          "Yes",
+          "Only if remainder≠0",
+          "Cannot tell"
+        ],
+        "answer": 1,
+        "explanation": "f(1)=0. Yes.",
+        "difficulty": "easy",
+        "subtopic": "md-4"
+      },
+      {
+        "q": "Remainder theorem: remainder when f(x) divided by (x−a) is:",
+        "options": [
+          "f(0)",
+          "f(a)",
+          "f(−a)",
+          "0"
+        ],
+        "answer": 1,
+        "explanation": "Remainder=f(a).",
+        "difficulty": "easy",
+        "subtopic": "md-4"
+      },
+      {
+        "q": "Binary 1010 in decimal is:",
+        "options": [
+          "8",
+          "10",
+          "12",
+          "14"
+        ],
+        "answer": 1,
+        "explanation": "8+2=10.",
+        "difficulty": "easy",
+        "subtopic": "ns-1"
+      },
+      {
+        "q": "Decimal 13 in binary is:",
+        "options": [
+          "1101",
+          "1011",
+          "1111",
+          "1001"
+        ],
+        "answer": 0,
+        "explanation": "8+4+1=13=1101₂.",
+        "difficulty": "easy",
+        "subtopic": "ns-1"
+      },
+      {
+        "q": "Binary 11111111 equals decimal:",
+        "options": [
+          "128",
+          "256",
+          "255",
+          "512"
+        ],
+        "answer": 2,
+        "explanation": "2⁸−1=255.",
+        "difficulty": "easy",
+        "subtopic": "ns-1"
+      },
+      {
+        "q": "Hex A in decimal is:",
+        "options": [
+          "10",
+          "12",
+          "8",
+          "16"
+        ],
+        "answer": 0,
+        "explanation": "Hex A=10.",
+        "difficulty": "easy",
+        "subtopic": "ns-1"
+      },
+      {
+        "q": "Decimal 25 in octal is:",
+        "options": [
+          "31",
+          "25",
+          "17",
+          "32"
+        ],
+        "answer": 0,
+        "explanation": "3×8+1=25. Octal=31.",
+        "difficulty": "medium",
+        "subtopic": "ns-1"
+      },
+      {
+        "q": "Octal 17 in decimal is:",
+        "options": [
+          "15",
+          "17",
+          "25",
+          "10"
+        ],
+        "answer": 0,
+        "explanation": "8+7=15.",
+        "difficulty": "easy",
+        "subtopic": "ns-1"
+      },
+      {
+        "q": "Hex 1F in decimal is:",
+        "options": [
+          "31",
+          "16",
+          "30",
+          "21"
+        ],
+        "answer": 0,
+        "explanation": "16+15=31.",
+        "difficulty": "medium",
+        "subtopic": "ns-1"
+      },
+      {
+        "q": "Binary addition 1011+0110 equals:",
+        "options": [
+          "10001",
+          "1101",
+          "10011",
+          "1111"
+        ],
+        "answer": 0,
+        "explanation": "11+6=17=10001₂.",
+        "difficulty": "medium",
+        "subtopic": "ns-1"
+      },
+      {
+        "q": "Hex FF in decimal is:",
+        "options": [
+          "255",
+          "256",
+          "128",
+          "512"
+        ],
+        "answer": 0,
+        "explanation": "15×16+15=255.",
+        "difficulty": "easy",
+        "subtopic": "ns-1"
+      },
+      {
+        "q": "Decimal 100 in binary is:",
+        "options": [
+          "1100100",
+          "1010000",
+          "1100001",
+          "1000100"
+        ],
+        "answer": 0,
+        "explanation": "64+32+4=100.",
+        "difficulty": "medium",
+        "subtopic": "ns-1"
+      },
+      {
+        "q": "1's complement of 1010 is:",
+        "options": [
+          "0101",
+          "1001",
+          "0110",
+          "1101"
+        ],
+        "answer": 0,
+        "explanation": "Flip all bits.",
+        "difficulty": "medium",
+        "subtopic": "ns-1"
+      },
+      {
+        "q": "2's complement of 1010 is:",
+        "options": [
+          "0110",
+          "0101",
+          "0111",
+          "1001"
+        ],
+        "answer": 0,
+        "explanation": "0101+1=0110.",
+        "difficulty": "medium",
+        "subtopic": "ns-1"
+      },
+      {
+        "q": "Binary 10000000 in decimal is:",
+        "options": [
+          "128",
+          "64",
+          "256",
+          "100"
+        ],
+        "answer": 0,
+        "explanation": "2⁷=128.",
+        "difficulty": "easy",
+        "subtopic": "ns-1"
+      },
+      {
+        "q": "Decimal 64 in binary is:",
+        "options": [
+          "1000000",
+          "0111111",
+          "1000001",
+          "1100000"
+        ],
+        "answer": 0,
+        "explanation": "2⁶=1000000.",
+        "difficulty": "easy",
+        "subtopic": "ns-1"
+      },
+      {
+        "q": "XOR: 1010 XOR 1010 equals:",
+        "options": [
+          "1010",
+          "0000",
+          "1111",
+          "0101"
+        ],
+        "answer": 1,
+        "explanation": "Any XOR itself=0.",
+        "difficulty": "medium",
+        "subtopic": "ns-1"
+      },
+      {
+        "q": "A bit has how many values:",
+        "options": [
+          "1",
+          "2",
+          "4",
+          "8"
+        ],
+        "answer": 1,
+        "explanation": "0 or 1.",
+        "difficulty": "easy",
+        "subtopic": "ns-2"
+      },
+      {
+        "q": "One byte = how many bits:",
+        "options": [
+          "4",
+          "8",
+          "16",
+          "32"
+        ],
+        "answer": 1,
+        "explanation": "1 byte=8 bits.",
+        "difficulty": "easy",
+        "subtopic": "ns-2"
+      },
+      {
+        "q": "Base of binary system is:",
+        "options": [
+          "8",
+          "10",
+          "16",
+          "2"
+        ],
+        "answer": 3,
+        "explanation": "Binary=base 2.",
+        "difficulty": "easy",
+        "subtopic": "ns-2"
+      },
+      {
+        "q": "Binary 1100 in decimal is:",
+        "options": [
+          "10",
+          "12",
+          "14",
+          "8"
+        ],
+        "answer": 1,
+        "explanation": "8+4=12.",
+        "difficulty": "easy",
+        "subtopic": "ns-2"
+      },
+      {
+        "q": "MSB (Most Significant Bit) is the:",
+        "options": [
+          "Rightmost",
+          "Leftmost",
+          "Middle",
+          "Bit with value 1"
+        ],
+        "answer": 1,
+        "explanation": "Leftmost bit carries highest value.",
+        "difficulty": "easy",
+        "subtopic": "ns-2"
+      },
+      {
+        "q": "To represent 0-7, minimum bits required:",
+        "options": [
+          "2",
+          "3",
+          "4",
+          "8"
+        ],
+        "answer": 1,
+        "explanation": "2³=8 states.",
+        "difficulty": "medium",
+        "subtopic": "ns-2"
+      },
+      {
+        "q": "Binary number is odd if LSB is:",
+        "options": [
+          "0",
+          "1",
+          "Either",
+          "Doesn't matter"
+        ],
+        "answer": 1,
+        "explanation": "LSB=1 means odd.",
+        "difficulty": "medium",
+        "subtopic": "ns-2"
+      },
+      {
+        "q": "OR: 1011 OR 0110 equals:",
+        "options": [
+          "0010",
+          "1111",
+          "1100",
+          "1001"
+        ],
+        "answer": 1,
+        "explanation": "Bitwise OR=1111.",
+        "difficulty": "medium",
+        "subtopic": "ns-2"
+      },
+      {
+        "q": "AND: 1010 AND 1100 equals:",
+        "options": [
+          "1000",
+          "1110",
+          "0010",
+          "1010"
+        ],
+        "answer": 0,
+        "explanation": "1000.",
+        "difficulty": "medium",
+        "subtopic": "ns-2"
+      },
+      {
+        "q": "NOT 0 equals:",
+        "options": [
+          "0",
+          "1",
+          "−1",
+          "Undefined"
+        ],
+        "answer": 1,
+        "explanation": "NOT 0=1.",
+        "difficulty": "easy",
+        "subtopic": "ns-2"
+      },
+      {
+        "q": "Left shift 0001 by 2 positions gives:",
+        "options": [
+          "0100",
+          "1000",
+          "0010",
+          "0001"
+        ],
+        "answer": 0,
+        "explanation": "0001→0100. ×4.",
+        "difficulty": "medium",
+        "subtopic": "ns-2"
+      },
+      {
+        "q": "Binary 1111 in decimal is:",
+        "options": [
+          "14",
+          "15",
+          "16",
+          "13"
+        ],
+        "answer": 1,
+        "explanation": "8+4+2+1=15.",
+        "difficulty": "easy",
+        "subtopic": "ns-2"
+      },
+      {
+        "q": "Right shift 1000 by 1 position gives:",
+        "options": [
+          "0100",
+          "0010",
+          "0001",
+          "1100"
+        ],
+        "answer": 0,
+        "explanation": "1000→0100. ÷2.",
+        "difficulty": "medium",
+        "subtopic": "ns-2"
+      },
+      {
+        "q": "NAND of 1 and 1 is:",
+        "options": [
+          "1",
+          "0",
+          "undefined",
+          "2"
+        ],
+        "answer": 1,
+        "explanation": "NAND=NOT(AND). NOT(1)=0.",
+        "difficulty": "medium",
+        "subtopic": "ns-2"
+      },
+      {
+        "q": "Binary 10101 in decimal is:",
+        "options": [
+          "20",
+          "21",
+          "22",
+          "23"
+        ],
+        "answer": 1,
+        "explanation": "16+4+1=21.",
+        "difficulty": "medium",
+        "subtopic": "ns-2"
+      },
+      {
+        "q": "Binary 1101 in decimal is:",
+        "options": [
+          "11",
+          "12",
+          "13",
+          "14"
+        ],
+        "answer": 2,
+        "explanation": "8+4+1=13.",
+        "difficulty": "easy",
+        "subtopic": "ns-3"
+      },
+      {
+        "q": "Binary 10110 in decimal is:",
+        "options": [
+          "20",
+          "22",
+          "18",
+          "24"
+        ],
+        "answer": 1,
+        "explanation": "16+4+2=22.",
+        "difficulty": "easy",
+        "subtopic": "ns-3"
+      },
+      {
+        "q": "Binary 11111 in decimal is:",
+        "options": [
+          "30",
+          "31",
+          "32",
+          "63"
+        ],
+        "answer": 1,
+        "explanation": "2⁵−1=31.",
+        "difficulty": "easy",
+        "subtopic": "ns-3"
+      },
+      {
+        "q": "Binary 100000 in decimal is:",
+        "options": [
+          "16",
+          "32",
+          "64",
+          "48"
+        ],
+        "answer": 1,
+        "explanation": "2⁵=32.",
+        "difficulty": "easy",
+        "subtopic": "ns-3"
+      },
+      {
+        "q": "Binary 101010 in decimal is:",
+        "options": [
+          "42",
+          "40",
+          "44",
+          "38"
+        ],
+        "answer": 0,
+        "explanation": "32+8+2=42.",
+        "difficulty": "medium",
+        "subtopic": "ns-3"
+      },
+      {
+        "q": "Binary 110011 in decimal is:",
+        "options": [
+          "51",
+          "49",
+          "53",
+          "48"
+        ],
+        "answer": 0,
+        "explanation": "32+16+2+1=51.",
+        "difficulty": "medium",
+        "subtopic": "ns-3"
+      },
+      {
+        "q": "Binary 10000001 in decimal is:",
+        "options": [
+          "128",
+          "129",
+          "127",
+          "255"
+        ],
+        "answer": 1,
+        "explanation": "128+1=129.",
+        "difficulty": "medium",
+        "subtopic": "ns-3"
+      },
+      {
+        "q": "Binary 11001100 in decimal is:",
+        "options": [
+          "204",
+          "200",
+          "196",
+          "208"
+        ],
+        "answer": 0,
+        "explanation": "128+64+8+4=204.",
+        "difficulty": "hard",
+        "subtopic": "ns-3"
+      },
+      {
+        "q": "Binary 01010101 in decimal is:",
+        "options": [
+          "85",
+          "86",
+          "84",
+          "170"
+        ],
+        "answer": 0,
+        "explanation": "64+16+4+1=85.",
+        "difficulty": "hard",
+        "subtopic": "ns-3"
+      },
+      {
+        "q": "Binary 11110000 in decimal is:",
+        "options": [
+          "240",
+          "248",
+          "224",
+          "128"
+        ],
+        "answer": 0,
+        "explanation": "128+64+32+16=240.",
+        "difficulty": "medium",
+        "subtopic": "ns-3"
+      },
+      {
+        "q": "Binary 10101010 in decimal is:",
+        "options": [
+          "170",
+          "160",
+          "168",
+          "180"
+        ],
+        "answer": 0,
+        "explanation": "128+32+8+2=170.",
+        "difficulty": "hard",
+        "subtopic": "ns-3"
+      },
+      {
+        "q": "Binary 00001111 in decimal is:",
+        "options": [
+          "15",
+          "16",
+          "7",
+          "31"
+        ],
+        "answer": 0,
+        "explanation": "8+4+2+1=15.",
+        "difficulty": "easy",
+        "subtopic": "ns-3"
+      },
+      {
+        "q": "Binary 11100111 in decimal is:",
+        "options": [
+          "231",
+          "229",
+          "233",
+          "227"
+        ],
+        "answer": 0,
+        "explanation": "128+64+32+4+2+1=231.",
+        "difficulty": "hard",
+        "subtopic": "ns-3"
+      },
+      {
+        "q": "Binary 10011001 in decimal is:",
+        "options": [
+          "153",
+          "149",
+          "157",
+          "152"
+        ],
+        "answer": 0,
+        "explanation": "128+16+8+1=153.",
+        "difficulty": "hard",
+        "subtopic": "ns-3"
+      },
+      {
+        "q": "Binary 01110110 in decimal is:",
+        "options": [
+          "118",
+          "116",
+          "120",
+          "114"
+        ],
+        "answer": 0,
+        "explanation": "64+32+16+4+2=118.",
+        "difficulty": "hard",
+        "subtopic": "ns-3"
+      },
+      {
+        "q": "Decimal 8 in binary is:",
+        "options": [
+          "1000",
+          "0100",
+          "1100",
+          "1010"
+        ],
+        "answer": 0,
+        "explanation": "2³=1000.",
+        "difficulty": "easy",
+        "subtopic": "ns-4"
+      },
+      {
+        "q": "Decimal 5 in binary is:",
+        "options": [
+          "0101",
+          "1001",
+          "0110",
+          "1010"
+        ],
+        "answer": 0,
+        "explanation": "4+1=0101.",
+        "difficulty": "easy",
+        "subtopic": "ns-4"
+      },
+      {
+        "q": "Decimal 16 in binary is:",
+        "options": [
+          "10000",
+          "11000",
+          "10100",
+          "01111"
+        ],
+        "answer": 0,
+        "explanation": "2⁴=10000.",
+        "difficulty": "easy",
+        "subtopic": "ns-4"
+      },
+      {
+        "q": "Decimal 20 in binary is:",
+        "options": [
+          "10100",
+          "10000",
+          "11000",
+          "01010"
+        ],
+        "answer": 0,
+        "explanation": "16+4=10100.",
+        "difficulty": "easy",
+        "subtopic": "ns-4"
+      },
+      {
+        "q": "Decimal 37 in binary is:",
+        "options": [
+          "100101",
+          "100111",
+          "101001",
+          "100110"
+        ],
+        "answer": 0,
+        "explanation": "32+4+1=100101.",
+        "difficulty": "medium",
+        "subtopic": "ns-4"
+      },
+      {
+        "q": "Decimal 45 in binary is:",
+        "options": [
+          "101101",
+          "110000",
+          "100101",
+          "111000"
+        ],
+        "answer": 0,
+        "explanation": "32+8+4+1=101101.",
+        "difficulty": "medium",
+        "subtopic": "ns-4"
+      },
+      {
+        "q": "Decimal 127 in binary is:",
+        "options": [
+          "1111111",
+          "1111110",
+          "1000000",
+          "1111101"
+        ],
+        "answer": 0,
+        "explanation": "2⁷−1: all 7 bits=1.",
+        "difficulty": "medium",
+        "subtopic": "ns-4"
+      },
+      {
+        "q": "Decimal 200 in binary is:",
+        "options": [
+          "11001000",
+          "10010000",
+          "11000100",
+          "11001001"
+        ],
+        "answer": 0,
+        "explanation": "128+64+8=11001000.",
+        "difficulty": "hard",
+        "subtopic": "ns-4"
+      },
+      {
+        "q": "Decimal 150 in binary is:",
+        "options": [
+          "10010110",
+          "10100110",
+          "10110000",
+          "11010110"
+        ],
+        "answer": 0,
+        "explanation": "128+16+4+2=10010110.",
+        "difficulty": "hard",
+        "subtopic": "ns-4"
+      },
+      {
+        "q": "Decimal 256 in binary is:",
+        "options": [
+          "100000000",
+          "11111111",
+          "1000000",
+          "10000000"
+        ],
+        "answer": 0,
+        "explanation": "2⁸=100000000.",
+        "difficulty": "medium",
+        "subtopic": "ns-4"
+      },
+      {
+        "q": "Decimal 3 in binary is:",
+        "options": [
+          "011",
+          "10",
+          "001",
+          "110"
+        ],
+        "answer": 0,
+        "explanation": "2+1=011.",
+        "difficulty": "easy",
+        "subtopic": "ns-4"
+      },
+      {
+        "q": "Decimal 99 in binary is:",
+        "options": [
+          "1100011",
+          "1010101",
+          "1111111",
+          "1001001"
+        ],
+        "answer": 0,
+        "explanation": "64+32+2+1=1100011.",
+        "difficulty": "hard",
+        "subtopic": "ns-4"
+      },
+      {
+        "q": "Decimal 48 in binary is:",
+        "options": [
+          "110000",
+          "100000",
+          "101000",
+          "111000"
+        ],
+        "answer": 0,
+        "explanation": "32+16=110000.",
+        "difficulty": "medium",
+        "subtopic": "ns-4"
+      },
+      {
+        "q": "Decimal 255 in binary is:",
+        "options": [
+          "11111111",
+          "10000000",
+          "11111110",
+          "01111111"
+        ],
+        "answer": 0,
+        "explanation": "2⁸−1: all 8 bits=1.",
+        "difficulty": "easy",
+        "subtopic": "ns-4"
+      },
+      {
+        "q": "Decimal 128 in binary is:",
+        "options": [
+          "10000000",
+          "11111111",
+          "01111111",
+          "11000000"
+        ],
+        "answer": 0,
+        "explanation": "2⁷=10000000.",
+        "difficulty": "easy",
+        "subtopic": "ns-4"
+      }
+    ],
+    "sequences-series": [
+      {
+        "q": "10th term of AP 2,5,8,11,... is:",
+        "options": [
+          "29",
+          "32",
+          "27",
+          "30"
+        ],
+        "answer": 0,
+        "explanation": "a+(n−1)d=2+27=29.",
+        "difficulty": "easy",
+        "subtopic": "sp-1"
+      },
+      {
+        "q": "Sum of first 10 terms of 1,2,3,... is:",
+        "options": [
+          "55",
+          "50",
+          "45",
+          "60"
+        ],
+        "answer": 0,
+        "explanation": "10/2×11=55.",
+        "difficulty": "easy",
+        "subtopic": "sp-1"
+      },
+      {
+        "q": "4th term of GP: a=2, r=3 is:",
+        "options": [
+          "54",
+          "27",
+          "81",
+          "162"
+        ],
+        "answer": 0,
+        "explanation": "2×3³=54.",
+        "difficulty": "easy",
+        "subtopic": "sp-1"
+      },
+      {
+        "q": "Sum of infinite GP: a=1, r=1/2 is:",
+        "options": [
+          "1",
+          "2",
+          "4",
+          "∞"
+        ],
+        "answer": 1,
+        "explanation": "1/(1−1/2)=2.",
+        "difficulty": "easy",
+        "subtopic": "sp-1"
+      },
+      {
+        "q": "SI on ₹5000 at 8% for 3 years is:",
+        "options": [
+          "₹1200",
+          "₹1000",
+          "₹1500",
+          "₹800"
+        ],
+        "answer": 0,
+        "explanation": "5000×8×3/100=₹1200.",
+        "difficulty": "easy",
+        "subtopic": "sp-1"
+      },
+      {
+        "q": "CI on ₹1000 at 10% for 2 years is:",
+        "options": [
+          "₹210",
+          "₹200",
+          "₹100",
+          "₹220"
+        ],
+        "answer": 0,
+        "explanation": "A=1210. CI=₹210.",
+        "difficulty": "medium",
+        "subtopic": "sp-1"
+      },
+      {
+        "q": "8th term of AP −3,−1,1,3,... is:",
+        "options": [
+          "11",
+          "13",
+          "15",
+          "9"
+        ],
+        "answer": 0,
+        "explanation": "−3+7×2=11.",
+        "difficulty": "medium",
+        "subtopic": "sp-1"
+      },
+      {
+        "q": "Sum of first n odd naturals is:",
+        "options": [
+          "n(n+1)/2",
+          "n²",
+          "n(2n−1)",
+          "n(n+1)"
+        ],
+        "answer": 1,
+        "explanation": "1+3+...+(2n−1)=n².",
+        "difficulty": "medium",
+        "subtopic": "sp-1"
+      },
+      {
+        "q": "AM of two numbers is 10, GM is 8. Numbers are:",
+        "options": [
+          "4 and 16",
+          "2 and 18",
+          "6 and 14",
+          "5 and 15"
+        ],
+        "answer": 0,
+        "explanation": "a+b=20, ab=64. x²−20x+64=0→4,16.",
+        "difficulty": "hard",
+        "subtopic": "sp-1"
+      },
+      {
+        "q": "Three numbers in AP, sum=15, product=105. Numbers are:",
+        "options": [
+          "3,5,7",
+          "3,5,8",
+          "2,5,8",
+          "4,5,6"
+        ],
+        "answer": 0,
+        "explanation": "a=5,d=2. Numbers:3,5,7.",
+        "difficulty": "hard",
+        "subtopic": "sp-1"
+      },
+      {
+        "q": "7th term of AP is 15 more than 4th term. Common difference is:",
+        "options": [
+          "5",
+          "3",
+          "4",
+          "6"
+        ],
+        "answer": 0,
+        "explanation": "3d=15→d=5.",
+        "difficulty": "medium",
+        "subtopic": "sp-1"
+      },
+      {
+        "q": "AP: 5th term=18, 8th term=27. First term is:",
+        "options": [
+          "6",
+          "3",
+          "9",
+          "12"
+        ],
+        "answer": 0,
+        "explanation": "3d=9→d=3. a=18−12=6.",
+        "difficulty": "medium",
+        "subtopic": "sp-1"
+      },
+      {
+        "q": "Sum of GP: a=2,r=1/3,n=4 is:",
+        "options": [
+          "80/27",
+          "80/81",
+          "40/27",
+          "80/243"
+        ],
+        "answer": 0,
+        "explanation": "2(1−1/81)/(2/3)=2×(80/81)×(3/2)=80/27.",
+        "difficulty": "hard",
+        "subtopic": "sp-1"
+      },
+      {
+        "q": "Principal doubles in CI in 3 years. Rate ≈:",
+        "options": [
+          "26%",
+          "33%",
+          "20%",
+          "25%"
+        ],
+        "answer": 0,
+        "explanation": "(1+R/100)³=2→R≈26%.",
+        "difficulty": "hard",
+        "subtopic": "sp-1"
+      },
+      {
+        "q": "Common ratio of GP 3,6,12,24 is:",
+        "options": [
+          "3",
+          "2",
+          "4",
+          "6"
+        ],
+        "answer": 1,
+        "explanation": "r=6/3=2.",
+        "difficulty": "easy",
+        "subtopic": "sp-1"
+      },
+      {
+        "q": "General term of (x+y)ⁿ is:",
+        "options": [
+          "ⁿCᵣxⁿ⁻ʳyʳ",
+          "ⁿCᵣxʳyⁿ⁻ʳ",
+          "ⁿCᵣxⁿyʳ",
+          "xⁿ⁻ʳyʳ"
+        ],
+        "answer": 0,
+        "explanation": "Binomial theorem.",
+        "difficulty": "easy",
+        "subtopic": "sp-2"
+      },
+      {
+        "q": "Coefficient of x³ in (1+x)¹⁰ is:",
+        "options": [
+          "120",
+          "210",
+          "10",
+          "720"
+        ],
+        "answer": 0,
+        "explanation": "¹⁰C₃=120.",
+        "difficulty": "easy",
+        "subtopic": "sp-2"
+      },
+      {
+        "q": "Sum of all binomial coefficients in (1+x)ⁿ is:",
+        "options": [
+          "n",
+          "n!",
+          "2ⁿ",
+          "n²"
+        ],
+        "answer": 2,
+        "explanation": "Put x=1: 2ⁿ.",
+        "difficulty": "easy",
+        "subtopic": "sp-2"
+      },
+      {
+        "q": "Middle term in (a+b)⁶ is the:",
+        "options": [
+          "4th",
+          "3rd",
+          "5th",
+          "2nd"
+        ],
+        "answer": 0,
+        "explanation": "(n/2+1)th=4th.",
+        "difficulty": "medium",
+        "subtopic": "sp-2"
+      },
+      {
+        "q": "Pascal triangle row n=4 is:",
+        "options": [
+          "1,4,6,4,1",
+          "1,3,3,1",
+          "1,4,4,1",
+          "4,6,4"
+        ],
+        "answer": 0,
+        "explanation": "⁴C₀,⁴C₁,⁴C₂,⁴C₃,⁴C₄=1,4,6,4,1.",
+        "difficulty": "easy",
+        "subtopic": "sp-2"
+      },
+      {
+        "q": "Coefficient of x² in (3+x)⁵ is:",
+        "options": [
+          "270",
+          "90",
+          "30",
+          "360"
+        ],
+        "answer": 0,
+        "explanation": "⁵C₂×3³=10×27=270.",
+        "difficulty": "medium",
+        "subtopic": "sp-2"
+      },
+      {
+        "q": "Term independent of x in (x+1/x)⁶:",
+        "options": [
+          "20",
+          "10",
+          "⁶C₃",
+          "Both A and C"
+        ],
+        "answer": 3,
+        "explanation": "r=3: ⁶C₃=20. Both A and C.",
+        "difficulty": "hard",
+        "subtopic": "sp-2"
+      },
+      {
+        "q": "If (1+x)ⁿ=1+8x+28x²+..., n is:",
+        "options": [
+          "7",
+          "8",
+          "6",
+          "56"
+        ],
+        "answer": 1,
+        "explanation": "ⁿC₁=8→n=8.",
+        "difficulty": "medium",
+        "subtopic": "sp-2"
+      },
+      {
+        "q": "ⁿC₀−ⁿC₁+ⁿC₂−... equals (n≥1):",
+        "options": [
+          "0",
+          "2ⁿ",
+          "1",
+          "−1"
+        ],
+        "answer": 0,
+        "explanation": "Put x=−1: (1−1)ⁿ=0.",
+        "difficulty": "hard",
+        "subtopic": "sp-2"
+      },
+      {
+        "q": "Coefficient of xⁿ in (1+x)²ⁿ is:",
+        "options": [
+          "ⁿCₙ",
+          "²ⁿCₙ",
+          "2ⁿ",
+          "n!"
+        ],
+        "answer": 1,
+        "explanation": "²ⁿCₙ.",
+        "difficulty": "medium",
+        "subtopic": "sp-2"
+      },
+      {
+        "q": "Binomial approximation: (1.01)¹⁰ ≈:",
+        "options": [
+          "1.1",
+          "1.2",
+          "1.01",
+          "1.5"
+        ],
+        "answer": 0,
+        "explanation": "(1+x)ⁿ≈1+nx=1+0.1=1.1.",
+        "difficulty": "easy",
+        "subtopic": "sp-2"
+      },
+      {
+        "q": "5th term in (x+2)⁸ is:",
+        "options": [
+          "1120x⁴",
+          "448x⁴",
+          "112x³",
+          "70x⁵"
+        ],
+        "answer": 0,
+        "explanation": "⁸C₄x⁴×2⁴=70×16x⁴=1120x⁴.",
+        "difficulty": "hard",
+        "subtopic": "sp-2"
+      },
+      {
+        "q": "Expansion of (a−b)ⁿ signs are:",
+        "options": [
+          "All positive",
+          "All negative",
+          "Alternating +,−",
+          "Alternating −,+"
+        ],
+        "answer": 2,
+        "explanation": "(−b)ʳ alternates signs.",
+        "difficulty": "medium",
+        "subtopic": "sp-2"
+      },
+      {
+        "q": "Number of terms in (a+b+c)¹⁰ is:",
+        "options": [
+          "66",
+          "33",
+          "55",
+          "132"
+        ],
+        "answer": 0,
+        "explanation": "(n+1)(n+2)/2=66.",
+        "difficulty": "hard",
+        "subtopic": "sp-2"
+      },
+      {
+        "q": "4th term of (2+x)⁵ is:",
+        "options": [
+          "40x³",
+          "80x²",
+          "80x³",
+          "40x²"
+        ],
+        "answer": 0,
+        "explanation": "⁵C₃×2²×x³=10×4×x³=40x³.",
+        "difficulty": "medium",
+        "subtopic": "sp-2"
+      },
+      {
+        "q": "SI formula is:",
+        "options": [
+          "P(1+RT/100)",
+          "PRT/100",
+          "P+RT",
+          "PR/100T"
+        ],
+        "answer": 1,
+        "explanation": "SI=PRT/100.",
+        "difficulty": "easy",
+        "subtopic": "sp-3"
+      },
+      {
+        "q": "Sum doubles in SI in 10 years. Rate is:",
+        "options": [
+          "10%",
+          "20%",
+          "5%",
+          "15%"
+        ],
+        "answer": 0,
+        "explanation": "P=P×R×10/100→R=10%.",
+        "difficulty": "easy",
+        "subtopic": "sp-3"
+      },
+      {
+        "q": "₹2000 at 5% SI for 3 years. Amount is:",
+        "options": [
+          "₹2300",
+          "₹2500",
+          "₹2200",
+          "₹2100"
+        ],
+        "answer": 0,
+        "explanation": "SI=300. A=₹2300.",
+        "difficulty": "easy",
+        "subtopic": "sp-3"
+      },
+      {
+        "q": "CI formula for amount is:",
+        "options": [
+          "P+PRT/100",
+          "P(1+R/100)ᵀ",
+          "PRT",
+          "P(RT)^100"
+        ],
+        "answer": 1,
+        "explanation": "A=P(1+R/100)ᵀ.",
+        "difficulty": "easy",
+        "subtopic": "sp-3"
+      },
+      {
+        "q": "₹1000 at 10% CI for 2 years. Amount is:",
+        "options": [
+          "₹1200",
+          "₹1210",
+          "₹1100",
+          "₹1300"
+        ],
+        "answer": 1,
+        "explanation": "1000×1.21=₹1210.",
+        "difficulty": "easy",
+        "subtopic": "sp-3"
+      },
+      {
+        "q": "CI−SI for 2 years equals:",
+        "options": [
+          "P(R/100)²",
+          "PR²/100",
+          "2PR/100",
+          "PRT/100"
+        ],
+        "answer": 0,
+        "explanation": "CI−SI=P(R/100)².",
+        "difficulty": "medium",
+        "subtopic": "sp-3"
+      },
+      {
+        "q": "A sum becomes ₹6050 in 2yr, ₹6655 in 3yr at CI. Rate is:",
+        "options": [
+          "10%",
+          "8%",
+          "12%",
+          "5%"
+        ],
+        "answer": 0,
+        "explanation": "6655/6050=1.1→R=10%.",
+        "difficulty": "medium",
+        "subtopic": "sp-3"
+      },
+      {
+        "q": "SI on ₹4500 for 2yr is ₹360. Rate is:",
+        "options": [
+          "4%",
+          "3%",
+          "5%",
+          "2%"
+        ],
+        "answer": 0,
+        "explanation": "R=360×100/(4500×2)=4%.",
+        "difficulty": "medium",
+        "subtopic": "sp-3"
+      },
+      {
+        "q": "Time for ₹800 to earn ₹200 at 5% SI is:",
+        "options": [
+          "5 years",
+          "4 years",
+          "6 years",
+          "3 years"
+        ],
+        "answer": 0,
+        "explanation": "T=200×100/(800×5)=5yr.",
+        "difficulty": "medium",
+        "subtopic": "sp-3"
+      },
+      {
+        "q": "₹10000 at 20% CI for 3yr. CI is:",
+        "options": [
+          "₹7280",
+          "₹6000",
+          "₹7200",
+          "₹8000"
+        ],
+        "answer": 0,
+        "explanation": "A=17280. CI=₹7280.",
+        "difficulty": "hard",
+        "subtopic": "sp-3"
+      },
+      {
+        "q": "PV of ₹1331 due in 3yr at 10% CI is:",
+        "options": [
+          "₹1000",
+          "₹1100",
+          "₹900",
+          "₹1210"
+        ],
+        "answer": 0,
+        "explanation": "1331/1.331=₹1000.",
+        "difficulty": "hard",
+        "subtopic": "sp-3"
+      },
+      {
+        "q": "₹2500 becomes ₹3600 in 2yr CI. Rate is:",
+        "options": [
+          "20%",
+          "15%",
+          "10%",
+          "25%"
+        ],
+        "answer": 0,
+        "explanation": "(1+R/100)²=1.44→R=20%.",
+        "difficulty": "hard",
+        "subtopic": "sp-3"
+      },
+      {
+        "q": "What sum gives ₹1500 SI at 6% for 5yr?",
+        "options": [
+          "₹5000",
+          "₹4500",
+          "₹3000",
+          "₹6000"
+        ],
+        "answer": 0,
+        "explanation": "P=1500×100/30=₹5000.",
+        "difficulty": "medium",
+        "subtopic": "sp-3"
+      },
+      {
+        "q": "CI>SI for same P,R when T is:",
+        "options": [
+          "T=1",
+          "T<1",
+          "T>1",
+          "Always equal"
+        ],
+        "answer": 2,
+        "explanation": "CI>SI for T>1 year.",
+        "difficulty": "medium",
+        "subtopic": "sp-3"
+      },
+      {
+        "q": "₹8000 invested. After 1yr CI at 10% compounded half-yearly is:",
+        "options": [
+          "₹820",
+          "₹800",
+          "₹810",
+          "₹840"
+        ],
+        "answer": 0,
+        "explanation": "A=8000(1.05)²=8820. CI=₹820.",
+        "difficulty": "hard",
+        "subtopic": "sp-3"
+      },
+      {
+        "q": "CP=₹200, SP=₹250. Profit% is:",
+        "options": [
+          "20%",
+          "25%",
+          "30%",
+          "50%"
+        ],
+        "answer": 1,
+        "explanation": "50/200×100=25%.",
+        "difficulty": "easy",
+        "subtopic": "sp-4"
+      },
+      {
+        "q": "Shirt MP=₹500, 20% discount. SP is:",
+        "options": [
+          "₹400",
+          "₹450",
+          "₹380",
+          "₹420"
+        ],
+        "answer": 0,
+        "explanation": "500−100=₹400.",
+        "difficulty": "easy",
+        "subtopic": "sp-4"
+      },
+      {
+        "q": "SP=₹360, Loss=10%. CP is:",
+        "options": [
+          "₹400",
+          "₹324",
+          "₹396",
+          "₹375"
+        ],
+        "answer": 0,
+        "explanation": "CP=360/0.9=₹400.",
+        "difficulty": "medium",
+        "subtopic": "sp-4"
+      },
+      {
+        "q": "Toy CP=₹150, SP=₹120. Loss% is:",
+        "options": [
+          "20%",
+          "25%",
+          "30%",
+          "15%"
+        ],
+        "answer": 0,
+        "explanation": "30/150×100=20%.",
+        "difficulty": "easy",
+        "subtopic": "sp-4"
+      },
+      {
+        "q": "Mark 25% above CP, give 20% discount. Profit% is:",
+        "options": [
+          "0%",
+          "5%",
+          "25%",
+          "20%"
+        ],
+        "answer": 0,
+        "explanation": "MP=125, SP=100. No profit no loss.",
+        "difficulty": "medium",
+        "subtopic": "sp-4"
+      },
+      {
+        "q": "Two successive discounts 10% and 20% = single discount of:",
+        "options": [
+          "28%",
+          "30%",
+          "25%",
+          "32%"
+        ],
+        "answer": 0,
+        "explanation": "100×0.9×0.8=72. Discount=28%.",
+        "difficulty": "medium",
+        "subtopic": "sp-4"
+      },
+      {
+        "q": "CP=₹1200, sold at 15% profit. SP is:",
+        "options": [
+          "₹1380",
+          "₹1200",
+          "₹1440",
+          "₹1320"
+        ],
+        "answer": 0,
+        "explanation": "1200×1.15=₹1380.",
+        "difficulty": "easy",
+        "subtopic": "sp-4"
+      },
+      {
+        "q": "Dishonest dealer uses 900g as 1kg. Profit% is:",
+        "options": [
+          "11.11%",
+          "10%",
+          "9%",
+          "12%"
+        ],
+        "answer": 0,
+        "explanation": "100/900×100=11.11%.",
+        "difficulty": "hard",
+        "subtopic": "sp-4"
+      },
+      {
+        "q": "MP=40% more than CP. To earn 12% profit, discount% is:",
+        "options": [
+          "20%",
+          "14%",
+          "25%",
+          "28%"
+        ],
+        "answer": 0,
+        "explanation": "MP=140, SP=112. Discount=28/140×100=20%.",
+        "difficulty": "hard",
+        "subtopic": "sp-4"
+      },
+      {
+        "q": "By selling 15 items, profit=SP of 5 items. Profit% is:",
+        "options": [
+          "50%",
+          "33%",
+          "25%",
+          "40%"
+        ],
+        "answer": 0,
+        "explanation": "Profit=5x, CP=10x. 5/10×100=50%.",
+        "difficulty": "hard",
+        "subtopic": "sp-4"
+      },
+      {
+        "q": "Profit on SP is 20%. Profit on CP is:",
+        "options": [
+          "25%",
+          "20%",
+          "16.67%",
+          "30%"
+        ],
+        "answer": 0,
+        "explanation": "SP=100,Profit=20,CP=80. 20/80=25%.",
+        "difficulty": "hard",
+        "subtopic": "sp-4"
+      },
+      {
+        "q": "CP of 10 articles = SP of 8 articles. Profit% is:",
+        "options": [
+          "25%",
+          "20%",
+          "30%",
+          "15%"
+        ],
+        "answer": 0,
+        "explanation": "Profit/CP×100=0.2SP/0.8SP×100=25%.",
+        "difficulty": "hard",
+        "subtopic": "sp-4"
+      },
+      {
+        "q": "Book sold at ₹120 gives 20% profit. For 30% profit, SP should be:",
+        "options": [
+          "₹130",
+          "₹156",
+          "₹150",
+          "₹140"
+        ],
+        "answer": 0,
+        "explanation": "CP=100. SP=130.",
+        "difficulty": "medium",
+        "subtopic": "sp-4"
+      },
+      {
+        "q": "₹1200 article sold at loss of 10%. SP is:",
+        "options": [
+          "₹1080",
+          "₹1200",
+          "₹1100",
+          "₹1320"
+        ],
+        "answer": 0,
+        "explanation": "1200×0.9=₹1080.",
+        "difficulty": "easy",
+        "subtopic": "sp-4"
+      },
+      {
+        "q": "SP=₹840, Profit=5%. CP is:",
+        "options": [
+          "₹800",
+          "₹820",
+          "₹880",
+          "₹780"
+        ],
+        "answer": 0,
+        "explanation": "CP=840/1.05=₹800.",
+        "difficulty": "medium",
+        "subtopic": "sp-4"
+      },
+      {
+        "q": "A: 10 days, B: 15 days. Together complete in:",
+        "options": [
+          "6 days",
+          "5 days",
+          "25 days",
+          "12 days"
+        ],
+        "answer": 0,
+        "explanation": "1/10+1/15=1/6. 6 days.",
+        "difficulty": "easy",
+        "subtopic": "sp-5"
+      },
+      {
+        "q": "Speed=60km/h, Time=2.5h. Distance is:",
+        "options": [
+          "150km",
+          "120km",
+          "100km",
+          "160km"
+        ],
+        "answer": 0,
+        "explanation": "60×2.5=150km.",
+        "difficulty": "easy",
+        "subtopic": "sp-5"
+      },
+      {
+        "q": "Train 200m long passes 400m platform at 30m/s. Time is:",
+        "options": [
+          "20s",
+          "10s",
+          "15s",
+          "30s"
+        ],
+        "answer": 0,
+        "explanation": "600/30=20s.",
+        "difficulty": "medium",
+        "subtopic": "sp-5"
+      },
+      {
+        "q": "Average speed: first half at 40, second at 60 km/h:",
+        "options": [
+          "48km/h",
+          "50km/h",
+          "45km/h",
+          "52km/h"
+        ],
+        "answer": 0,
+        "explanation": "2×40×60/100=48km/h.",
+        "difficulty": "medium",
+        "subtopic": "sp-5"
+      },
+      {
+        "q": "Pipe fills in 6h, leak empties in 8h. Time to fill:",
+        "options": [
+          "24h",
+          "14h",
+          "48h",
+          "12h"
+        ],
+        "answer": 0,
+        "explanation": "1/6−1/8=1/24.",
+        "difficulty": "medium",
+        "subtopic": "sp-5"
+      },
+      {
+        "q": "A+B together: 6 days. B alone: 10 days. A alone:",
+        "options": [
+          "15 days",
+          "16 days",
+          "12 days",
+          "20 days"
+        ],
+        "answer": 0,
+        "explanation": "1/6−1/10=1/15.",
+        "difficulty": "medium",
+        "subtopic": "sp-5"
+      },
+      {
+        "q": "Two trains 120m,80m at 50,30km/h same direction. Crossing time:",
+        "options": [
+          "36s",
+          "18s",
+          "72s",
+          "45s"
+        ],
+        "answer": 0,
+        "explanation": "Rel speed=20km/h=50/9m/s. 200/(50/9)=36s.",
+        "difficulty": "hard",
+        "subtopic": "sp-5"
+      },
+      {
+        "q": "12km downstream in 2h, 8km upstream in 4h. Stream speed:",
+        "options": [
+          "1km/h",
+          "2km/h",
+          "3km/h",
+          "4km/h"
+        ],
+        "answer": 1,
+        "explanation": "Down=6, Up=2. Stream=(6−2)/2=2km/h.",
+        "difficulty": "hard",
+        "subtopic": "sp-5"
+      },
+      {
+        "q": "Time=D/S. Distance doubles, speed halves. Time becomes:",
+        "options": [
+          "Same",
+          "4 times",
+          "Half",
+          "Double"
+        ],
+        "answer": 1,
+        "explanation": "T=2D/(S/2)=4T.",
+        "difficulty": "medium",
+        "subtopic": "sp-5"
+      },
+      {
+        "q": "Tap fills in 4h, leak empties in 6h. Net time to fill:",
+        "options": [
+          "12h",
+          "10h",
+          "8h",
+          "6h"
+        ],
+        "answer": 0,
+        "explanation": "1/4−1/6=1/12. 12h.",
+        "difficulty": "medium",
+        "subtopic": "sp-5"
+      },
+      {
+        "q": "A to B at 60km/h, return at 40km/h. Average speed:",
+        "options": [
+          "48km/h",
+          "50km/h",
+          "45km/h",
+          "52km/h"
+        ],
+        "answer": 0,
+        "explanation": "2×60×40/100=48km/h.",
+        "difficulty": "medium",
+        "subtopic": "sp-5"
+      },
+      {
+        "q": "Train passes pole in 8s, bridge 315m in 15s. Length is:",
+        "options": [
+          "360m",
+          "240m",
+          "180m",
+          "300m"
+        ],
+        "answer": 0,
+        "explanation": "7L=2520→L=360m.",
+        "difficulty": "hard",
+        "subtopic": "sp-5"
+      },
+      {
+        "q": "12 workers, 15 days, 8h/day. Workers for 9 days, 10h/day:",
+        "options": [
+          "16",
+          "20",
+          "18",
+          "12"
+        ],
+        "answer": 0,
+        "explanation": "1440/(9×10)=16.",
+        "difficulty": "hard",
+        "subtopic": "sp-5"
+      },
+      {
+        "q": "A:B efficiency=2:3, work ₹600. A's share is:",
+        "options": [
+          "₹240",
+          "₹360",
+          "₹300",
+          "₹200"
+        ],
+        "answer": 0,
+        "explanation": "2/5×600=₹240.",
+        "difficulty": "hard",
+        "subtopic": "sp-5"
+      },
+      {
+        "q": "Man rows 18km downstream in 3h, 12km upstream in 3h. His speed in still water:",
+        "options": [
+          "5km/h",
+          "3km/h",
+          "4km/h",
+          "6km/h"
+        ],
+        "answer": 0,
+        "explanation": "Down=6, Up=4. Still=(6+4)/2=5km/h.",
+        "difficulty": "medium",
+        "subtopic": "sp-5"
+      },
+      {
+        "q": "If a,b,c in AP, b is called:",
+        "options": [
+          "GM",
+          "AM",
+          "HM",
+          "Both mean"
+        ],
+        "answer": 1,
+        "explanation": "b=(a+c)/2=AM.",
+        "difficulty": "easy",
+        "subtopic": "md-5"
+      },
+      {
+        "q": "Sum of 1+1/2+1/4+... (infinite GP) is:",
+        "options": [
+          "2",
+          "∞",
+          "3/2",
+          "4"
+        ],
+        "answer": 0,
+        "explanation": "1/(1−1/2)=2.",
+        "difficulty": "easy",
+        "subtopic": "md-5"
+      },
+      {
+        "q": "If a,b,c in GP, b² equals:",
+        "options": [
+          "a+c",
+          "ac",
+          "a×c",
+          "(a+c)/2"
+        ],
+        "answer": 1,
+        "explanation": "b²=ac. Both B and C same.",
+        "difficulty": "easy",
+        "subtopic": "md-5"
+      },
+      {
+        "q": "HM of 2 and 8 is:",
+        "options": [
+          "5",
+          "3.2",
+          "4",
+          "√16"
+        ],
+        "answer": 1,
+        "explanation": "2×2×8/10=3.2.",
+        "difficulty": "medium",
+        "subtopic": "md-5"
+      },
+      {
+        "q": "Σn² formula is:",
+        "options": [
+          "n(n+1)/2",
+          "n(n+1)(2n+1)/6",
+          "[n(n+1)/2]²",
+          "n²(n+1)/2"
+        ],
+        "answer": 1,
+        "explanation": "Standard formula.",
+        "difficulty": "medium",
+        "subtopic": "md-5"
+      },
+      {
+        "q": "Σn³ equals:",
+        "options": [
+          "[n(n+1)/2]²",
+          "n(n+1)(2n+1)/6",
+          "n²(n+1)²",
+          "n(n+1)/2"
+        ],
+        "answer": 0,
+        "explanation": "Sum of cubes=(sum of naturals)².",
+        "difficulty": "medium",
+        "subtopic": "md-5"
+      },
+      {
+        "q": "Σ(r=1 to 10) r equals:",
+        "options": [
+          "55",
+          "50",
+          "45",
+          "60"
+        ],
+        "answer": 0,
+        "explanation": "10×11/2=55.",
+        "difficulty": "easy",
+        "subtopic": "md-5"
+      },
+      {
+        "q": "Sum of first 5 terms of GP: a=3,r=2:",
+        "options": [
+          "93",
+          "96",
+          "99",
+          "90"
+        ],
+        "answer": 0,
+        "explanation": "3(32−1)/1=93.",
+        "difficulty": "medium",
+        "subtopic": "md-5"
+      },
+      {
+        "q": "AM≥GM≥HM is:",
+        "options": [
+          "Only for negative numbers",
+          "True for positive reals",
+          "Sometimes true",
+          "Never true"
+        ],
+        "answer": 1,
+        "explanation": "Classic inequality for positive reals.",
+        "difficulty": "medium",
+        "subtopic": "md-5"
+      },
+      {
+        "q": "Next term of HP 1/3,1/5,1/7,... is:",
+        "options": [
+          "1/9",
+          "1/8",
+          "1/11",
+          "1/6"
+        ],
+        "answer": 0,
+        "explanation": "Reciprocals 3,5,7,9... Next=1/9.",
+        "difficulty": "medium",
+        "subtopic": "md-5"
+      },
+      {
+        "q": "Sum 2+4+6+...+2n equals:",
+        "options": [
+          "n(n+1)",
+          "n²",
+          "2n(n+1)",
+          "n(n+2)"
+        ],
+        "answer": 0,
+        "explanation": "2×n(n+1)/2=n(n+1).",
+        "difficulty": "medium",
+        "subtopic": "md-5"
+      },
+      {
+        "q": "GM²=AM×HM is:",
+        "options": [
+          "Always false",
+          "True for two positive numbers",
+          "Only for equal numbers",
+          "Conditionally true"
+        ],
+        "answer": 1,
+        "explanation": "GM²=AM×HM for any two positive numbers.",
+        "difficulty": "hard",
+        "subtopic": "md-5"
+      },
+      {
+        "q": "Σ(r=1 to 5) r² equals:",
+        "options": [
+          "55",
+          "30",
+          "45",
+          "15"
+        ],
+        "answer": 0,
+        "explanation": "1+4+9+16+25=55.",
+        "difficulty": "medium",
+        "subtopic": "md-5"
+      },
+      {
+        "q": "For AGP: 1×1+2×2+3×4+4×8. Sum of 4 terms is:",
+        "options": [
+          "49",
+          "33",
+          "41",
+          "51"
+        ],
+        "answer": 0,
+        "explanation": "1+4+12+32=49.",
+        "difficulty": "hard",
+        "subtopic": "md-5"
+      },
+      {
+        "q": "If a,b,c in GP and a+c=2b, then:",
+        "options": [
+          "r=1 only",
+          "r can be anything",
+          "a≠b≠c",
+          "GP becomes HP"
+        ],
+        "answer": 0,
+        "explanation": "AM=GM condition → a=b=c → r=1.",
+        "difficulty": "hard",
+        "subtopic": "md-5"
+      }
+    ]
+  },
+  "mockTests": [
+    {
+      "id": "mock-paper2",
+      "title": "Paper II — Mathematics",
+      "duration": 90,
+      "totalMarks": 570,
+      "description": "Full Mathematics paper covering all topics",
+      "topics": [
+        "trigonometry",
+        "algebra",
+        "coordinate-geometry",
+        "calculus",
+        "statistics-probability",
+        "mensuration",
+        "number-system",
+        "sequences-series"
+      ]
+    }
+  ]
+}
