@@ -1,6 +1,6 @@
 // ============================================================
 // NavPath – NEA Exam Prep App
-// script.js – FULLY DEBUGGED & FIXED (v2)
+// script.js – FULLY DEBUGGED & FIXED (v2 + json integration)
 // ============================================================
 //
 // BUGS FIXED (v1 — original):
@@ -32,6 +32,9 @@
 //     (happens for topics not yet loaded) — replaced with safe qBank lookup.
 // 13. auth/invalid-credential error code added (newer Firebase SDK v9+ compat).
 // 14. Demo mode loadResources() double-call removed — skips if already loaded.
+//
+// ADDED (v2 + json):
+// 15. Duplicate window exports removed (rmSetPeriod added, duplicates cleaned).
 //
 // ============================================================
 
@@ -2665,11 +2668,12 @@ window.closePremiumModal = closePremiumModal;
 window.selectPlan        = selectPlan;
 window.initiatePurchase  = initiatePurchase;
 window.toggleDarkMode    = toggleDarkMode;
-window.toggleStudyReminder = toggleStudyReminder;
-window.openReminderModal   = openReminderModal;
-window.closeReminderModal  = closeReminderModal;
-window.saveReminderFromModal  = saveReminderFromModal;
+window.toggleStudyReminder      = toggleStudyReminder;
+window.openReminderModal        = openReminderModal;
+window.closeReminderModal       = closeReminderModal;
+window.saveReminderFromModal    = saveReminderFromModal;
 window.disableReminderFromModal = disableReminderFromModal;
+window.rmSetPeriod              = rmSetPeriod;
 window.installApp        = installApp;
 window.openTopicModal    = openTopicModal;
 window.closeTopicModal   = closeTopicModal;
@@ -2692,11 +2696,5 @@ window.confirmExitMockTest  = confirmExitMockTest;
 window.exitMockTest         = exitMockTest;
 window.mockNav              = mockNav;
 window.mockJumpTo           = mockJumpTo;
-window.mockSelectAnswer        = mockSelectAnswer;
-window.setupAdminLongPress     = setupAdminLongPress;
-window.openReminderModal       = openReminderModal;
-window.closeReminderModal      = closeReminderModal;
-window.saveReminderFromModal   = saveReminderFromModal;
-window.disableReminderFromModal = disableReminderFromModal;
-window.toggleStudyReminder     = toggleStudyReminder;
-window.rmSetPeriod             = rmSetPeriod;
+window.mockSelectAnswer     = mockSelectAnswer;
+window.setupAdminLongPress  = setupAdminLongPress;
