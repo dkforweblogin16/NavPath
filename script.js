@@ -1,13 +1,13 @@
 // ============================================================
 // NavPath – NEA Exam Prep App
-// script.js – FULLY DEBUGGED & FIXED
+// script.js – FULLY DEBUGGED & FIXED (v2 + json integration)
 // ============================================================
 //
-// BUGS FIXED (see detailed list in README section below):
+// BUGS FIXED (v1 — original):
 //  1. App object not exposed to window  → window.App = App
 //  2. login/signup btn never re-enabled on success → added reset in finally/success
 //  3. firebase.firestore.Timestamp used directly → guarded with App.firebase ref
-//  4. renderQuestion() references DOM nodes that don't exist intil 
+//  4. renderQuestion() references DOM nodes that don't exist until
 //     renderLiveQuiz() is called → moved quiz DOM render inside startQuiz()
 //  5. window.renderQuestion not exported → added to window exports
 //  6. Demo mode showScreen called before loadResources resolves → await fixed
@@ -17,6 +17,24 @@
 //     which conflicts with switchAuthTab() calling $(`#tab-${tab}`) — this
 //     matched the TAB CONTENT divs too — FIXED by renaming tab button IDs
 //     to "authtab-login" / "authtab-signup" (matching fix in index.html)
+//
+// BUGS FIXED (v2 — this version):
+//  9. questions.json monolithic file replaced with 3 separate files:
+//     english.json + math.json + science.json
+//     loadResources() now fetches all 3 in parallel and merges topics/mockTests
+//     into App.questions so all downstream code works unchanged.
+// 10. Login/signup page not showing on load → initApp() and onAuthStateChanged
+//     logout branch now call switchAuthTab('login') after showScreen('auth-screen')
+//     so the login form is always visible by default.
+// 11. switchAuthTab() now supports BOTH old (tab-login) and new (authtab-login)
+//     button IDs so it works regardless of which index.html version is deployed.
+// 12. openTopicModal() crashed when App.questions.topics[chapterId] was undefined
+//     (happens for topics not yet loaded) — replaced with safe qBank lookup.
+// 13. auth/invalid-credential error code added (newer Firebase SDK v9+ compat).
+// 14. Demo mode loadResources() double-call removed — skips if already loaded.
+//
+// ADDED (v2 + json):
+// 15. Duplicate window exports removed (rmSetPeriod added, duplicates cleaned).
 //
 // ============================================================
 
@@ -91,7 +109,10 @@ function initApp() {
 
   if (!App.firebase) {
     console.warn('[NavPath] Firebase not configured. Running in demo mode.');
-    loadResources().then(() => showScreen('auth-screen'));
+    loadResources().then(() => {
+      showScreen('auth-screen');
+      switchAuthTab('login'); // FIX: ensure login tab is shown by default
+    });
     return;
   }
 
@@ -124,6 +145,7 @@ function initApp() {
       if (signupBtn) { signupBtn.textContent = 'Start Free Trial 🚀'; signupBtn.disabled = false; }
       await loadResources();
       showScreen('auth-screen');
+      switchAuthTab('login'); // FIX: ensure login tab is shown by default
     }
   });
 }
@@ -132,24 +154,68 @@ function initApp() {
 // LOAD JSON RESOURCES
 // ============================================================
 
-
 // ============================================================
-// LOAD RESOURCES — merges embedded questions with questions.json
+// LOAD RESOURCES — loads syllabus + english.json + math.json + science.json
+// All three question files are merged into App.questions so the
+// rest of the app (quiz, mock test, practice browse) works unchanged.
 // ============================================================
 async function loadResources() {
   try {
-    const [sylRes, qRes] = await Promise.all([
-      fetch('syllabus.json'),
-      fetch('questions.json'),
-    ]);
+    // Load syllabus first (required)
+    const sylRes = await fetch('syllabus.json');
     if (!sylRes.ok) throw new Error('syllabus.json not found');
-    if (!qRes.ok)   throw new Error('questions.json not found');
-    App.syllabus   = await sylRes.json();
-    App.questions  = await qRes.json();
-    console.log('[NavPath] syllabus.json + questions.json loaded ✓');
-  } catch(e) {
-    console.error('[NavPath] Failed to load resources:', e.message);
+    App.syllabus = await sylRes.json();
+    console.log('[NavPath] syllabus.json loaded ✓');
+  } catch (e) {
+    console.error('[NavPath] Failed to load syllabus.json:', e.message);
   }
+
+  // Load the three separate question files in parallel
+  // Any file that fails is silently skipped so the app still works
+  const questionFiles = [
+    { file: 'english.json',  label: 'english'  },
+    { file: 'math.json',     label: 'math'      },
+    { file: 'science.json',  label: 'science'   },
+  ];
+
+  // Merged App.questions structure that the rest of the app expects:
+  // { topics: { topicId: [...questions] }, mockTests: [...] }
+  const merged = { topics: {}, mockTests: [] };
+
+  await Promise.all(questionFiles.map(async ({ file, label }) => {
+    try {
+      const res = await fetch(file);
+      if (!res.ok) {
+        console.warn(`[NavPath] ${file} not found — skipping.`);
+        return;
+      }
+      const data = await res.json();
+
+      // Merge topics
+      if (data.topics && typeof data.topics === 'object') {
+        Object.assign(merged.topics, data.topics);
+      }
+
+      // Merge mockTests (avoid duplicates by id)
+      if (Array.isArray(data.mockTests)) {
+        data.mockTests.forEach(mt => {
+          if (!merged.mockTests.find(m => m.id === mt.id)) {
+            merged.mockTests.push(mt);
+          }
+        });
+      }
+
+      const qCount = data.topics ? Object.values(data.topics).reduce((s, a) => s + (a?.length || 0), 0) : 0;
+      console.log(`[NavPath] ${file} loaded ✓ — ${qCount} questions (${label})`);
+    } catch (e) {
+      console.error(`[NavPath] Failed to load ${file}:`, e.message);
+    }
+  }));
+
+  App.questions = merged;
+  const total = Object.values(merged.topics).reduce((s, a) => s + (a?.length || 0), 0);
+  console.log(`[NavPath] All question files merged ✓ — ${total} total questions, ${merged.mockTests.length} mock tests`);
+
   await loadContent();
   console.log('[NavPath] All resources loaded ✓');
 }
@@ -205,7 +271,10 @@ async function loadUserData() {
 // TRIAL & PREMIUM CHECKS
 // ============================================================
 function getTrialStatus() {
-  if (!App.userDoc) return { active: true, daysLeft: 3 }; // Default to trial active for new sessions
+  // Admin always gets full premium access — no payment needed
+  if (isAdmin()) return { active: false, isPremium: true, isAdmin: true, daysLeft: 999 };
+
+  if (!App.userDoc) return { active: true, daysLeft: 3 };
   if (App.userDoc.isPremium) return { active: false, isPremium: true, daysLeft: 999 };
 
   const start = App.userDoc.trialStartDate?.toDate?.() || new Date(App.userDoc.trialStartDate || Date.now());
@@ -218,6 +287,8 @@ function getTrialStatus() {
 }
 
 function canAccessTopic(topicId) {
+  // Admin has full access to every topic
+  if (isAdmin()) return true;
   const trial = getTrialStatus();
   if (trial.isPremium || trial.active) return true;
   return App.progress[topicId] === true;
@@ -311,7 +382,8 @@ async function handleSignup() {
   if (!App.firebase) {
     App.user = { uid: 'demo', email, displayName: name };
     App.userDoc = { displayName: name, email, trialStartDate: { toDate: () => new Date() }, isPremium: false, streak: 1, planType: 'trial' };
-    await loadResources();
+    // Only reload resources if not already loaded
+    if (!App.syllabus || !App.questions) await loadResources();
     renderDashboard();
     showScreen('main-screen');
     switchTab('dashboard');
@@ -361,7 +433,8 @@ async function handleLogin() {
   if (!App.firebase) {
     App.user = { uid: 'demo', email, displayName: email.split('@')[0] };
     App.userDoc = { displayName: email.split('@')[0], email, trialStartDate: { toDate: () => new Date() }, isPremium: false, streak: 3, planType: 'trial' };
-    await loadResources();
+    // Only reload resources if not already loaded
+    if (!App.syllabus || !App.questions) await loadResources();
     renderDashboard();
     showScreen('main-screen');
     switchTab('dashboard');
@@ -379,9 +452,10 @@ async function handleLogin() {
   } catch (e) {
     // FIX #2: Always show specific, honest error and reset button
     let msg = 'Invalid email or password.';
-    if (e.code === 'auth/user-not-found') msg = 'No account found with this email.';
-    else if (e.code === 'auth/wrong-password') msg = 'Incorrect password.';
-    else if (e.code === 'auth/invalid-email') msg = 'Invalid email address.';
+    if (e.code === 'auth/user-not-found')        msg = 'No account found with this email.';
+    else if (e.code === 'auth/wrong-password')   msg = 'Incorrect password.';
+    else if (e.code === 'auth/invalid-credential') msg = 'Invalid email or password.'; // newer Firebase SDK
+    else if (e.code === 'auth/invalid-email')    msg = 'Invalid email address.';
     else if (e.code === 'auth/too-many-requests') msg = 'Too many attempts. Please try again later.';
     else if (e.code === 'auth/network-request-failed') msg = 'Network error. Check your connection.';
     toast(msg, 'error');
@@ -435,6 +509,18 @@ function renderTrialBanner() {
   const banner = $('#trial-banner');
   const premBadge = $('#premium-badge');
 
+  // Admin: show special ADMIN badge, hide trial banner
+  if (trial.isAdmin) {
+    banner?.classList.add('hidden');
+    if (premBadge) {
+      premBadge.classList.remove('hidden');
+      premBadge.innerHTML = '🛡️ ADMIN';
+      premBadge.style.background = 'linear-gradient(135deg,rgba(56,189,248,0.3),rgba(56,189,248,0.6))';
+      premBadge.style.color = '#e2effd';
+    }
+    return;
+  }
+
   if (trial.isPremium) {
     banner?.classList.add('hidden');
     premBadge?.classList.remove('hidden');
@@ -465,7 +551,7 @@ function updateProgressStats() {
   App.syllabus.papers.forEach(paper => {
     paper.subjects.forEach(subject => {
       subject.chapters.forEach(chapter => {
-        chapter.topics.forEach(topic => {
+ chapter.topics.forEach(topic => {
           total++;
           if (App.progress[topic.id]) completed++;
         });
@@ -661,7 +747,6 @@ async function toggleTopic(topicId) {
     await updateStreak();
   }
 }
-
 function updateSyllabusUI() {
   const syllabusTab = document.getElementById('tab-syllabus');
   if (App.currentScreen === 'main-screen' && syllabusTab?.classList.contains('active-tab')) {
@@ -1050,7 +1135,6 @@ function renderStudyBrowse() {
   html += `<div style="padding-bottom:5rem;"></div>`;
   browseEl.innerHTML = html;
 }
-
 function studyOpenTopic(topicId, topicName, chapterId, chapterName) {
   _activeTopicId   = topicId;
   _activeChapterId = chapterId;
@@ -1248,11 +1332,13 @@ function renderProfile() {
   const trial = getTrialStatus();
   const streak = App.userDoc?.streak || 0;
 
-  let statusBadge = trial.isPremium
-    ? `<span style="color:var(--gold)">⭐ Premium Member</span>`
-    : trial.active
-      ? `<span style="color:var(--success)">🟢 Free Trial (${trial.daysLeft} days left)</span>`
-      : `<span style="color:var(--danger)">⚠️ Trial Expired</span>`;
+  let statusBadge = trial.isAdmin
+    ? `<span style="color:#38bdf8">🛡️ Administrator (Full Access)</span>`
+    : trial.isPremium
+      ? `<span style="color:var(--gold)">⭐ Premium Member</span>`
+      : trial.active
+        ? `<span style="color:var(--success)">🟢 Free Trial (${trial.daysLeft} days left)</span>`
+        : `<span style="color:var(--danger)">⚠️ Trial Expired</span>`;
 
   el.innerHTML = `
     <div class="main-content">
@@ -1271,10 +1357,13 @@ function renderProfile() {
       <div class="card mb-2">
         <div class="card-header"><span>Subscription</span></div>
         <div class="card-body">
-          ${trial.isPremium
-            ? `<p style="color:var(--success)">✓ Active premium subscription</p>`
-            : `<button class="btn btn-gold btn-block" onclick="openPremiumModal()">⭐ Upgrade to Premium</button>
-               <p style="text-align:center;font-size:0.75rem;margin-top:0.5rem;color:var(--text-muted)">Plans from ₹99 only</p>`
+          ${trial.isAdmin
+            ? `<p style="color:#38bdf8">🛡️ Admin account — full access enabled</p>
+               <a href="admin.html" style="display:block;margin-top:0.75rem;padding:0.6rem;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:var(--radius);color:#38bdf8;text-align:center;font-size:0.85rem;font-weight:600;text-decoration:none;">⚙️ Open Admin Panel</a>`
+            : trial.isPremium
+              ? `<p style="color:var(--success)">✓ Active premium subscription</p>`
+              : `<button class="btn btn-gold btn-block" onclick="openPremiumModal()">⭐ Upgrade to Premium</button>
+                 <p style="text-align:center;font-size:0.75rem;margin-top:0.5rem;color:var(--text-muted)">Plans from ₹99 only</p>`
           }
         </div>
       </div>
@@ -1708,7 +1797,7 @@ function openReminderModal() {
   overlay.style.cssText = `position:fixed;inset:0;background:rgba(6,16,30,0.85);backdrop-filter:blur(6px);z-index:999;display:flex;align-items:flex-end;justify-content:center;`;
   overlay.onclick = (e) => { if (e.target === overlay) closeReminderModal(); };
 
-  overlay.innerHTML = `
+overlay.innerHTML = `
     <div style="background:var(--card-bg,#112240);border:1px solid var(--card-border,rgba(201,168,76,0.25));border-radius:1.25rem 1.25rem 0 0;padding:1.5rem 1.25rem 2.5rem;width:100%;max-width:480px;box-shadow:0 -8px 40px rgba(0,0,0,0.5);animation:slideUpModal 0.28s cubic-bezier(.4,0,.2,1);">
       <div style="width:40px;height:4px;background:rgba(255,255,255,0.15);border-radius:99px;margin:0 auto 1.25rem;"></div>
       <h2 style="text-align:center;font-size:1.1rem;font-weight:700;color:#e2effd;margin-bottom:0.35rem;">🔔 Study Reminder</h2>
@@ -1857,7 +1946,14 @@ function toggleDarkMode() {
 // ============================================================
 // PREMIUM MODAL
 // ============================================================
-function openPremiumModal()  { show('#premium-modal'); }
+function openPremiumModal() {
+  // Admin never sees the premium paywall
+  if (isAdmin()) {
+    toast('🛡️ Admin account — full access already enabled!', 'success');
+    return;
+  }
+  show('#premium-modal');
+}
 function closePremiumModal() { hide('#premium-modal'); }
 
 function selectPlan(plan) {
@@ -1975,16 +2071,24 @@ function installApp() {
 // the selector is unambiguous.
 // ============================================================
 function switchAuthTab(tab) {
+  // Deactivate all auth tab buttons
   $$('.auth-tab').forEach(t => t.classList.remove('active'));
-  // FIX #8: use renamed IDs authtab-login / authtab-signup
-  $(`#authtab-${tab}`)?.classList.add('active');
+
+  // Support BOTH old IDs (tab-login/tab-signup) and new IDs (authtab-login/authtab-signup)
+  // This way the script works regardless of which index.html version is deployed
+  const btn = $(`#authtab-${tab}`) || $(`#tab-${tab}`);
+  btn?.classList.add('active');
 
   if (tab === 'login') {
     $('#signup-form')?.classList.add('hidden');
     $('#login-form')?.classList.remove('hidden');
+    // Focus first input for better UX
+    setTimeout(() => $('#login-email')?.focus(), 50);
   } else {
     $('#login-form')?.classList.add('hidden');
     $('#signup-form')?.classList.remove('hidden');
+    // Focus first input for better UX
+    setTimeout(() => $('#signup-name')?.focus(), 50);
   }
 }
 
@@ -2024,20 +2128,28 @@ function openTopicModal(topicId, topicName, chapterId, chapterName) {
   _activeChapterId = chapterId;
 
   const modal = document.getElementById('topic-action-modal');
+  if (!modal) return;
   document.getElementById('topic-modal-name').textContent    = topicName;
   document.getElementById('topic-modal-chapter').textContent = chapterName;
 
-  const hasContent   = App.content && App.content[topicId];
-  const hasQuestions = App.questions?.topics?.[chapterId]?.length > 0 ||
-                       App.questions?.questions?.[chapterId]?.length > 0;
+  const hasContent = App.content && App.content[topicId];
+
+  // FIX: safely get question count from the merged topics structure
+  // questions are indexed by chapterId in App.questions.topics
+  const qBank = App.questions?.topics || App.questions?.questions || {};
+  const chapterQs = qBank[chapterId] || [];
+  const hasQuestions = chapterQs.length > 0;
 
   const studyBtn    = document.getElementById('topic-study-btn');
   const practiceBtn = document.getElementById('topic-practice-btn');
 
-  studyBtn.querySelector('.topic-action-sub').textContent =
-    hasContent ? 'Read full notes & theory' : 'Notes coming soon';
-  practiceBtn.querySelector('.topic-action-sub').textContent =
-    hasQuestions ? `${App.questions.topics[chapterId].length}+ MCQs with explanations` : 'Questions coming soon';
+  if (studyBtn)
+    studyBtn.querySelector('.topic-action-sub').textContent =
+      hasContent ? 'Read full notes & theory' : 'Notes coming soon';
+
+  if (practiceBtn)
+    practiceBtn.querySelector('.topic-action-sub').textContent =
+      hasQuestions ? `${chapterQs.length}+ MCQs with explanations` : 'Questions coming soon';
 
   modal.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
@@ -2236,8 +2348,7 @@ function renderMockTestScreen() {
 
   const q = MockTest.questions;
   const total = q.length;
-
-  mockArea.innerHTML = `
+mockArea.innerHTML = `
     <div class="practice-container" id="mock-container">
       <div class="practice-top-bar" style="position:sticky;top:0;z-index:10;background:var(--navy-deep);padding:0.75rem 1rem;margin:-1rem -1rem 1rem -1rem;">
         <button class="practice-back-btn" onclick="confirmExitMockTest()">✕ Exit</button>
@@ -2496,6 +2607,12 @@ mockArea.innerHTML = `
 // ============================================================
 const ADMIN_EMAIL_KEY = 'navpath.admin@gmail.com';
 
+// ── Admin check — used by canAccessTopic & renderTrialBanner
+function isAdmin() {
+  const user = App?.firebase?.auth?.currentUser || App?.user;
+  return !!(user && user.email === ADMIN_EMAIL_KEY);
+}
+
 function setupAdminLongPress() {
   const logo = document.querySelector('.nav-logo');
   if (!logo) return;
@@ -2528,42 +2645,7 @@ function setupAdminLongPress() {
   logo.addEventListener('touchcancel', cancelPress);
 }
 
-// ============================================================
-// ADMIN LONG-PRESS — 2 sec hold on logo → admin.html
-// ============================================================
-const ADMIN_EMAIL_KEY = 'navpath.admin@gmail.com';
-
-function setupAdminLongPress() {
-  const logo = document.querySelector('.nav-logo');
-  if (!logo) return;
-  let pressTimer = null;
-  let toastEl    = null;
-
-  function startPress() {
-    const user = App?.firebase?.auth?.currentUser;
-    if (!user || user.email !== ADMIN_EMAIL_KEY) return;
-    toastEl = document.createElement('div');
-    toastEl.style.cssText = 'position:fixed;bottom:5.5rem;left:50%;transform:translateX(-50%);background:rgba(201,168,76,0.15);border:1.5px solid rgba(201,168,76,0.45);border-radius:50px;padding:0.4rem 1.2rem;color:#c9a84c;font-family:IBM Plex Mono,monospace;font-size:0.68rem;font-weight:600;z-index:9999;pointer-events:none;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.4);';
-    toastEl.textContent = '⛳ Hold to open Admin Panel…';
-    document.body.appendChild(toastEl);
-    pressTimer = setTimeout(() => {
-      if (toastEl) toastEl.remove();
-      window.location.href = 'admin.html';
-    }, 2000);
-  }
-
-  function cancelPress() {
-    clearTimeout(pressTimer);
-    if (toastEl) { toastEl.remove(); toastEl = null; }
-  }
-
-  logo.addEventListener('mousedown',   startPress);
-  logo.addEventListener('touchstart',  startPress, { passive: true });
-  logo.addEventListener('mouseup',     cancelPress);
-  logo.addEventListener('mouseleave',  cancelPress);
-  logo.addEventListener('touchend',    cancelPress);
-  logo.addEventListener('touchcancel', cancelPress);
-}
+// [Duplicate setupAdminLongPress removed — FIX applied]
 
 // FIX #5: renderQuestion and App were not exported to window,
 // breaking the inline override script in index.html
@@ -2586,11 +2668,12 @@ window.closePremiumModal = closePremiumModal;
 window.selectPlan        = selectPlan;
 window.initiatePurchase  = initiatePurchase;
 window.toggleDarkMode    = toggleDarkMode;
-window.toggleStudyReminder = toggleStudyReminder;
-window.openReminderModal   = openReminderModal;
-window.closeReminderModal  = closeReminderModal;
-window.saveReminderFromModal  = saveReminderFromModal;
+window.toggleStudyReminder      = toggleStudyReminder;
+window.openReminderModal        = openReminderModal;
+window.closeReminderModal       = closeReminderModal;
+window.saveReminderFromModal    = saveReminderFromModal;
 window.disableReminderFromModal = disableReminderFromModal;
+window.rmSetPeriod              = rmSetPeriod;
 window.installApp        = installApp;
 window.openTopicModal    = openTopicModal;
 window.closeTopicModal   = closeTopicModal;
@@ -2613,11 +2696,5 @@ window.confirmExitMockTest  = confirmExitMockTest;
 window.exitMockTest         = exitMockTest;
 window.mockNav              = mockNav;
 window.mockJumpTo           = mockJumpTo;
-window.mockSelectAnswer        = mockSelectAnswer;
-window.setupAdminLongPress     = setupAdminLongPress;
-window.openReminderModal       = openReminderModal;
-window.closeReminderModal      = closeReminderModal;
-window.saveReminderFromModal   = saveReminderFromModal;
-window.disableReminderFromModal = disableReminderFromModal;
-window.toggleStudyReminder     = toggleStudyReminder;
-window.rmSetPeriod             = rmSetPeriod;
+window.mockSelectAnswer     = mockSelectAnswer;
+window.setupAdminLongPress  = setupAdminLongPress;
