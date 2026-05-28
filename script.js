@@ -1,6 +1,6 @@
 // ============================================================
 // NavPath – NEA Exam Prep App
-// script.js – FULLY DEBUGGED & FIXED (v2 + json integration)
+// script.js – FULLY DEBUGGED & FIXED (v2)
 // ============================================================
 //
 // BUGS FIXED (v1 — original):
@@ -33,9 +33,6 @@
 // 13. auth/invalid-credential error code added (newer Firebase SDK v9+ compat).
 // 14. Demo mode loadResources() double-call removed — skips if already loaded.
 //
-// ADDED (v2 + json):
-// 15. Duplicate window exports removed (rmSetPeriod added, duplicates cleaned).
-//
 // ============================================================
 
 'use strict';
@@ -61,6 +58,18 @@ const App = {
 // FIX #1: App must be on window so the inline quiz override script in
 // index.html can access window.App — previously it was a module-scoped const
 window.App = App;
+
+// ============================================================
+// SAFE FIREBASE HELPERS — prevent crash if SDK loads late
+// ============================================================
+function fbTimestampNow() {
+  try { return fbTimestampNow(); } 
+  catch(e) { return new Date(); }
+}
+function fbTimestampFromDate(d) {
+  try { return firebase.firestore.Timestamp.fromDate(d); }
+  catch(e) { return d; }
+}
 
 // ============================================================
 // DOM HELPERS
@@ -143,9 +152,9 @@ function initApp() {
       const signupBtn = $('#signup-btn');
       if (loginBtn) { loginBtn.textContent = 'Sign In →'; loginBtn.disabled = false; }
       if (signupBtn) { signupBtn.textContent = 'Start Free Trial 🚀'; signupBtn.disabled = false; }
-      await loadResources();
       showScreen('auth-screen');
-      switchAuthTab('login'); // FIX: ensure login tab is shown by default
+      switchAuthTab('login');
+      await loadResources(); // load after screen shown so buttons are never blocked
     }
   });
 }
@@ -237,7 +246,7 @@ async function loadUserData() {
     } else {
       // FIX #3: Use App.firebase.db Timestamp reference, not bare firebase.firestore.Timestamp
       // (the bare reference sometimes fails if Firestore isn't initialized before this runs)
-      const now = firebase.firestore.Timestamp.now();
+      const now = fbTimestampNow();
       App.userDoc = {
         email: App.user.email,
         displayName: App.user.displayName || App.user.email.split('@')[0],
@@ -313,7 +322,7 @@ async function saveTopicProgress(topicId, completed) {
       .collection('progress').doc(topicId)
       .set({
         completed,
-        completedAt: firebase.firestore.Timestamp.now()
+        completedAt: fbTimestampNow()
       });
     updateSyllabusUI();
     updateProgressStats();
@@ -375,8 +384,7 @@ async function handleSignup() {
   }
 
   const btn = $('#signup-btn');
-  btn.textContent = 'Creating account...';
-  btn.disabled = true;
+  if (btn) { btn.textContent = 'Creating account...'; btn.disabled = true; }
 
   // Demo mode
   if (!App.firebase) {
@@ -426,8 +434,7 @@ async function handleLogin() {
   }
 
   const btn = $('#login-btn');
-  btn.textContent = 'Signing in...';
-  btn.disabled = true;
+  if (btn) { btn.textContent = 'Signing in...'; btn.disabled = true; }
 
   // Demo mode
   if (!App.firebase) {
@@ -1556,7 +1563,7 @@ const StudyReminder = {
         if (uid && window.App?.firebase?.db) {
           await window.App.firebase.db.collection('users').doc(uid).update({
             fcmToken: token,
-            fcmUpdatedAt: firebase.firestore.Timestamp.now()
+            fcmUpdatedAt: fbTimestampNow()
           });
         }
         localStorage.setItem('navpath-fcm-token', token);
@@ -1581,7 +1588,7 @@ const StudyReminder = {
           hour,
           minute,
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Asia/Kolkata',
-          updatedAt: firebase.firestore.Timestamp.now()
+          updatedAt: fbTimestampNow()
         }
       });
       console.log('[NavPath FCM] Reminder scheduled in Firestore');
@@ -2009,7 +2016,7 @@ async function handlePaymentSuccess(response, plan) {
     const { db } = App.firebase;
     await db.collection('users').doc(App.user.uid).update({
       isPremium: true,
-      premiumExpiry: firebase.firestore.Timestamp.fromDate(expiry),
+      premiumExpiry: fbTimestampFromDate(expiry),
       planType: plan,
     });
     await db.collection('users').doc(App.user.uid)
@@ -2018,7 +2025,7 @@ async function handlePaymentSuccess(response, plan) {
         razorpay_order_id: response.razorpay_order_id || '',
         amount: plan === 'monthly' ? 99 : 199,
         plan,
-        createdAt: firebase.firestore.Timestamp.now()
+        createdAt: fbTimestampNow()
       });
     App.userDoc.isPremium = true;
   }
@@ -2668,12 +2675,11 @@ window.closePremiumModal = closePremiumModal;
 window.selectPlan        = selectPlan;
 window.initiatePurchase  = initiatePurchase;
 window.toggleDarkMode    = toggleDarkMode;
-window.toggleStudyReminder      = toggleStudyReminder;
-window.openReminderModal        = openReminderModal;
-window.closeReminderModal       = closeReminderModal;
-window.saveReminderFromModal    = saveReminderFromModal;
+window.toggleStudyReminder = toggleStudyReminder;
+window.openReminderModal   = openReminderModal;
+window.closeReminderModal  = closeReminderModal;
+window.saveReminderFromModal  = saveReminderFromModal;
 window.disableReminderFromModal = disableReminderFromModal;
-window.rmSetPeriod              = rmSetPeriod;
 window.installApp        = installApp;
 window.openTopicModal    = openTopicModal;
 window.closeTopicModal   = closeTopicModal;
@@ -2696,5 +2702,11 @@ window.confirmExitMockTest  = confirmExitMockTest;
 window.exitMockTest         = exitMockTest;
 window.mockNav              = mockNav;
 window.mockJumpTo           = mockJumpTo;
-window.mockSelectAnswer     = mockSelectAnswer;
-window.setupAdminLongPress  = setupAdminLongPress;
+window.mockSelectAnswer        = mockSelectAnswer;
+window.setupAdminLongPress     = setupAdminLongPress;
+window.openReminderModal       = openReminderModal;
+window.closeReminderModal      = closeReminderModal;
+window.saveReminderFromModal   = saveReminderFromModal;
+window.disableReminderFromModal = disableReminderFromModal;
+window.toggleStudyReminder     = toggleStudyReminder;
+window.rmSetPeriod             = rmSetPeriod;
