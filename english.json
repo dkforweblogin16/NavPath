@@ -1,0 +1,3020 @@
+{
+  "version": "3.0",
+  "totalQuestions": 712,
+  "topics": {
+    "comprehension": [
+      {
+        "q": "Which of the following best describes 'skimming' a passage?",
+        "options": [
+          "Reading every word carefully",
+          "Looking for answers to specific questions",
+          "Reading quickly to get the main idea",
+          "Reading aloud for pronunciation"
+        ],
+        "answer": 2,
+        "explanation": "Skimming means reading rapidly to get a general overview or main idea, without focusing on every detail.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "When a question asks 'According to the passage, why did…', your answer should:",
+        "options": [
+          "Use your own knowledge",
+          "Quote at least 5 lines from the passage",
+          "Be based strictly on information in the passage",
+          "Express your personal opinion"
+        ],
+        "answer": 2,
+        "explanation": "'According to the passage' means your answer must stay within the text — no outside knowledge or personal opinion.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "A question worth 2 marks in comprehension requires:",
+        "options": [
+          "One long sentence",
+          "Two separate and distinct points",
+          "Copying two paragraphs from the passage",
+          "A personal opinion plus a fact"
+        ],
+        "answer": 1,
+        "explanation": "In comprehension marking, 1 mark = 1 clear point. A 2-mark question requires two separate, distinct points.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "The word 'What' in a comprehension question asks for:",
+        "options": [
+          "A method or process",
+          "A time or date",
+          "A person's name",
+          "A fact or object"
+        ],
+        "answer": 3,
+        "explanation": "Question keywords: What = fact/object, Why = reason, How = method, When = time, Who = person.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "An 'inferential' comprehension question asks you to:",
+        "options": [
+          "Copy text directly from the passage",
+          "Find a specific fact stated clearly",
+          "Draw a logical conclusion from clues in the text",
+          "Write a summary of the whole passage"
+        ],
+        "answer": 2,
+        "explanation": "Inference means reading between the lines — finding implied meaning based on evidence in the text, not stated directly.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "If a passage says 'She sat by the window all night, her letter unopened beside her,' what can you infer?",
+        "options": [
+          "She was tired",
+          "She was anxious or distressed about the letter",
+          "She was reading",
+          "She was happy"
+        ],
+        "answer": 1,
+        "explanation": "Sitting by the window all night with an 'unopened' letter suggests anxiety, distress or reluctance to read it — an inference from the clues.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "Which of the following is an example of a 'tone' in writing?",
+        "options": [
+          "Length of the passage",
+          "Number of paragraphs",
+          "Author's attitude expressed through word choice",
+          "Punctuation marks used"
+        ],
+        "answer": 2,
+        "explanation": "Tone is the author's attitude conveyed through word choices — it can be sarcastic, admiring, mournful, hopeful, etc.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "'The classroom was a warzone' is an example of:",
+        "options": [
+          "A simile",
+          "A metaphor",
+          "Alliteration",
+          "Personification"
+        ],
+        "answer": 1,
+        "explanation": "This is a metaphor — a direct comparison without 'like' or 'as'. A simile would say 'like a warzone'.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "When answering a comprehension question, the BEST approach is to:",
+        "options": [
+          "Write as much as possible",
+          "Copy sentences directly from the passage",
+          "Read questions first, then locate relevant lines, then paraphrase",
+          "Write answers before reading the passage"
+        ],
+        "answer": 2,
+        "explanation": "Best strategy: read all questions first, then read the passage, locate relevant sections, and paraphrase answers in your own words.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "The difference between 'inference' and 'assumption' is:",
+        "options": [
+          "They are the same thing",
+          "Inference has textual evidence; assumption has none",
+          "Assumptions are always correct; inferences are not",
+          "Inferences are opinions; assumptions are facts"
+        ],
+        "answer": 1,
+        "explanation": "An inference is supported by evidence from the text. An assumption is an unsupported guess — it cannot be backed up with specific textual clues.",
+        "difficulty": "medium"
+      }
+    ],
+    "tenses-voices": [
+      {
+        "q": "Which sentence is in the Simple Present Tense?",
+        "options": [
+          "She was reading a book.",
+          "She reads a book every day.",
+          "She will read a book.",
+          "She has read a book."
+        ],
+        "answer": 1,
+        "explanation": "Simple Present uses the base form of the verb (reads). It expresses habits and routines.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "The Present Perfect tense is formed using:",
+        "options": [
+          "was/were + V-ing",
+          "will + V1",
+          "has/have + V3 (past participle)",
+          "is/am/are + V-ing"
+        ],
+        "answer": 2,
+        "explanation": "Present Perfect = has/have + past participle (V3). Example: She has completed the task.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "Which sentence uses the Past Perfect correctly?",
+        "options": [
+          "He has eaten before she arrived.",
+          "He had eaten before she arrived.",
+          "He was eating before she arrived.",
+          "He ate before she arrived."
+        ],
+        "answer": 1,
+        "explanation": "Past Perfect (had + V3) is used for the earlier of two past actions. 'Had eaten' happened before 'arrived'.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "Which time word CANNOT be used with Present Perfect tense?",
+        "options": [
+          "Already",
+          "Just",
+          "Yesterday",
+          "Yet"
+        ],
+        "answer": 2,
+        "explanation": "Present Perfect cannot be used with specific past time words like yesterday, last year, in 2020, ago. Use Simple Past instead.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "The passive voice of 'The dog chased the cat' is:",
+        "options": [
+          "The cat chased the dog.",
+          "The cat is being chased by the dog.",
+          "The cat was chased by the dog.",
+          "The cat has been chased by the dog."
+        ],
+        "answer": 2,
+        "explanation": "Simple Past active → Simple Past passive. Object 'cat' becomes subject. 'chased' → 'was chased by'.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "'I am writing a letter' is in which tense?",
+        "options": [
+          "Simple Present",
+          "Present Perfect",
+          "Present Continuous",
+          "Past Continuous"
+        ],
+        "answer": 2,
+        "explanation": "Present Continuous = is/am/are + V-ing (writing). It expresses an action happening right now.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "She said, 'I am happy.' The indirect speech is:",
+        "options": [
+          "She said she is happy.",
+          "She told she was happy.",
+          "She said that she was happy.",
+          "She said that she is happy."
+        ],
+        "answer": 2,
+        "explanation": "Indirect speech with past reporting verb: 'am' (Present Simple) → 'was' (Past Simple). 'said' does not need an object.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "Direct: He said, 'I will help you.' Indirect speech is:",
+        "options": [
+          "He said he will help you.",
+          "He said that he would help me.",
+          "He told that he will help me.",
+          "He said he would help you."
+        ],
+        "answer": 1,
+        "explanation": "Will → Would in indirect speech. First person pronoun 'I' changes to 'he'. Second person 'you' changes to 'me'.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "The sentence 'By next Monday, she will have finished the project' uses which tense?",
+        "options": [
+          "Future Simple",
+          "Future Continuous",
+          "Future Perfect",
+          "Future Perfect Continuous"
+        ],
+        "answer": 2,
+        "explanation": "Future Perfect = will + have + V3. Used for an action that will be completed before a specific future time.",
+        "difficulty": "hard"
+      },
+      {
+        "q": "'Neither the captain nor the sailors __ ready.' The correct verb is:",
+        "options": [
+          "is",
+          "are",
+          "was",
+          "were"
+        ],
+        "answer": 1,
+        "explanation": "With 'Neither...nor', the verb agrees with the nearer subject. 'sailors' is plural, so use 'are'.",
+        "difficulty": "hard"
+      },
+      {
+        "q": "The command 'Close the window!' in indirect speech becomes:",
+        "options": [
+          "He said to close the window.",
+          "He told him to close the window.",
+          "He asked if he would close the window.",
+          "He said that close the window."
+        ],
+        "answer": 1,
+        "explanation": "Commands in indirect speech: reporting verb (told/ordered/instructed) + object + to + base verb.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "Passive voice of 'They have completed the project' is:",
+        "options": [
+          "The project was completed by them.",
+          "The project is completed by them.",
+          "The project has been completed by them.",
+          "The project will be completed by them."
+        ],
+        "answer": 2,
+        "explanation": "Present Perfect active → Present Perfect passive: has/have been + V3. 'have completed' → 'has been completed'.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "Which sentence has correct subject-verb agreement?",
+        "options": [
+          "The news are shocking.",
+          "Mathematics are easy.",
+          "The team are winning.",
+          "The price of oranges is high."
+        ],
+        "answer": 3,
+        "explanation": "The subject is 'price' (singular), not 'oranges'. Singular subject → singular verb 'is'. News, Mathematics take singular verbs.",
+        "difficulty": "hard"
+      },
+      {
+        "q": "The Future Continuous tense structure is:",
+        "options": [
+          "will + V3",
+          "will + be + V-ing",
+          "will + have + V3",
+          "would + V1"
+        ],
+        "answer": 1,
+        "explanation": "Future Continuous = will + be + V-ing. Example: This time tomorrow, I will be travelling.",
+        "difficulty": "medium"
+      }
+    ],
+    "applied-grammar": [
+      {
+        "q": "Which sentence contains an error in article usage?",
+        "options": [
+          "She is a honest woman.",
+          "He bought an umbrella.",
+          "This is an elephant.",
+          "She needs a pen."
+        ],
+        "answer": 0,
+        "explanation": "'Honest' begins with a silent 'h', so the vowel sound is 'o'. Use 'an': 'an honest woman'. Articles are based on sound, not spelling.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "Choose the correctly punctuated sentence:",
+        "options": [
+          "Its a beautiful day isnt it",
+          "It's a beautiful day, isn't it?",
+          "Its a beautiful day, isnt it?",
+          "It's a beautiful day isnt it?"
+        ],
+        "answer": 1,
+        "explanation": "'It's' = 'it is' (apostrophe for contraction). 'isn't' = 'is not'. A comma before a question tag. Question mark at end.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "Find the error: 'She is more taller than her sister.'",
+        "options": [
+          "'She is' is wrong",
+          "'more taller' is a double comparative error",
+          "'than' should be 'then'",
+          "'sister' should be 'sisters'"
+        ],
+        "answer": 1,
+        "explanation": "'More taller' is a double comparative — you cannot use both 'more' and '-er'. Correct: 'taller than' OR 'more tall than' (unusual).",
+        "difficulty": "easy"
+      },
+      {
+        "q": "Identify the type of sentence: 'Although she was tired, she continued working.'",
+        "options": [
+          "Simple sentence",
+          "Compound sentence",
+          "Complex sentence",
+          "Compound-complex sentence"
+        ],
+        "answer": 2,
+        "explanation": "A complex sentence has one main clause and at least one subordinate clause. 'Although she was tired' is the subordinate clause.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "Rearrange: 'the / market / fresh / from / vegetables / are / these' to form a correct sentence.",
+        "options": [
+          "These are fresh vegetables from the market.",
+          "From fresh these are the market vegetables.",
+          "Vegetables these are fresh from the market.",
+          "Are these fresh from the market vegetables."
+        ],
+        "answer": 0,
+        "explanation": "Correct word order: Subject (These) + Verb (are) + Adjective (fresh) + Noun (vegetables) + Prepositional phrase (from the market).",
+        "difficulty": "easy"
+      },
+      {
+        "q": "The synonym of 'benevolent' is:",
+        "options": [
+          "Cruel",
+          "Kind",
+          "Stubborn",
+          "Lazy"
+        ],
+        "answer": 1,
+        "explanation": "Benevolent means well-meaning and kindly. Its synonym is 'kind'. Antonym would be 'cruel' or 'malevolent'.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "The antonym of 'diligent' is:",
+        "options": [
+          "Hardworking",
+          "Careful",
+          "Lazy",
+          "Honest"
+        ],
+        "answer": 2,
+        "explanation": "Diligent means hardworking and industrious. Its antonym (opposite) is 'lazy' or 'indolent'.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "Choose the correct word: 'The __ of the school has strong __.' (principal/principle)",
+        "options": [
+          "principle, principal",
+          "principal, principles",
+          "principle, principles",
+          "principal, principle"
+        ],
+        "answer": 1,
+        "explanation": "Principal = head person. Principle = a rule or belief (usually plural 'principles'). 'The principal has strong principles.'",
+        "difficulty": "medium"
+      }
+    ],
+    "idioms-phrases": [
+      {
+        "q": "'Beat around the bush' means:",
+        "options": [
+          "To work in a garden",
+          "To avoid the main topic",
+          "To search in bushes",
+          "To be physically active"
+        ],
+        "answer": 1,
+        "explanation": "'Beat around the bush' means to avoid saying something directly, to talk around the main point without addressing it.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "'Burning the midnight oil' means:",
+        "options": [
+          "Wasting resources",
+          "Setting fire to something at night",
+          "Working or studying very late into the night",
+          "Using candles instead of electricity"
+        ],
+        "answer": 2,
+        "explanation": "'Burning the midnight oil' means working or studying very late at night, past midnight.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "'Bite the bullet' means:",
+        "options": [
+          "Eat something hard",
+          "Be violent",
+          "Endure a painful or difficult situation bravely",
+          "Shoot a gun"
+        ],
+        "answer": 2,
+        "explanation": "'Bite the bullet' means to endure a painful or difficult situation with courage and determination.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "'Let the cat out of the bag' means:",
+        "options": [
+          "Release an animal",
+          "Reveal a secret accidentally",
+          "Open a bag carefully",
+          "Make a mess"
+        ],
+        "answer": 1,
+        "explanation": "'Let the cat out of the bag' means to accidentally reveal a secret or surprise that was supposed to be kept hidden.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "'Once in a blue moon' means:",
+        "options": [
+          "During a lunar eclipse",
+          "Every month",
+          "Very rarely",
+          "At night"
+        ],
+        "answer": 2,
+        "explanation": "'Once in a blue moon' means very rarely — almost never. A 'blue moon' is the second full moon in a calendar month, a rare event.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "'Hit the nail on the head' means:",
+        "options": [
+          "Do carpentry work",
+          "Injure yourself",
+          "Say or do exactly the right thing",
+          "Cause damage accidentally"
+        ],
+        "answer": 2,
+        "explanation": "'Hit the nail on the head' means to describe exactly what is causing a situation or problem; to be precisely correct.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "'Kill two birds with one stone' means:",
+        "options": [
+          "Be cruel to animals",
+          "Hunt efficiently",
+          "Solve two problems with one single action",
+          "Work very hard"
+        ],
+        "answer": 2,
+        "explanation": "'Kill two birds with one stone' means to accomplish two different things with a single action, saving time and effort.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "'Break the ice' means:",
+        "options": [
+          "Destroy something frozen",
+          "Start a fight",
+          "Initiate conversation in an awkward situation",
+          "Be very cold"
+        ],
+        "answer": 2,
+        "explanation": "'Break the ice' means to do or say something to relieve tension or awkwardness and begin a conversation in a social situation.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "'Spill the beans' means:",
+        "options": [
+          "Cause a mess",
+          "Reveal secret information",
+          "Cook food carelessly",
+          "Waste resources"
+        ],
+        "answer": 1,
+        "explanation": "'Spill the beans' means to reveal secret or confidential information, usually by mistake.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "'Every cloud has a silver lining' means:",
+        "options": [
+          "All weather is temporary",
+          "Clouds contain water",
+          "Every difficult situation has a positive aspect",
+          "Silver is found in nature"
+        ],
+        "answer": 2,
+        "explanation": "Every cloud has a silver lining means that every negative or unfortunate situation has some positive or hopeful aspect to it.",
+        "difficulty": "easy"
+      }
+    ],
+    "vocabulary": [
+      {
+        "q": "The word 'audacious' means:",
+        "options": [
+          "Shy and timid",
+          "Bold and daring",
+          "Careful and cautious",
+          "Sad and gloomy"
+        ],
+        "answer": 1,
+        "explanation": "Audacious means showing a willingness to take bold risks; extremely bold or daring.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "Choose the correct word: 'The medicine will ___ the pain.' (affect/effect)",
+        "options": [
+          "effect",
+          "affect",
+          "Both are correct",
+          "Neither is correct"
+        ],
+        "answer": 1,
+        "explanation": "Affect (verb) = to have an impact on. Effect (noun) = the result. 'Affect the pain' is correct — the medicine will affect (impact) the pain.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "'Stationary' and 'Stationery' differ in meaning. 'Stationery' refers to:",
+        "options": [
+          "Not moving",
+          "Writing materials like pens and paper",
+          "A train station",
+          "A standing position"
+        ],
+        "answer": 1,
+        "explanation": "Stationery (with an 'e') = writing materials (pens, paper, envelopes). Stationary (with an 'a') = not moving. Tip: stationEry has an 'e' for Envelope.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "The one-word substitution for 'a person who cannot be corrected' is:",
+        "options": [
+          "Incorrigible",
+          "Infallible",
+          "Indelible",
+          "Inevitable"
+        ],
+        "answer": 0,
+        "explanation": "Incorrigible means a person or habit that cannot be corrected or reformed. Infallible = never wrong. Indelible = cannot be erased.",
+        "difficulty": "hard"
+      },
+      {
+        "q": "'Emigrate' means:",
+        "options": [
+          "To move into a new country",
+          "To leave one's own country to settle elsewhere",
+          "To visit a foreign country temporarily",
+          "To be deported"
+        ],
+        "answer": 1,
+        "explanation": "Emigrate = to leave your own country to settle elsewhere. Immigrate = to enter a new country to settle there. Remember: Emigrate = Exit, Immigrate = In.",
+        "difficulty": "medium"
+      }
+    ],
+    "indian-constitution": [
+      {
+        "q": "The Indian Constitution was adopted on:",
+        "options": [
+          "26 January 1950",
+          "15 August 1947",
+          "26 November 1949",
+          "30 January 1948"
+        ],
+        "answer": 2,
+        "explanation": "The Indian Constitution was adopted by the Constituent Assembly on 26 November 1949. It came into effect on 26 January 1950 (Republic Day).",
+        "difficulty": "easy"
+      },
+      {
+        "q": "Who was the Chairman of the Drafting Committee of the Indian Constitution?",
+        "options": [
+          "Dr. Rajendra Prasad",
+          "Jawaharlal Nehru",
+          "Dr. B.R. Ambedkar",
+          "Sardar Vallabhbhai Patel"
+        ],
+        "answer": 2,
+        "explanation": "Dr. B.R. Ambedkar was the Chairman of the Drafting Committee and is called the Father of the Indian Constitution.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "How many Fundamental Rights are currently guaranteed by the Indian Constitution?",
+        "options": [
+          "7",
+          "5",
+          "6",
+          "8"
+        ],
+        "answer": 2,
+        "explanation": "There are 6 Fundamental Rights: Right to Equality, Right to Freedom, Right Against Exploitation, Right to Freedom of Religion, Cultural & Educational Rights, and Right to Constitutional Remedies.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "Which Article of the Indian Constitution is called the 'Heart and Soul of the Constitution'?",
+        "options": [
+          "Article 14",
+          "Article 21",
+          "Article 32",
+          "Article 44"
+        ],
+        "answer": 2,
+        "explanation": "Article 32 (Right to Constitutional Remedies) was called the 'Heart and Soul' of the Constitution by Dr. B.R. Ambedkar. It allows citizens to approach the Supreme Court for enforcement of Fundamental Rights.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "The words 'Socialist', 'Secular' and 'Integrity' were added to the Preamble by the:",
+        "options": [
+          "42nd Amendment, 1976",
+          "44th Amendment, 1978",
+          "86th Amendment, 2002",
+          "73rd Amendment, 1992"
+        ],
+        "answer": 0,
+        "explanation": "The 42nd Constitutional Amendment in 1976 added 'Socialist', 'Secular' and 'Integrity' to the Preamble of the Indian Constitution.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "Article 17 of the Indian Constitution:",
+        "options": [
+          "Guarantees freedom of speech",
+          "Abolishes untouchability",
+          "Provides right to education",
+          "Abolishes titles"
+        ],
+        "answer": 1,
+        "explanation": "Article 17 abolishes untouchability and forbids its practice in any form. Enforcement of disability arising from untouchability is an offence.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "Which writ is issued by a court to produce an illegally detained person?",
+        "options": [
+          "Mandamus",
+          "Certiorari",
+          "Habeas Corpus",
+          "Quo Warranto"
+        ],
+        "answer": 2,
+        "explanation": "Habeas Corpus (Latin: 'you may have the body') is issued to produce a detained person before the court to determine if the detention is legal.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "The Right to Property was removed as a Fundamental Right by the:",
+        "options": [
+          "42nd Amendment",
+          "44th Amendment",
+          "52nd Amendment",
+          "73rd Amendment"
+        ],
+        "answer": 1,
+        "explanation": "The 44th Constitutional Amendment in 1978 removed the Right to Property from the list of Fundamental Rights. It is now a legal right under Article 300A.",
+        "difficulty": "hard"
+      },
+      {
+        "q": "Which article provides for free and compulsory education for children aged 6-14?",
+        "options": [
+          "Article 21",
+          "Article 21A",
+          "Article 24",
+          "Article 45"
+        ],
+        "answer": 1,
+        "explanation": "Article 21A (added by 86th Amendment, 2002) provides the Right to Education — free and compulsory education for all children aged 6-14 years.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "The Directive Principles of State Policy are in which Part of the Constitution?",
+        "options": [
+          "Part II",
+          "Part III",
+          "Part IV",
+          "Part V"
+        ],
+        "answer": 2,
+        "explanation": "Directive Principles of State Policy are contained in Part IV (Articles 36-51) of the Indian Constitution. They are non-justiciable (not enforceable by courts) unlike Fundamental Rights in Part III.",
+        "difficulty": "hard"
+      }
+    ],
+    "military-history": [
+      {
+        "q": "World War I began in which year?",
+        "options": [
+          "1912",
+          "1914",
+          "1916",
+          "1918"
+        ],
+        "answer": 1,
+        "explanation": "World War I began on 28 July 1914, triggered by the assassination of Archduke Franz Ferdinand in Sarajevo on 28 June 1914.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "The Treaty of Versailles (1919) was primarily directed against:",
+        "options": [
+          "Austria-Hungary",
+          "The Ottoman Empire",
+          "Germany",
+          "Bulgaria"
+        ],
+        "answer": 2,
+        "explanation": "The Treaty of Versailles placed the entire blame for WWI on Germany (War Guilt Clause), imposed massive reparations, and restricted Germany's military.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "Which event caused the USA to enter World War II?",
+        "options": [
+          "Invasion of Poland",
+          "Fall of France",
+          "Attack on Pearl Harbor",
+          "Battle of Britain"
+        ],
+        "answer": 2,
+        "explanation": "Japan's surprise attack on the US naval base at Pearl Harbor, Hawaii on 7 December 1941 brought the USA into World War II.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "The atomic bomb was dropped on Hiroshima on:",
+        "options": [
+          "6 August 1945",
+          "9 August 1945",
+          "6 August 1944",
+          "15 August 1945"
+        ],
+        "answer": 0,
+        "explanation": "The first atomic bomb (Little Boy) was dropped on Hiroshima on 6 August 1945. The second (Fat Man) was dropped on Nagasaki on 9 August 1945.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "Maharaja Hari Singh signed the Instrument of Accession of Kashmir to India on:",
+        "options": [
+          "15 August 1947",
+          "26 October 1947",
+          "1 January 1949",
+          "26 November 1947"
+        ],
+        "answer": 1,
+        "explanation": "Maharaja Hari Singh signed the Instrument of Accession making J&K part of India on 26 October 1947, after Pakistani tribal forces invaded.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "The Tashkent Declaration (1966) was signed after which war?",
+        "options": [
+          "1947 Indo-Pak War",
+          "1962 Sino-Indian War",
+          "1965 Indo-Pak War",
+          "1971 Indo-Pak War"
+        ],
+        "answer": 2,
+        "explanation": "The Tashkent Declaration was signed on 10 January 1966 after the 1965 Indo-Pak War, mediated by the Soviet Union between PM Lal Bahadur Shastri and Pakistan's Ayub Khan.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "The 1971 Indo-Pak War led to the surrender of how many Pakistani soldiers?",
+        "options": [
+          "45,000",
+          "93,000",
+          "1,30,000",
+          "20,000"
+        ],
+        "answer": 1,
+        "explanation": "On 16 December 1971, 93,000 Pakistani soldiers surrendered to the Indian Army in Dhaka — the largest military surrender since World War II.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "During the 1971 war, Operation Trident was carried out by:",
+        "options": [
+          "Indian Army in East Pakistan",
+          "Indian Air Force bombing Karachi",
+          "Indian Navy missile boats attacking Karachi port",
+          "Indian submarines in the Arabian Sea"
+        ],
+        "answer": 2,
+        "explanation": "Operation Trident (4-5 Dec 1971) was an Indian Navy missile boat attack on Karachi port using INS Nipat, INS Nirghat and INS Veer — first use of anti-ship missiles in Asia.",
+        "difficulty": "hard"
+      },
+      {
+        "q": "The Kargil War was fought between India and Pakistan in:",
+        "options": [
+          "1997",
+          "1998",
+          "1999",
+          "2001"
+        ],
+        "answer": 2,
+        "explanation": "The Kargil War (Operation Vijay) was fought from May to July 1999 in the Kargil district of Jammu & Kashmir.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "Which Indian warship was sunk during the 1971 Indo-Pak War?",
+        "options": [
+          "INS Vikrant",
+          "INS Khukri",
+          "INS Viraat",
+          "INS Nipat"
+        ],
+        "answer": 1,
+        "explanation": "INS Khukri was sunk by Pakistani submarine PNS Hangor on 9 December 1971 — the only Indian warship sunk in post-independence wars.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "The MAIN acronym for causes of WWI stands for:",
+        "options": [
+          "Militarism, Alliance, Imperialism, Nationalism",
+          "Money, Anger, Industry, Nationalism",
+          "Maps, Army, India, Navy",
+          "Movement, Alliances, Industry, Nationalism"
+        ],
+        "answer": 0,
+        "explanation": "MAIN = Militarism (arms race), Alliance system (complex treaties), Imperialism (competition for colonies), Nationalism (ethnic tensions). These are the four main causes of WWI.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "The Shimla Agreement (1972) renamed the Ceasefire Line to:",
+        "options": [
+          "International Border",
+          "Line of Actual Control",
+          "Line of Control",
+          "McMahon Line"
+        ],
+        "answer": 2,
+        "explanation": "The Shimla Agreement signed on 2 July 1972 between Indira Gandhi and Z.A. Bhutto renamed the Ceasefire Line to Line of Control (LoC).",
+        "difficulty": "medium"
+      }
+    ],
+    "current-affairs": [
+      {
+        "q": "INS Vikrant (IAC-1) was commissioned in:",
+        "options": [
+          "2020",
+          "2021",
+          "2022",
+          "2023"
+        ],
+        "answer": 2,
+        "explanation": "INS Vikrant, India's first indigenously built aircraft carrier, was commissioned on 2 September 2022 by Prime Minister Narendra Modi.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "AGNIPATH scheme was launched to recruit soldiers into the Indian Armed Forces in:",
+        "options": [
+          "2020",
+          "2021",
+          "2022",
+          "2023"
+        ],
+        "answer": 2,
+        "explanation": "The Agnipath scheme was launched in June 2022 to recruit youth (Agniveers) into the Indian Army, Navy and Air Force for a 4-year tenure.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "Chandrayaan-3 successfully landed near the Moon's south pole in:",
+        "options": [
+          "2021",
+          "2022",
+          "2023",
+          "2024"
+        ],
+        "answer": 2,
+        "explanation": "Chandrayaan-3's Vikram lander touched down near the Moon's south pole on 23 August 2023, making India the first country to achieve this.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "The NEA exam is conducted to recruit into which branch?",
+        "options": [
+          "Medical branch",
+          "Officer cadre",
+          "Technical artificer branch of the Indian Navy",
+          "Accounts branch"
+        ],
+        "answer": 2,
+        "explanation": "The Navy Entry Artificer (NEA) examination is conducted by the Indian Navy to recruit technically skilled personnel into the artificer branches.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "Aditya-L1, India's first solar mission, was launched in:",
+        "options": [
+          "2022",
+          "2023",
+          "2024",
+          "2021"
+        ],
+        "answer": 1,
+        "explanation": "ISRO's Aditya-L1, India's first solar observation mission, was launched on 2 September 2023 and reached its destination at Lagrange Point 1.",
+        "difficulty": "medium"
+      }
+    ],
+    "abbreviations": [
+      {
+        "q": "What does 'SONAR' stand for?",
+        "options": [
+          "Sound Navigation and Ranging",
+          "Solar Navigational Array",
+          "Sound Ocean Network Array",
+          "Submarine Ocean Navigation Radar"
+        ],
+        "answer": 0,
+        "explanation": "SONAR stands for Sound Navigation and Ranging. It uses sound pulses to detect and locate underwater objects.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "What does 'RADAR' stand for?",
+        "options": [
+          "Radio Array Detection and Relay",
+          "Radio Detection and Ranging",
+          "Remote Area Detection and Recording",
+          "Rapid Area Defence and Ranging"
+        ],
+        "answer": 1,
+        "explanation": "RADAR stands for Radio Detection and Ranging. It uses radio waves to detect and determine the range of objects.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "INS stands for:",
+        "options": [
+          "Indian Navigation Ship",
+          "Indian Naval Ship",
+          "Integrated Naval System",
+          "Indian Navy Squadron"
+        ],
+        "answer": 1,
+        "explanation": "INS stands for Indian Naval Ship — the prefix given to commissioned warships and shore establishments of the Indian Navy.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "What does 'NATO' stand for?",
+        "options": [
+          "National Army and Treaty Organisation",
+          "North Atlantic Treaty Organisation",
+          "Naval Alliance and Treaty Organisation",
+          "North American Treaty Organisation"
+        ],
+        "answer": 1,
+        "explanation": "NATO = North Atlantic Treaty Organisation, a military alliance of Western nations founded in 1949.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "NDA stands for:",
+        "options": [
+          "Naval Defence Academy",
+          "National Defence Academy",
+          "Navy and Defence Administration",
+          "National Development Agency"
+        ],
+        "answer": 1,
+        "explanation": "NDA = National Defence Academy, located in Khadakwasla, Pune. It is the premier tri-services training academy of India.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "DRDO stands for:",
+        "options": [
+          "Defence Research and Development Organisation",
+          "Department of Rockets and Defence Operations",
+          "Defence Research and Design Organisation",
+          "Directorate of Research and Defence Operations"
+        ],
+        "answer": 0,
+        "explanation": "DRDO = Defence Research and Development Organisation, India's premier defence R&D agency under the Ministry of Defence.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "What does 'ISRO' stand for?",
+        "options": [
+          "International Space Research Organisation",
+          "Indian Space Research Organisation",
+          "Indian Satellite and Rocket Operations",
+          "Integrated Space Research Organisation"
+        ],
+        "answer": 1,
+        "explanation": "ISRO = Indian Space Research Organisation, India's national space agency headquartered in Bengaluru.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "EEZ in naval context stands for:",
+        "options": [
+          "Electronic Engagement Zone",
+          "Exclusive Economic Zone",
+          "Extended Engagement Zone",
+          "Exclusive Entry Zone"
+        ],
+        "answer": 1,
+        "explanation": "EEZ = Exclusive Economic Zone — a maritime zone extending 200 nautical miles from a country's coast where it has exclusive rights over marine resources.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "What does 'SOS' originally stand for?",
+        "options": [
+          "Save Our Souls",
+          "Send Out Soldiers",
+          "It has no meaning — chosen for Morse code simplicity",
+          "Sinking Or Stranded"
+        ],
+        "answer": 2,
+        "explanation": "SOS does not stand for any specific phrase. It was chosen because ... --- ... (three dots, three dashes, three dots) is simple to transmit in Morse code.",
+        "difficulty": "hard"
+      },
+      {
+        "q": "MARCOS is:",
+        "options": [
+          "Indian Navy's Marine Commandos",
+          "Indian Army's Mountain Corps",
+          "Indian Air Force's Special Operations Squad",
+          "Coast Guard's Rescue Unit"
+        ],
+        "answer": 0,
+        "explanation": "MARCOS (Marine Commandos) are the special operations forces of the Indian Navy, equivalent to the US Navy SEALs.",
+        "difficulty": "medium"
+      }
+    ],
+    "science-tech": [
+      {
+        "q": "India's first indigenous aircraft carrier is:",
+        "options": [
+          "INS Vikramaditya",
+          "INS Viraat",
+          "INS Vikrant",
+          "INS Vishal"
+        ],
+        "answer": 2,
+        "explanation": "INS Vikrant (IAC-1) is India's first indigenously designed and built aircraft carrier, commissioned on 2 September 2022.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "Mission Shakti (2019) demonstrated India's capability to:",
+        "options": [
+          "Launch a geostationary satellite",
+          "Shoot down a live satellite in space",
+          "Land on the Moon",
+          "Send a spacecraft to Mars"
+        ],
+        "answer": 1,
+        "explanation": "Mission Shakti (27 March 2019) was India's anti-satellite missile test that successfully shot down a live Indian satellite, making India the 4th country with this capability.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "The INS Arihant is India's first:",
+        "options": [
+          "Aircraft carrier",
+          "Nuclear-powered ballistic missile submarine",
+          "Stealth destroyer",
+          "Nuclear-powered aircraft carrier"
+        ],
+        "answer": 1,
+        "explanation": "INS Arihant is India's first indigenously built nuclear-powered ballistic missile submarine (SSBN), giving India the nuclear triad.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "Tejas is:",
+        "options": [
+          "An Indian battle tank",
+          "India's indigenous light combat aircraft",
+          "A naval frigate",
+          "A ballistic missile"
+        ],
+        "answer": 1,
+        "explanation": "Tejas is India's indigenously developed Light Combat Aircraft (LCA) by HAL and DRDO, currently serving with the Indian Air Force.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "The Brahmos missile is:",
+        "options": [
+          "An intercontinental ballistic missile",
+          "A supersonic cruise missile jointly developed by India and Russia",
+          "An anti-submarine torpedo",
+          "A satellite launch vehicle"
+        ],
+        "answer": 1,
+        "explanation": "BrahMos is a supersonic cruise missile jointly developed by India and Russia. It is named after the Brahmaputra and Moskva rivers.",
+        "difficulty": "medium"
+      }
+    ],
+    "indian-navy-gk": [
+      {
+        "q": "The motto of the Indian Navy is:",
+        "options": [
+          "Jai Hind",
+          "Sam No Varuna",
+          "Satyameva Jayate",
+          "Sarvatra Vijay"
+        ],
+        "answer": 1,
+        "explanation": "'Sam No Varuna' (शं नो वरुण) means 'May the Lord of the Waters be auspicious unto us' — the motto of the Indian Navy.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "The Indian Navy's Western Naval Command is headquartered at:",
+        "options": [
+          "Visakhapatnam",
+          "Kochi",
+          "Mumbai",
+          "Port Blair"
+        ],
+        "answer": 2,
+        "explanation": "The Western Naval Command is headquartered at Mumbai. Eastern Command is at Visakhapatnam. Southern Command is at Kochi.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "Which is the highest rank in the Indian Navy?",
+        "options": [
+          "Vice Admiral",
+          "Rear Admiral",
+          "Admiral",
+          "Admiral of the Fleet"
+        ],
+        "answer": 2,
+        "explanation": "Admiral is the highest active rank in the Indian Navy. 'Admiral of the Fleet' is a ceremonial rank not currently in use.",
+        "difficulty": "medium"
+      },
+      {
+        "q": "INS Vikramaditya is a:",
+        "options": [
+          "Nuclear submarine",
+          "Destroyer",
+          "Aircraft carrier",
+          "Frigate"
+        ],
+        "answer": 2,
+        "explanation": "INS Vikramaditya is an aircraft carrier of the Indian Navy, commissioned in 2013. It is a modified Kiev-class carrier originally from Russia.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "The Indian Navy's Flag Day is observed on:",
+        "options": [
+          "15 August",
+          "4 December",
+          "26 January",
+          "26 November"
+        ],
+        "answer": 1,
+        "explanation": "Indian Navy Day is celebrated on 4 December every year to mark India's naval success in the 1971 Indo-Pak War, particularly Operation Trident.",
+        "difficulty": "easy"
+      },
+      {
+        "q": "The Andaman and Nicobar Command is India's first:",
+        "options": [
+          "Naval base",
+          "Tri-services integrated theatre command",
+          "Air Force base in the Bay of Bengal",
+          "Army coastal command"
+        ],
+        "answer": 1,
+        "explanation": "The Andaman and Nicobar Command, headquartered at Port Blair, is India's first and only integrated tri-services theatre command.",
+        "difficulty": "hard"
+      },
+      {
+        "q": "Whose image appears on the Indian Navy's Crest?",
+        "options": [
+          "Lion facing right",
+          "A ship's anchor with a shield",
+          "An eagle with spread wings",
+          "The Ashoka emblem over waves with an anchor"
+        ],
+        "answer": 3,
+        "explanation": "The Indian Navy's crest features the Ashoka Lion Capital above a shield with an anchor, over stylised waves, with the motto 'Sam No Varuna'.",
+        "difficulty": "hard"
+      },
+      {
+        "q": "INS Kadamba in Karnataka is:",
+        "options": [
+          "A destroyer",
+          "India's largest naval base",
+          "A submarine base",
+          "A training ship"
+        ],
+        "answer": 1,
+        "explanation": "INS Kadamba (Karwar Naval Base) in Karnataka is the largest naval base in Asia and one of the largest in the world, capable of housing both warships and submarines.",
+        "difficulty": "medium"
+      }
+    ],
+    "comp-1": [
+      {
+        "q": "In a comprehension passage, 'short answer questions' primarily test the reader's ability to:",
+        "options": [
+          "Memorise every sentence",
+          "Locate and state specific facts from the passage",
+          "Guess meanings not given",
+          "Rewrite the passage in own words"
+        ],
+        "answer": 1,
+        "explanation": "Short answer questions require identifying specific facts directly in the text.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "Which of the following best describes 'explicit' information in a passage?",
+        "options": [
+          "Information that must be inferred",
+          "Information clearly and directly stated",
+          "A hidden moral lesson",
+          "The author's personal opinion"
+        ],
+        "answer": 1,
+        "explanation": "Explicit information is directly stated in the text requiring no inference.",
+        "difficulty": "easy",
+        "pyq": false
+      },
+      {
+        "q": "When answering a factual question from a passage, you should:",
+        "options": [
+          "Write a lengthy essay",
+          "Use your own knowledge only",
+          "Refer directly to relevant lines of the passage",
+          "Ignore the passage entirely"
+        ],
+        "answer": 2,
+        "explanation": "Factual questions must be answered using information directly from the passage.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "A 'title' for a passage should ideally be:",
+        "options": [
+          "As long as possible",
+          "The first sentence of the passage",
+          "Brief and reflective of the central idea",
+          "A random phrase from the passage"
+        ],
+        "answer": 2,
+        "explanation": "A good title is concise and captures the main theme.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "'Scanning' a passage means:",
+        "options": [
+          "Reading every word slowly",
+          "Searching quickly for specific information",
+          "Summarising the passage",
+          "Writing notes in the margins"
+        ],
+        "answer": 1,
+        "explanation": "Scanning is a reading technique to locate specific facts quickly.",
+        "difficulty": "easy",
+        "pyq": false
+      },
+      {
+        "q": "To find the main idea of a paragraph, you should look at the:",
+        "options": [
+          "Last sentence only",
+          "First and last sentences and supporting details",
+          "Middle sentences only",
+          "Words in bold only"
+        ],
+        "answer": 1,
+        "explanation": "The main idea is typically in the topic sentence and supported by the rest of the paragraph.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Which question word asks about the reason or cause of an event in a passage?",
+        "options": [
+          "What",
+          "When",
+          "Why",
+          "Where"
+        ],
+        "answer": 2,
+        "explanation": "'Why' questions ask for the cause or reason behind an event.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "A 'rhetorical question' in a passage:",
+        "options": [
+          "Demands an immediate answer",
+          "Is asked for effect and does not expect a literal answer",
+          "Is always answered later",
+          "Is a grammar mistake"
+        ],
+        "answer": 1,
+        "explanation": "Rhetorical questions are posed for emphasis or effect, not to elicit a factual answer.",
+        "difficulty": "medium",
+        "pyq": false
+      },
+      {
+        "q": "When a question asks 'According to the passage…', your answer must:",
+        "options": [
+          "Be based on general knowledge",
+          "Come directly from the passage",
+          "Include your personal opinion",
+          "Be at least 100 words"
+        ],
+        "answer": 1,
+        "explanation": "'According to the passage' means the answer must come from the text.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "The purpose of a comprehension exercise is to test:",
+        "options": [
+          "Handwriting speed",
+          "Understanding of a given text",
+          "Mathematical ability",
+          "Memory of unrelated facts"
+        ],
+        "answer": 1,
+        "explanation": "Comprehension exercises assess how well a student understands and interprets a piece of writing.",
+        "difficulty": "easy",
+        "pyq": false
+      },
+      {
+        "q": "In a passage, the word 'however' signals:",
+        "options": [
+          "Addition of a similar idea",
+          "A contrast or exception to the previous idea",
+          "A conclusion",
+          "A list of examples"
+        ],
+        "answer": 1,
+        "explanation": "'However' is a conjunction that introduces a contrasting idea.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "The best strategy before answering comprehension questions is:",
+        "options": [
+          "Answer all questions first, then read",
+          "Read questions first, then read the passage carefully",
+          "Skip difficult questions",
+          "Only read first and last paragraphs"
+        ],
+        "answer": 1,
+        "explanation": "Reading questions first helps you know what to look for while reading.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "'Context' in reading comprehension refers to:",
+        "options": [
+          "The dictionary meaning only",
+          "The surrounding text that helps clarify meaning",
+          "The author's nationality",
+          "The number of paragraphs"
+        ],
+        "answer": 1,
+        "explanation": "Context refers to surrounding words and situations that help clarify meaning.",
+        "difficulty": "medium",
+        "pyq": false
+      },
+      {
+        "q": "A passage written in the 'first person' uses which pronouns primarily?",
+        "options": [
+          "He, she, it",
+          "They, them",
+          "I, me, we, our",
+          "You, your"
+        ],
+        "answer": 2,
+        "explanation": "First-person narration uses I, me, we, our.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "If a passage states 'The soldier fought valiantly', 'valiantly' means:",
+        "options": [
+          "Lazily",
+          "With great courage",
+          "Slowly",
+          "Without weapons"
+        ],
+        "answer": 1,
+        "explanation": "'Valiantly' means in a brave and determined manner.",
+        "difficulty": "medium",
+        "pyq": true
+      }
+    ],
+    "comp-2": [
+      {
+        "q": "Drawing an inference from a passage means:",
+        "options": [
+          "Copying sentences from it",
+          "Reaching a logical conclusion not directly stated",
+          "Writing a summary",
+          "Changing the vocabulary"
+        ],
+        "answer": 1,
+        "explanation": "An inference is a conclusion drawn by reasoning from evidence in the text.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Which of the following is an example of inference?",
+        "options": [
+          "The passage says the boy is 10 years old",
+          "The passage says it rained",
+          "Since the character carries an umbrella and looks at dark clouds, we infer it will rain",
+          "The passage lists countries"
+        ],
+        "answer": 2,
+        "explanation": "Inferring rain from clues uses the text to reach a conclusion not explicitly stated.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "The 'tone' of a passage refers to:",
+        "options": [
+          "The loudness of the writing",
+          "The author's attitude or feeling toward the subject",
+          "The length of sentences",
+          "The number of characters"
+        ],
+        "answer": 1,
+        "explanation": "Tone reflects the writer's attitude toward the topic or audience.",
+        "difficulty": "medium",
+        "pyq": false
+      },
+      {
+        "q": "If a passage has an optimistic tone, the writer is most likely expressing:",
+        "options": [
+          "Hopelessness",
+          "Anger",
+          "Positivity and hope",
+          "Confusion"
+        ],
+        "answer": 2,
+        "explanation": "An optimistic tone conveys positive feelings and hope.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "'Reading between the lines' means:",
+        "options": [
+          "Reading very slowly line by line",
+          "Understanding implied or hidden meanings",
+          "Reading footnotes only",
+          "Skipping alternate lines"
+        ],
+        "answer": 1,
+        "explanation": "Reading between the lines means understanding what is implied but not directly written.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "Which best defines 'author's purpose'?",
+        "options": [
+          "The number of words the author writes",
+          "The reason or intention behind writing a piece",
+          "The author's country of origin",
+          "The title of the passage"
+        ],
+        "answer": 1,
+        "explanation": "Author's purpose is the reason the text was written: to inform, entertain, persuade, or describe.",
+        "difficulty": "easy",
+        "pyq": false
+      },
+      {
+        "q": "A passage that presents facts, figures and data is likely written to:",
+        "options": [
+          "Entertain",
+          "Persuade with emotions",
+          "Inform the reader",
+          "Create fear"
+        ],
+        "answer": 2,
+        "explanation": "Factual, data-driven writing is typically meant to inform readers objectively.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "A valid inference from 'The soldier returned with a medal' is:",
+        "options": [
+          "The soldier is unwell",
+          "The soldier performed bravely and was rewarded",
+          "The soldier lost the battle",
+          "The soldier has no family"
+        ],
+        "answer": 1,
+        "explanation": "A medal is awarded for bravery or outstanding performance — a logical inference.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "A 'critical' reading of a passage involves:",
+        "options": [
+          "Finding spelling errors only",
+          "Accepting all claims without question",
+          "Evaluating arguments, evidence and reasoning",
+          "Counting sentences"
+        ],
+        "answer": 2,
+        "explanation": "Critical reading means actively analysing the text's arguments, evidence, assumptions and logic.",
+        "difficulty": "hard",
+        "pyq": false
+      },
+      {
+        "q": "The word 'implicit' means:",
+        "options": [
+          "Clearly stated",
+          "Politely written",
+          "Suggested but not directly expressed",
+          "Factually incorrect"
+        ],
+        "answer": 2,
+        "explanation": "Implicit information is hinted at rather than directly stated.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "When inferring the meaning of an unfamiliar word, the best approach is to:",
+        "options": [
+          "Skip it",
+          "Look at surrounding words and context",
+          "Always use a dictionary",
+          "Guess randomly"
+        ],
+        "answer": 1,
+        "explanation": "Context clues in surrounding sentences help deduce meaning of unknown words.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "A soldier shares his last ration with a wounded comrade. What can we infer?",
+        "options": [
+          "He is selfish",
+          "He is compassionate and selfless",
+          "He dislikes his comrade",
+          "He is hungry"
+        ],
+        "answer": 1,
+        "explanation": "Sharing one's last ration implies a compassionate and selfless character.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "'Predicting' in reading comprehension means:",
+        "options": [
+          "Guessing number of paragraphs",
+          "Using clues to anticipate what will happen next",
+          "Memorising the passage",
+          "Summarising the ending"
+        ],
+        "answer": 1,
+        "explanation": "Prediction uses textual clues to anticipate upcoming events.",
+        "difficulty": "medium",
+        "pyq": false
+      },
+      {
+        "q": "If a passage ends with 'despite the setbacks, they pressed on', the underlying message is:",
+        "options": [
+          "Quitting is wise",
+          "Persistence in the face of difficulties is admirable",
+          "Setbacks are impossible to overcome",
+          "Rest is more important than effort"
+        ],
+        "answer": 1,
+        "explanation": "'Pressed on despite setbacks' implies the value of perseverance.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Which word signals a concluding idea in a passage?",
+        "options": [
+          "However",
+          "Furthermore",
+          "Therefore",
+          "Although"
+        ],
+        "answer": 2,
+        "explanation": "'Therefore' signals a conclusion or result derived from preceding information.",
+        "difficulty": "easy",
+        "pyq": true
+      }
+    ],
+    "voc-2": [
+      {
+        "q": "One word for 'one who cannot be corrected':",
+        "options": [
+          "Innocent",
+          "Incorrigible",
+          "Introvert",
+          "Insolvent"
+        ],
+        "answer": 1,
+        "explanation": "'Incorrigible' = not able to be corrected.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "One word for 'a person who lives alone and avoids society':",
+        "options": [
+          "Nomad",
+          "Hermit",
+          "Vagrant",
+          "Pilgrim"
+        ],
+        "answer": 1,
+        "explanation": "A 'hermit' lives alone, apart from society.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "'Post-mortem' means:",
+        "options": [
+          "Examination of a living person",
+          "Examination conducted after death",
+          "Medical certificate",
+          "Birth record"
+        ],
+        "answer": 1,
+        "explanation": "'Post-mortem' = medical examination after death.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "One word for 'one who is indifferent to pleasure and pain':",
+        "options": [
+          "Epicure",
+          "Stoic",
+          "Optimist",
+          "Pessimist"
+        ],
+        "answer": 1,
+        "explanation": "A 'stoic' endures pain without complaint.",
+        "difficulty": "hard",
+        "pyq": true
+      },
+      {
+        "q": "'Omniscient' means one who:",
+        "options": [
+          "Knows nothing",
+          "Sees everything",
+          "Knows everything",
+          "Eats everything"
+        ],
+        "answer": 2,
+        "explanation": "'Omniscient' = having unlimited knowledge.",
+        "difficulty": "medium",
+        "pyq": false
+      },
+      {
+        "q": "One word for 'a person who hates mankind':",
+        "options": [
+          "Misogynist",
+          "Philanthropist",
+          "Misanthrope",
+          "Humanist"
+        ],
+        "answer": 2,
+        "explanation": "A 'misanthrope' dislikes humankind.",
+        "difficulty": "hard",
+        "pyq": true
+      },
+      {
+        "q": "One word for 'the study of birds':",
+        "options": [
+          "Botany",
+          "Ornithology",
+          "Zoology",
+          "Entomology"
+        ],
+        "answer": 1,
+        "explanation": "'Ornithology' is the branch studying birds.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "One word for 'one who can speak two languages':",
+        "options": [
+          "Polyglot",
+          "Bilingual",
+          "Linguist",
+          "Multilingual"
+        ],
+        "answer": 1,
+        "explanation": "'Bilingual' = can speak two languages fluently.",
+        "difficulty": "easy",
+        "pyq": false
+      },
+      {
+        "q": "'A doctor who treats eye diseases':",
+        "options": [
+          "Dentist",
+          "Dermatologist",
+          "Ophthalmologist",
+          "Cardiologist"
+        ],
+        "answer": 2,
+        "explanation": "'Ophthalmologist' treats eye diseases.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "'Plagiarism' means:",
+        "options": [
+          "Original writing",
+          "Copying someone else's work as your own",
+          "Citing sources correctly",
+          "Writing a review"
+        ],
+        "answer": 1,
+        "explanation": "'Plagiarism' = presenting others' work as your own.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "One word for 'a place where bees are kept':",
+        "options": [
+          "Burrow",
+          "Kennel",
+          "Apiary",
+          "Aviary"
+        ],
+        "answer": 2,
+        "explanation": "An 'apiary' is where honeybees are kept.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "One word for 'one who is present everywhere':",
+        "options": [
+          "Omnivore",
+          "Omnipotent",
+          "Omnipresent",
+          "Omniscient"
+        ],
+        "answer": 2,
+        "explanation": "'Omnipresent' = present everywhere at once.",
+        "difficulty": "medium",
+        "pyq": false
+      },
+      {
+        "q": "'Autobiography' means:",
+        "options": [
+          "Biography by someone else",
+          "A person's own life story written by themselves",
+          "A fictional life story",
+          "A historical account"
+        ],
+        "answer": 1,
+        "explanation": "Auto (self) + bio (life) + graphy (writing).",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "One word for 'government of the people, by the people':",
+        "options": [
+          "Monarchy",
+          "Oligarchy",
+          "Democracy",
+          "Autocracy"
+        ],
+        "answer": 2,
+        "explanation": "'Democracy' = system where citizens exercise power.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "One word for 'one who compiles a dictionary':",
+        "options": [
+          "Biographer",
+          "Lexicographer",
+          "Bibliophile",
+          "Philologist"
+        ],
+        "answer": 1,
+        "explanation": "A 'lexicographer' compiles dictionaries.",
+        "difficulty": "hard",
+        "pyq": false
+      }
+    ],
+    "voc-3": [
+      {
+        "q": "Choose correctly spelled word:",
+        "options": [
+          "Accomodation",
+          "Accommodation",
+          "Acommodation",
+          "Accommadation"
+        ],
+        "answer": 1,
+        "explanation": "'Accommodation' — double 'c' and double 'm'.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Which word is spelled correctly?",
+        "options": [
+          "Occured",
+          "Occurred",
+          "Ocurred",
+          "Occurerd"
+        ],
+        "answer": 1,
+        "explanation": "'Occurred' — double 'r' when adding -ed to 'occur'.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "'Affect' vs 'Effect' — correct sentence:",
+        "options": [
+          "The medicine effected him quickly",
+          "Cold weather affects the equipment",
+          "The affect of training is visible",
+          "Effect the change immediately"
+        ],
+        "answer": 1,
+        "explanation": "'Affect' (verb) = to influence. 'Cold weather affects' is correct.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Choose correctly spelled:",
+        "options": [
+          "Recieve",
+          "Receive",
+          "Recive",
+          "Receeve"
+        ],
+        "answer": 1,
+        "explanation": "'Receive' — 'e' before 'i' after 'c'.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "'Principal' vs 'Principle' — correct usage:",
+        "options": [
+          "She is a woman of high principal",
+          "The principal of the school gave a speech",
+          "The principle reason is money",
+          "Follow your principals"
+        ],
+        "answer": 1,
+        "explanation": "'Principal' = main person/rank. 'Principal of the school' is correct.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Correctly spelled word:",
+        "options": [
+          "Neccessary",
+          "Necesary",
+          "Necessary",
+          "Necessery"
+        ],
+        "answer": 2,
+        "explanation": "'Necessary' — one 'c', double 's'.",
+        "difficulty": "easy",
+        "pyq": false
+      },
+      {
+        "q": "'Their/There/They're' — correct sentence:",
+        "options": [
+          "They're books are on the table",
+          "Their are many soldiers",
+          "There are twenty cadets in the squad",
+          "Their ready for the inspection"
+        ],
+        "answer": 2,
+        "explanation": "'There' introduces a sentence. 'There are twenty cadets' is correct.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Correctly spelled:",
+        "options": [
+          "Seperately",
+          "Separatly",
+          "Separately",
+          "Separarely"
+        ],
+        "answer": 2,
+        "explanation": "'Separately' — remember sepaRATely has 'rate' in it.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "'Complement' vs 'Compliment' — correct usage:",
+        "options": [
+          "She complemented him on his bravery",
+          "His uniform was a compliment to his rank",
+          "The medal complemented his uniform",
+          "His dedication was a compliment"
+        ],
+        "answer": 2,
+        "explanation": "'Complement' = completes or goes well with. 'Medal complemented uniform' is correct.",
+        "difficulty": "hard",
+        "pyq": true
+      },
+      {
+        "q": "Identify misspelled word:",
+        "options": [
+          "Committee",
+          "Committment",
+          "Committed",
+          "Commit"
+        ],
+        "answer": 1,
+        "explanation": "'Commitment' (not 'committment') — no double 't' before '-ment'.",
+        "difficulty": "hard",
+        "pyq": false
+      },
+      {
+        "q": "Correctly spelled:",
+        "options": [
+          "Priviledge",
+          "Privelege",
+          "Privilege",
+          "Privilage"
+        ],
+        "answer": 2,
+        "explanation": "'Privilege' — no 'd', ends in '-lege'.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "'Stationery' vs 'Stationary' — correct sentence:",
+        "options": [
+          "The vehicle remained stationery",
+          "He bought stationery for the office",
+          "The stationery bicycle is good",
+          "Buy some stationary for school"
+        ],
+        "answer": 1,
+        "explanation": "'Stationery' (e) = paper/materials. 'Stationary' (a) = not moving.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Correctly spelled:",
+        "options": [
+          "Concious",
+          "Conscious",
+          "Consious",
+          "Consceous"
+        ],
+        "answer": 1,
+        "explanation": "'Conscious' — with 'sc' and ending '-ious'.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "'Loose' vs 'Lose' — correct sentence:",
+        "options": [
+          "Don't loose your focus",
+          "You will lose the match if careless",
+          "The bolt is lose",
+          "He did not loose the game"
+        ],
+        "answer": 1,
+        "explanation": "'Lose' (verb) = fail to win. 'You will lose' is correct.",
+        "difficulty": "medium",
+        "pyq": false
+      },
+      {
+        "q": "Correctly spelled:",
+        "options": [
+          "Millenium",
+          "Millennium",
+          "Milenium",
+          "Millenuim"
+        ],
+        "answer": 1,
+        "explanation": "'Millennium' — double 'l' and double 'n'.",
+        "difficulty": "hard",
+        "pyq": true
+      }
+    ],
+    "ic-1": [
+      {
+        "q": "The Constitution of India came into force on:",
+        "options": [
+          "15 August 1947",
+          "26 January 1950",
+          "26 November 1949",
+          "2 October 1950"
+        ],
+        "answer": 1,
+        "explanation": "Constitution adopted 26 Nov 1949; came into effect 26 Jan 1950 (Republic Day).",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "Which Fundamental Right is called 'heart and soul' of Constitution?",
+        "options": [
+          "Right to Equality",
+          "Right to Freedom",
+          "Right to Constitutional Remedies",
+          "Right to Education"
+        ],
+        "answer": 2,
+        "explanation": "Dr Ambedkar called Article 32 (Right to Constitutional Remedies) the heart and soul.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "How many Fundamental Rights are currently guaranteed?",
+        "options": [
+          "7",
+          "6",
+          "8",
+          "9"
+        ],
+        "answer": 1,
+        "explanation": "Currently 6 Fundamental Rights (Right to Property removed by 44th Amendment, 1978).",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "Which article abolishes untouchability?",
+        "options": [
+          "Article 14",
+          "Article 17",
+          "Article 19",
+          "Article 21"
+        ],
+        "answer": 1,
+        "explanation": "Article 17 abolishes untouchability in any form.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "The Preamble declares India to be:",
+        "options": [
+          "A Federal Democratic Republic",
+          "A Sovereign Socialist Secular Democratic Republic",
+          "A Parliamentary Monarchy",
+          "A Confederation"
+        ],
+        "answer": 1,
+        "explanation": "After 42nd Amendment (1976): Sovereign, Socialist, Secular, Democratic Republic.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Article 21A provides free education to children of age:",
+        "options": [
+          "5–14 years",
+          "6–14 years",
+          "6–18 years",
+          "5–18 years"
+        ],
+        "answer": 1,
+        "explanation": "Article 21A (86th Amendment, 2002) = 6 to 14 years.",
+        "difficulty": "medium",
+        "pyq": false
+      },
+      {
+        "q": "Article 20(2) protects against:",
+        "options": [
+          "Arbitrary arrest",
+          "Double jeopardy (tried twice for same offence)",
+          "Self-incrimination",
+          "Retrospective punishment"
+        ],
+        "answer": 1,
+        "explanation": "Article 20(2) = protection against double jeopardy.",
+        "difficulty": "hard",
+        "pyq": true
+      },
+      {
+        "q": "Fundamental Duties are in:",
+        "options": [
+          "Part III",
+          "Part IV",
+          "Part IV-A",
+          "Part V"
+        ],
+        "answer": 2,
+        "explanation": "Fundamental Duties are in Part IV-A (Article 51A), added by 42nd Amendment 1976.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Article 32 gives citizens the right to move which court for Fundamental Rights?",
+        "options": [
+          "High Court",
+          "Supreme Court",
+          "District Court",
+          "Any court"
+        ],
+        "answer": 1,
+        "explanation": "Article 32 allows citizens to petition the Supreme Court for FR enforcement.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "The 42nd Amendment is known as:",
+        "options": [
+          "24th Amendment",
+          "Mini Constitution",
+          "Magna Carta of India",
+          "44th Amendment"
+        ],
+        "answer": 1,
+        "explanation": "42nd Amendment (1976) made sweeping changes — called the 'Mini Constitution'.",
+        "difficulty": "hard",
+        "pyq": false
+      },
+      {
+        "q": "Article 21 guarantees:",
+        "options": [
+          "Right to Equality",
+          "Freedom of Religion",
+          "Right to Life and Personal Liberty",
+          "Right to Education"
+        ],
+        "answer": 2,
+        "explanation": "Article 21 = no person deprived of life or personal liberty without due process.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "Fundamental Rights are in which Part of the Constitution?",
+        "options": [
+          "Part II",
+          "Part III",
+          "Part IV",
+          "Part V"
+        ],
+        "answer": 1,
+        "explanation": "Fundamental Rights = Part III (Articles 12–35).",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "44th Amendment removed which Fundamental Right?",
+        "options": [
+          "Right to Equality",
+          "Freedom of Speech",
+          "Right to Property",
+          "Right to Constitutional Remedies"
+        ],
+        "answer": 2,
+        "explanation": "44th Amendment (1978) removed Right to Property from Fundamental Rights.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Article 19 guarantees freedom of:",
+        "options": [
+          "Religion",
+          "Speech and expression (among others)",
+          "Life",
+          "Education"
+        ],
+        "answer": 1,
+        "explanation": "Article 19 = 6 freedoms including speech, assembly, movement, residence, profession.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "'State' as defined in Article 12 includes:",
+        "options": [
+          "Only Parliament",
+          "Only State Legislatures",
+          "Parliament, State Legislatures, and all governments",
+          "Only the Supreme Court"
+        ],
+        "answer": 2,
+        "explanation": "Article 12 defines 'State' broadly to include all government bodies.",
+        "difficulty": "hard",
+        "pyq": false
+      }
+    ],
+    "ic-2": [
+      {
+        "q": "The Election Commission is established under Article:",
+        "options": [
+          "315",
+          "324",
+          "329",
+          "356"
+        ],
+        "answer": 1,
+        "explanation": "Article 324 establishes the Election Commission.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Lok Sabha elections are held every:",
+        "options": [
+          "3 years",
+          "4 years",
+          "5 years",
+          "6 years"
+        ],
+        "answer": 2,
+        "explanation": "Lok Sabha term = 5 years.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "Voting age reduced from 21 to 18 by the ___ Amendment:",
+        "options": [
+          "42nd",
+          "52nd",
+          "61st",
+          "73rd"
+        ],
+        "answer": 2,
+        "explanation": "61st Amendment (1989) reduced voting age to 18.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "India's Lok Sabha election system:",
+        "options": [
+          "Proportional Representation",
+          "First Past The Post (FPTP)",
+          "Preferential Voting",
+          "Block Voting"
+        ],
+        "answer": 1,
+        "explanation": "Lok Sabha uses FPTP — candidate with most votes wins.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "President of India is elected by:",
+        "options": [
+          "Lok Sabha members only",
+          "Rajya Sabha only",
+          "Direct election",
+          "Elected members of Parliament and State Legislatures"
+        ],
+        "answer": 3,
+        "explanation": "Electoral College = elected MPs + elected State Legislature members.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "How many elected seats are in Lok Sabha?",
+        "options": [
+          "250",
+          "543",
+          "545",
+          "552"
+        ],
+        "answer": 1,
+        "explanation": "543 elected seats (2 Anglo-Indian seats removed by 104th Amendment, 2020).",
+        "difficulty": "easy",
+        "pyq": false
+      },
+      {
+        "q": "Chief Election Commissioner can be removed by:",
+        "options": [
+          "Prime Minister",
+          "President on PM's advice",
+          "Impeachment like a SC judge",
+          "Simple majority in Parliament"
+        ],
+        "answer": 2,
+        "explanation": "CEC removal = impeachment process like Supreme Court judge.",
+        "difficulty": "hard",
+        "pyq": true
+      },
+      {
+        "q": "Rajya Sabha is:",
+        "options": [
+          "Temporary",
+          "Permanent with 1/3 retiring every 2 years",
+          "Permanent, members serve 6 years",
+          "Dissolves with Lok Sabha"
+        ],
+        "answer": 1,
+        "explanation": "Rajya Sabha is permanent — 1/3 retire every 2 years.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "'EVM' stands for:",
+        "options": [
+          "Electronic Value Meter",
+          "Electronic Voting Machine",
+          "Electoral Vote Monitor",
+          "Electorate Verification Method"
+        ],
+        "answer": 1,
+        "explanation": "EVM = Electronic Voting Machine.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "Article 71 states disputes in President/VP election go to:",
+        "options": [
+          "Election Commission",
+          "Supreme Court",
+          "High Court",
+          "Parliament"
+        ],
+        "answer": 1,
+        "explanation": "Article 71 = Supreme Court decides President/VP election disputes.",
+        "difficulty": "hard",
+        "pyq": true
+      },
+      {
+        "q": "'Universal Adult Franchise' means:",
+        "options": [
+          "Only educated adults vote",
+          "All citizens above 18 vote regardless of background",
+          "Only taxpayers vote",
+          "Property owners vote"
+        ],
+        "answer": 1,
+        "explanation": "= right to vote for all adults without discrimination.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "By-elections are held when:",
+        "options": [
+          "President calls for them",
+          "A sitting member's seat falls vacant",
+          "Both houses dissolve",
+          "PM loses confidence"
+        ],
+        "answer": 1,
+        "explanation": "By-elections fill vacancies from death, resignation, or disqualification.",
+        "difficulty": "medium",
+        "pyq": false
+      },
+      {
+        "q": "VVPAT was introduced to:",
+        "options": [
+          "Speed up counting",
+          "Allow voters to verify their vote",
+          "Replace EVMs",
+          "Store voter data"
+        ],
+        "answer": 1,
+        "explanation": "VVPAT = paper trail voters can check to verify vote was recorded correctly.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "No-Confidence Motion is used to:",
+        "options": [
+          "Remove President",
+          "Remove PM if he loses majority in Lok Sabha",
+          "Dissolve Rajya Sabha",
+          "Remove Governor"
+        ],
+        "answer": 1,
+        "explanation": "No-Confidence Motion (Article 75) tests if PM has Lok Sabha confidence.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Which body resolves President/VP election disputes?",
+        "options": [
+          "Election Commission",
+          "Supreme Court",
+          "High Court",
+          "Parliament"
+        ],
+        "answer": 1,
+        "explanation": "Article 71 — Supreme Court has exclusive jurisdiction.",
+        "difficulty": "medium",
+        "pyq": true
+      }
+    ],
+    "ic-3": [
+      {
+        "q": "Executive power of India is vested in:",
+        "options": [
+          "Prime Minister",
+          "Parliament",
+          "President",
+          "Cabinet"
+        ],
+        "answer": 2,
+        "explanation": "Article 53 vests executive power in the President.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "Prime Minister is appointed by:",
+        "options": [
+          "Lok Sabha",
+          "President",
+          "Rajya Sabha",
+          "Supreme Court"
+        ],
+        "answer": 1,
+        "explanation": "President appoints PM — conventionally the Lok Sabha majority leader.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "Article 74 defines:",
+        "options": [
+          "PM's powers",
+          "Council of Ministers aiding the President",
+          "Supreme Court",
+          "State Emergency"
+        ],
+        "answer": 1,
+        "explanation": "Article 74 = Council of Ministers with PM to aid/advise the President.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Money Bills can only be introduced in:",
+        "options": [
+          "Rajya Sabha",
+          "Lok Sabha",
+          "Either House",
+          "Joint Session"
+        ],
+        "answer": 1,
+        "explanation": "Article 110 = Money Bills only in Lok Sabha.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "Judicial review means:",
+        "options": [
+          "Parliament reviews court decisions",
+          "Courts can strike down laws violating Constitution",
+          "President reviews legislation",
+          "Courts approve all laws"
+        ],
+        "answer": 1,
+        "explanation": "Judicial review = courts examine constitutionality of laws.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Vice President is ex-officio Chairman of:",
+        "options": [
+          "Lok Sabha",
+          "Rajya Sabha",
+          "Planning Commission",
+          "NITI Aayog"
+        ],
+        "answer": 1,
+        "explanation": "Article 64 = Vice President is ex-officio Chairman of Rajya Sabha.",
+        "difficulty": "easy",
+        "pyq": false
+      },
+      {
+        "q": "Article 124 establishes:",
+        "options": [
+          "High Courts",
+          "Supreme Court",
+          "Election Commission",
+          "CAG"
+        ],
+        "answer": 1,
+        "explanation": "Article 124 = establishment of Supreme Court.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Custodian of the Constitution is:",
+        "options": [
+          "President",
+          "Prime Minister",
+          "Supreme Court",
+          "Parliament"
+        ],
+        "answer": 2,
+        "explanation": "Supreme Court is the custodian and final interpreter of the Constitution.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Article 61 deals with:",
+        "options": [
+          "PM appointment",
+          "Impeachment of President",
+          "State Emergency",
+          "Rajya Sabha composition"
+        ],
+        "answer": 1,
+        "explanation": "Article 61 = procedure for impeaching the President.",
+        "difficulty": "hard",
+        "pyq": true
+      },
+      {
+        "q": "Speaker of Lok Sabha is elected by:",
+        "options": [
+          "President",
+          "Members of Lok Sabha",
+          "Both Houses jointly",
+          "PM"
+        ],
+        "answer": 1,
+        "explanation": "Article 93 = Speaker elected by Lok Sabha members.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "Which court handles disputes between two states?",
+        "options": [
+          "District Court",
+          "High Court",
+          "Supreme Court",
+          "Lok Adalat"
+        ],
+        "answer": 2,
+        "explanation": "Article 131 = Supreme Court has original jurisdiction over inter-state disputes.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "A bill becomes an Act after:",
+        "options": [
+          "Passed by Lok Sabha",
+          "Passed by Rajya Sabha",
+          "Passed by both Houses + Presidential assent",
+          "PM signs it"
+        ],
+        "answer": 2,
+        "explanation": "A bill needs both Houses + President's assent to become law.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "'Rule of Law' means:",
+        "options": [
+          "Army rules the country",
+          "Law is supreme and applies equally to all",
+          "Only government is above law",
+          "Judges make all laws"
+        ],
+        "answer": 1,
+        "explanation": "Rule of Law = no one is above the law.",
+        "difficulty": "easy",
+        "pyq": false
+      },
+      {
+        "q": "Supreme Court of India has CJI + how many judges?",
+        "options": [
+          "25",
+          "30",
+          "33",
+          "34"
+        ],
+        "answer": 2,
+        "explanation": "Supreme Court has CJI + 33 other judges = 34 total.",
+        "difficulty": "hard",
+        "pyq": true
+      },
+      {
+        "q": "Which article empowers Parliament to impeach the President?",
+        "options": [
+          "Article 56",
+          "Article 61",
+          "Article 63",
+          "Article 74"
+        ],
+        "answer": 1,
+        "explanation": "Article 61 = impeachment procedure for the President.",
+        "difficulty": "hard",
+        "pyq": false
+      }
+    ],
+    "ic-4": [
+      {
+        "q": "Article 1 describes India as:",
+        "options": [
+          "A Federation",
+          "A Union of States",
+          "A Confederation",
+          "A Republic"
+        ],
+        "answer": 1,
+        "explanation": "Article 1 = India, that is Bharat, shall be a Union of States.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "73rd Constitutional Amendment relates to:",
+        "options": [
+          "Urban local bodies",
+          "Panchayati Raj institutions",
+          "Right to Education",
+          "Women's reservation"
+        ],
+        "answer": 1,
+        "explanation": "73rd Amendment gave constitutional status to Panchayati Raj.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "74th Constitutional Amendment deals with:",
+        "options": [
+          "Panchayati Raj",
+          "Urban Local Bodies/Municipalities",
+          "Right to Information",
+          "Land Acquisition"
+        ],
+        "answer": 1,
+        "explanation": "74th Amendment gave constitutional status to Urban Local Bodies.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Gram Panchayat belongs to which tier?",
+        "options": [
+          "National",
+          "State",
+          "Local/Village",
+          "Zonal"
+        ],
+        "answer": 2,
+        "explanation": "Gram Panchayat = 3rd tier (village level) of governance.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "The Seventh Schedule deals with:",
+        "options": [
+          "Fifth Schedule",
+          "Sixth Schedule",
+          "Distribution of powers between Centre and States",
+          "Eighth Schedule"
+        ],
+        "answer": 2,
+        "explanation": "Seventh Schedule = Union, State, and Concurrent Lists.",
+        "difficulty": "medium",
+        "pyq": false
+      },
+      {
+        "q": "President's Rule is imposed under Article:",
+        "options": [
+          "352",
+          "356",
+          "360",
+          "370"
+        ],
+        "answer": 1,
+        "explanation": "Article 356 = President's Rule (State Emergency).",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "State List gives exclusive legislative powers to:",
+        "options": [
+          "Parliament",
+          "State Legislatures",
+          "Both",
+          "President"
+        ],
+        "answer": 1,
+        "explanation": "State List subjects = only State Legislatures can legislate.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "Article 3 empowers Parliament to:",
+        "options": [
+          "Declare war",
+          "Form new States and alter boundaries",
+          "Impose Emergency",
+          "Amend Constitution"
+        ],
+        "answer": 1,
+        "explanation": "Article 3 = Parliament can form/alter/rename States.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Finance Commission is constituted under Article:",
+        "options": [
+          "256",
+          "263",
+          "280",
+          "315"
+        ],
+        "answer": 2,
+        "explanation": "Article 280 = Finance Commission for Centre-State tax distribution.",
+        "difficulty": "hard",
+        "pyq": true
+      },
+      {
+        "q": "Governor of a State is appointed by:",
+        "options": [
+          "State Legislature",
+          "Chief Minister",
+          "President",
+          "Prime Minister"
+        ],
+        "answer": 2,
+        "explanation": "Article 155 = Governor appointed by the President.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "Gram Sabha is constituted at:",
+        "options": [
+          "Block level",
+          "District level",
+          "Village level",
+          "State level"
+        ],
+        "answer": 2,
+        "explanation": "Gram Sabha = all registered voters of a village.",
+        "difficulty": "easy",
+        "pyq": false
+      },
+      {
+        "q": "'Cooperative Federalism' means:",
+        "options": [
+          "States compete",
+          "Centre and States work together on national goals",
+          "States merge into Centre",
+          "Centre controls all State finances"
+        ],
+        "answer": 1,
+        "explanation": "= Centre and States collaborating on shared national objectives.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Inter-State Council established under Article:",
+        "options": [
+          "256",
+          "261",
+          "263",
+          "268"
+        ],
+        "answer": 2,
+        "explanation": "Article 263 = Inter-State Council for Centre-State coordination.",
+        "difficulty": "hard",
+        "pyq": true
+      },
+      {
+        "q": "Article 3 vs Article 368 — Article 368 deals with:",
+        "options": [
+          "Forming new States",
+          "Amending the Constitution",
+          "Emergency provisions",
+          "Panchayati Raj"
+        ],
+        "answer": 1,
+        "explanation": "Article 368 = procedure for amending the Constitution.",
+        "difficulty": "medium",
+        "pyq": false
+      },
+      {
+        "q": "Local self-government in urban areas managed by:",
+        "options": [
+          "District Collector",
+          "State Legislature",
+          "Municipal Corporations/Councils",
+          "Gram Panchayats"
+        ],
+        "answer": 2,
+        "explanation": "Urban local governance = Municipal Corporations, Councils, and Nagar Panchayats.",
+        "difficulty": "easy",
+        "pyq": true
+      }
+    ],
+    "mh-1": [
+      {
+        "q": "World War I began in:",
+        "options": [
+          "1912",
+          "1914",
+          "1916",
+          "1918"
+        ],
+        "answer": 1,
+        "explanation": "WWI began on 28 July 1914 following assassination of Archduke Franz Ferdinand.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "The assassination that triggered WWI was of:",
+        "options": [
+          "Adolf Hitler",
+          "Archduke Franz Ferdinand",
+          "Kaiser Wilhelm II",
+          "Benito Mussolini"
+        ],
+        "answer": 1,
+        "explanation": "Archduke Franz Ferdinand of Austria-Hungary was assassinated in Sarajevo on 28 June 1914.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "Which alliance won World War I?",
+        "options": [
+          "Triple Alliance",
+          "Allied Powers (Britain, France, Russia, USA)",
+          "Axis Powers",
+          "Central Powers"
+        ],
+        "answer": 1,
+        "explanation": "The Allied Powers defeated the Central Powers in WWI.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "World War II ended in:",
+        "options": [
+          "1943",
+          "1944",
+          "1945",
+          "1946"
+        ],
+        "answer": 2,
+        "explanation": "WWII ended in 1945 — Germany surrendered in May, Japan in September.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "The Treaty of Versailles (1919) formally ended:",
+        "options": [
+          "World War II",
+          "The Korean War",
+          "World War I",
+          "The Cold War"
+        ],
+        "answer": 2,
+        "explanation": "The Treaty of Versailles (28 June 1919) officially ended World War I.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Which event brought the United States into World War II?",
+        "options": [
+          "Fall of France",
+          "Invasion of Poland",
+          "Japanese attack on Pearl Harbor",
+          "Battle of Britain"
+        ],
+        "answer": 2,
+        "explanation": "Japan's surprise attack on Pearl Harbor (7 December 1941) brought the US into WWII.",
+        "difficulty": "easy",
+        "pyq": false
+      },
+      {
+        "q": "The atomic bombs in WWII were dropped on:",
+        "options": [
+          "Tokyo and Osaka",
+          "Hiroshima and Nagasaki",
+          "Berlin and Munich",
+          "Shanghai and Beijing"
+        ],
+        "answer": 1,
+        "explanation": "US dropped bombs on Hiroshima (6 Aug 1945) and Nagasaki (9 Aug 1945).",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "India's contribution to World War I included:",
+        "options": [
+          "Sending nuclear weapons",
+          "Over 1.5 million soldiers serving with British forces",
+          "Declaring war independently",
+          "Sending aircraft carriers"
+        ],
+        "answer": 1,
+        "explanation": "Over 1.5 million Indian soldiers served in WWI under British command.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "The United Nations was founded in:",
+        "options": [
+          "1944",
+          "1945",
+          "1947",
+          "1950"
+        ],
+        "answer": 1,
+        "explanation": "The United Nations was officially established on 24 October 1945.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "The 'D-Day' landing in WWII took place at:",
+        "options": [
+          "Dunkirk",
+          "Normandy, France",
+          "Pearl Harbor",
+          "Sicily"
+        ],
+        "answer": 1,
+        "explanation": "D-Day (6 June 1944) — Operation Overlord — was the Allied invasion at Normandy beaches.",
+        "difficulty": "medium",
+        "pyq": false
+      },
+      {
+        "q": "Germany's invasion of which country in 1939 triggered WWII?",
+        "options": [
+          "France",
+          "Britain",
+          "Poland",
+          "USSR"
+        ],
+        "answer": 2,
+        "explanation": "Germany's invasion of Poland on 1 September 1939 triggered WWII.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "The Battle of Stalingrad (1942–43) was a turning point fought between:",
+        "options": [
+          "Britain and Germany",
+          "USA and Japan",
+          "Germany and Soviet Union",
+          "Italy and USSR"
+        ],
+        "answer": 2,
+        "explanation": "Soviet Union defeated Nazi Germany's 6th Army at Stalingrad — a major WWII turning point.",
+        "difficulty": "medium",
+        "pyq": false
+      },
+      {
+        "q": "The League of Nations was established after:",
+        "options": [
+          "World War II",
+          "World War I",
+          "Korean War",
+          "Cold War"
+        ],
+        "answer": 1,
+        "explanation": "The League of Nations was established in 1920 after WWI as part of the Treaty of Versailles.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "India achieved independence during which post-war period?",
+        "options": [
+          "End of WWI",
+          "Immediately after WWII / onset of Cold War",
+          "During Korean War",
+          "During Vietnam War"
+        ],
+        "answer": 1,
+        "explanation": "India achieved independence on 15 August 1947, in the immediate post-WWII period.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Which Indian soldier won the Victoria Cross in World War I?",
+        "options": [
+          "Field Marshal Sam Manekshaw",
+          "Subedar Mir Dast",
+          "Capt Vikram Batra",
+          "Lt Col A B Tarapore"
+        ],
+        "answer": 1,
+        "explanation": "Subedar Mir Dast won the Victoria Cross in WWI for bravery on the Western Front.",
+        "difficulty": "hard",
+        "pyq": true
+      }
+    ],
+    "mh-2": [
+      {
+        "q": "The First Indo-Pak War was fought in:",
+        "options": [
+          "1947",
+          "1965",
+          "1971",
+          "1948"
+        ],
+        "answer": 0,
+        "explanation": "The first Indo-Pak war began on 22 October 1947 with Pakistan's tribal invasion of J&K.",
+        "difficulty": "easy",
+        "pyq": true
+      },
+      {
+        "q": "The Line of Control (LOC) in Kashmir resulted from which war?",
+        "options": [
+          "1965 War",
+          "1971 War",
+          "1947 War",
+          "Kargil 1999"
+        ],
+        "answer": 2,
+        "explanation": "The ceasefire line after the 1947 War became the Line of Control.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "The 1965 Indo-Pak War was primarily fought over:",
+        "options": [
+          "Bangladesh",
+          "Rann of Kutch and Kashmir",
+          "Punjab border",
+          "Rajasthan"
+        ],
+        "answer": 1,
+        "explanation": "The 1965 war mainly involved fighting in the Rann of Kutch and Kashmir.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "The Tashkent Agreement (1966) ended which conflict?",
+        "options": [
+          "1947 War",
+          "1962 Sino-Indian War",
+          "1965 Indo-Pak War",
+          "1971 War"
+        ],
+        "answer": 2,
+        "explanation": "The Tashkent Agreement ended the 1965 Indo-Pak War, brokered by the Soviet Union.",
+        "difficulty": "medium",
+        "pyq": true
+      },
+      {
+        "q": "Pakistan surrendered to Indian forces in 1971 at:",
+        "options": [
+          "
