@@ -1741,7 +1741,7 @@ const StudyReminder = {
         @keyframes reminderSlideDown{from{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:none}}
         @keyframes reminderFadeOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-100%)}}
         #study-reminder-banner .rb-quote-box{background:${quote.color};border-bottom:3px solid ${quote.accent};position:relative;overflow:hidden;}
-        #study-reminder-banner .rb-quote-box::before{content:'\275D';position:absolute;top:-10px;left:12px;font-size:5rem;color:${quote.accent};opacity:0.12;font-family:Georgia,serif;line-height:1;pointer-events:none;}
+        #study-reminder-banner .rb-quote-box::before{content:'\\u275D';position:absolute;top:-10px;left:12px;font-size:5rem;color:${quote.accent};opacity:0.12;font-family:Georgia,serif;line-height:1;pointer-events:none;}
       </style>
       <div style="background:#0d1f35;border-bottom:1px solid rgba(201,168,76,0.3);padding:0.75rem 1rem 0;display:flex;align-items:center;justify-content:space-between;">
         <div style="display:flex;align-items:center;gap:0.5rem;">
