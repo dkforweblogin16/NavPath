@@ -147,12 +147,12 @@ function initApp() {
       App.user = null;
       App.userDoc = null;
       App.progress = {};
-      // Reset button states when logging out
+      // Reset buttons so they're never stuck disabled after logout
       const loginBtn = $('#login-btn');
       const signupBtn = $('#signup-btn');
       if (loginBtn) { loginBtn.textContent = 'Sign In →'; loginBtn.disabled = false; }
       if (signupBtn) { signupBtn.textContent = 'Start Free Trial 🚀'; signupBtn.disabled = false; }
-      // Load resources BEFORE showing screen so auth page is never blocked
+      // Load resources BEFORE showing screen — prevents async blocking the auth UI
       await loadResources();
       showScreen('auth-screen');
       switchAuthTab('login');
@@ -170,12 +170,11 @@ function initApp() {
 // rest of the app (quiz, mock test, practice browse) works unchanged.
 // ============================================================
 async function loadResources() {
-  // Guard: skip if already fully loaded to prevent double-fetch race conditions
+  // Guard: skip if already loaded — prevents double-fetch race from onAuthStateChanged
   if (App.syllabus && App.questions) {
     console.log('[NavPath] Resources already loaded — skipping.');
     return;
   }
-
   try {
     // Load syllabus first (required)
     const sylRes = await fetch('syllabus.json');
@@ -251,24 +250,24 @@ async function loadUserData() {
     if (userSnap.exists) {
       App.userDoc = userSnap.data();
     } else {
-      // FIX #3: Use App.firebase.db Timestamp reference, not bare firebase.firestore.Timestamp
-      // (the bare reference sometimes fails if Firestore isn't initialized before this runs)
-      const now = new Date(); // real Date — needed for local getTrialStatus() reads
-      const nowTs = fbTimestampNow(); // serverTimestamp sentinel for Firestore
+      // Use real Date locally — serverTimestamp() is write-only and can't be read back
+      const now = new Date();
       App.userDoc = {
         email: App.user.email,
         displayName: App.user.displayName || App.user.email.split('@')[0],
-        createdAt: nowTs,
-        trialStartDate: now.toISOString(), // stored as ISO string so toDate() fallback works
+        createdAt: fbTimestampNow(),
+        trialStartDate: now.toISOString(), // ISO string — safely readable by getTrialStatus()
         isPremium: false,
         premiumExpiry: null,
         planType: 'trial',
         streak: 0,
         lastStudiedDate: null,
       };
+      // Write to Firestore with real Firestore timestamps
       await userRef.set({
         ...App.userDoc,
-        trialStartDate: nowTs, // store as Firestore timestamp in DB
+        createdAt: fbTimestampNow(),
+        trialStartDate: fbTimestampNow(),
       });
     }
 
@@ -333,18 +332,14 @@ async function saveTopicProgress(topicId, completed) {
   try {
     await db.collection('users').doc(uid)
       .collection('progress').doc(topicId)
-      .set({
-        completed,
-        completedAt: fbTimestampNow()
-      });
+      .set({ completed, completedAt: fbTimestampNow() });
     updateSyllabusUI();
     updateProgressStats();
   } catch (e) {
     console.error('[NavPath] Failed to save progress:', e);
-    // Still update UI even if Firestore write fails
-    updateSyllabusUI();
+    updateSyllabusUI();   // still update UI locally
     updateProgressStats();
-    toast('Progress saved locally. Sync failed — check connection.', 'error');
+    toast('Saved locally — sync failed, check connection.', 'error');
   }
 }
 
