@@ -63,7 +63,7 @@ window.App = App;
 // SAFE FIREBASE HELPERS — prevent crash if SDK loads late
 // ============================================================
 function fbTimestampNow() {
-  try { return fbTimestampNow(); } 
+  try { return firebase.firestore.FieldValue.serverTimestamp(); }
   catch(e) { return new Date(); }
 }
 function fbTimestampFromDate(d) {
@@ -152,9 +152,10 @@ function initApp() {
       const signupBtn = $('#signup-btn');
       if (loginBtn) { loginBtn.textContent = 'Sign In →'; loginBtn.disabled = false; }
       if (signupBtn) { signupBtn.textContent = 'Start Free Trial 🚀'; signupBtn.disabled = false; }
+      // Load resources BEFORE showing screen so auth page is never blocked
+      await loadResources();
       showScreen('auth-screen');
       switchAuthTab('login');
-      await loadResources(); // load after screen shown so buttons are never blocked
     }
   });
 }
@@ -169,6 +170,12 @@ function initApp() {
 // rest of the app (quiz, mock test, practice browse) works unchanged.
 // ============================================================
 async function loadResources() {
+  // Guard: skip if already fully loaded to prevent double-fetch race conditions
+  if (App.syllabus && App.questions) {
+    console.log('[NavPath] Resources already loaded — skipping.');
+    return;
+  }
+
   try {
     // Load syllabus first (required)
     const sylRes = await fetch('syllabus.json');
@@ -246,19 +253,23 @@ async function loadUserData() {
     } else {
       // FIX #3: Use App.firebase.db Timestamp reference, not bare firebase.firestore.Timestamp
       // (the bare reference sometimes fails if Firestore isn't initialized before this runs)
-      const now = fbTimestampNow();
+      const now = new Date(); // real Date — needed for local getTrialStatus() reads
+      const nowTs = fbTimestampNow(); // serverTimestamp sentinel for Firestore
       App.userDoc = {
         email: App.user.email,
         displayName: App.user.displayName || App.user.email.split('@')[0],
-        createdAt: now,
-        trialStartDate: now,
+        createdAt: nowTs,
+        trialStartDate: now.toISOString(), // stored as ISO string so toDate() fallback works
         isPremium: false,
         premiumExpiry: null,
         planType: 'trial',
         streak: 0,
         lastStudiedDate: null,
       };
-      await userRef.set(App.userDoc);
+      await userRef.set({
+        ...App.userDoc,
+        trialStartDate: nowTs, // store as Firestore timestamp in DB
+      });
     }
 
     // Load progress
@@ -286,7 +297,9 @@ function getTrialStatus() {
   if (!App.userDoc) return { active: true, daysLeft: 3 };
   if (App.userDoc.isPremium) return { active: false, isPremium: true, daysLeft: 999 };
 
-  const start = App.userDoc.trialStartDate?.toDate?.() || new Date(App.userDoc.trialStartDate || Date.now());
+  const start = App.userDoc.trialStartDate?.toDate?.()
+    || (typeof App.userDoc.trialStartDate === 'string' ? new Date(App.userDoc.trialStartDate) : null)
+    || new Date(App.userDoc.trialStartDate || Date.now());
   const now = new Date();
   const msPerDay = 1000 * 60 * 60 * 24;
   const daysElapsed = Math.floor((now - start) / msPerDay);
@@ -328,7 +341,10 @@ async function saveTopicProgress(topicId, completed) {
     updateProgressStats();
   } catch (e) {
     console.error('[NavPath] Failed to save progress:', e);
-    toast('Could not save progress. Try again.', 'error');
+    // Still update UI even if Firestore write fails
+    updateSyllabusUI();
+    updateProgressStats();
+    toast('Progress saved locally. Sync failed — check connection.', 'error');
   }
 }
 
@@ -488,6 +504,7 @@ async function handleLogout() {
     App.userDoc = null;
     App.progress = {};
     showScreen('auth-screen');
+    switchAuthTab('login');
   }
 }
 
