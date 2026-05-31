@@ -250,24 +250,25 @@ async function loadUserData() {
     if (userSnap.exists) {
       App.userDoc = userSnap.data();
     } else {
-      // Use real Date locally — serverTimestamp() is write-only and can't be read back
+      // Use ISO string for trialStartDate — readable locally AND from Firestore on next login
       const now = new Date();
+      const isoNow = now.toISOString();
       App.userDoc = {
         email: App.user.email,
         displayName: App.user.displayName || App.user.email.split('@')[0],
-        createdAt: fbTimestampNow(),
-        trialStartDate: now.toISOString(), // ISO string — safely readable by getTrialStatus()
+        createdAt: isoNow,
+        trialStartDate: isoNow,
         isPremium: false,
         premiumExpiry: null,
         planType: 'trial',
         streak: 0,
         lastStudiedDate: null,
       };
-      // Write to Firestore with real Firestore timestamps
+      // Write ISO strings to Firestore — consistent on every read-back
       await userRef.set({
         ...App.userDoc,
-        createdAt: fbTimestampNow(),
-        trialStartDate: fbTimestampNow(),
+        createdAt: fbTimestampNow(), // server timestamp for createdAt is fine
+        trialStartDate: isoNow,     // ISO string — getTrialStatus() reads this reliably
       });
     }
 
@@ -691,25 +692,28 @@ function renderChapters(paper) {
   paper.subjects.forEach(subject => {
     subject.chapters.forEach(chapter => {
       let cTotal = chapter.topics.length;
-      let cDone = chapter.topics.filter(t => App.progress[t.id]).length;
+      let cDone  = chapter.topics.filter(t => App.progress[t.id]).length;
       const cPct = cTotal ? Math.round(cDone / cTotal * 100) : 0;
+      const isComplete = cTotal > 0 && cDone === cTotal;
+      const isActiveChapter = chapter.id === _activeChapterId;
       const radius = 14;
-      const circ = 2 * Math.PI * radius;
+      const circ   = 2 * Math.PI * radius;
       const offset = circ - (cPct / 100) * circ;
 
       html += `
-        <div class="chapter-item" id="chapter-${chapter.id}">
+        <div class="chapter-item ${isComplete ? 'chapter-complete' : ''} ${isActiveChapter ? 'chapter-active' : ''}" id="chapter-${chapter.id}">
           <div class="chapter-header" onclick="toggleChapter('${chapter.id}')">
             <div class="chapter-progress-ring">
               <svg viewBox="0 0 36 36">
                 <circle class="ring-bg" cx="18" cy="18" r="${radius}"/>
-                <circle class="ring-fill" cx="18" cy="18" r="${radius}"
+                <circle class="ring-fill ${isComplete ? 'ring-fill-complete' : ''}" cx="18" cy="18" r="${radius}"
                   stroke-dasharray="${circ}"
                   stroke-dashoffset="${offset}"/>
               </svg>
+              ${isComplete ? '<div class="ring-check">✓</div>' : ''}
             </div>
             <div class="chapter-meta">
-              <h4>${chapter.name}</h4>
+              <h4>${chapter.name}${isComplete ? ' <span class="chapter-done-badge">✓ Done</span>' : ''}</h4>
               <p>${cDone}/${cTotal} done • ${chapter.marks} marks</p>
             </div>
             <div style="display:flex;gap:0.4rem;align-items:center;">
@@ -730,14 +734,20 @@ function renderChapters(paper) {
 function renderTopics(chapter) {
   let html = '';
   chapter.topics.forEach(topic => {
-    const done = App.progress[topic.id] || false;
+    const done       = App.progress[topic.id] || false;
     const accessible = canAccessTopic(topic.id);
-    const isLocked = !accessible;
+    const isLocked   = !accessible;
+    const isActive   = topic.id === _activeTopicId;
 
     html += `
-      <div class="topic-item ${done ? 'completed' : ''} ${isLocked ? 'locked' : ''}"
+      <div class="topic-item ${done ? 'completed' : ''} ${isLocked ? 'locked' : ''} ${isActive ? 'active-topic' : ''}"
            onclick="${isLocked ? 'openPremiumModal()' : `openTopicModal('${topic.id}','${topic.name.replace(/'/g,"\\'")}','${chapter.id}','${chapter.name.replace(/'/g,"\\'")}')` }">
-        <div class="topic-check">${done ? '✓' : ''}</div>
+        <div class="topic-check"
+             onclick="${isLocked ? '' : `event.stopPropagation();toggleTopic('${topic.id}')`}"
+             title="${done ? 'Mark incomplete' : 'Mark complete'}"
+             style="${!isLocked ? 'cursor:pointer;' : ''}">
+          ${done ? '✓' : ''}
+        </div>
         <span class="topic-name">${topic.name}</span>
         <div class="topic-right-actions">
           ${isLocked ? '<span class="lock-icon">🔒</span>' : '<span class="topic-chevron">›</span>'}
@@ -970,6 +980,31 @@ function showQuizResults() {
   else if (pct >= 40) { grade='C';  emoji='📖'; msg='Needs improvement. Study first.';    gradeCls='grade-c'; }
   else                { grade='D';  emoji='⚓'; msg='Read Study notes, then retry.';      gradeCls='grade-d'; }
 
+  // ── AUTO-COMPLETE: mark all topics in chapter done if score ≥ 60% ──
+  let autoMarkedCount = 0;
+  if (pct >= 60 && chapterId && App.syllabus) {
+    for (const paper of App.syllabus.papers) {
+      for (const subj of paper.subjects) {
+        const ch = subj.chapters.find(c => c.id === chapterId);
+        if (ch) {
+          ch.topics.forEach(t => {
+            if (!App.progress[t.id]) {
+              saveTopicProgress(t.id, true); // fire-and-forget, updates locally + Firestore
+              autoMarkedCount++;
+            }
+          });
+          break;
+        }
+      }
+    }
+  }
+
+  const autoMsg = autoMarkedCount > 0
+    ? `<div style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:var(--radius-sm);padding:0.6rem 0.75rem;margin-bottom:1rem;font-size:0.78rem;color:var(--success);text-align:center;">
+        ✅ ${autoMarkedCount} topic${autoMarkedCount > 1 ? 's' : ''} auto-marked complete in your syllabus!
+       </div>`
+    : '';
+
   const resultArea = document.getElementById('quiz-result-area');
   if (resultArea) {
     resultArea.innerHTML = `
@@ -995,6 +1030,7 @@ function showQuizResults() {
             <div class="result-stat-lbl">Score</div>
           </div>
         </div>
+        ${autoMsg}
         <div class="result-actions">
           <button class="btn btn-primary btn-block" onclick="resetQuiz()">🔄 Try Again</button>
           <button class="btn btn-outline btn-block" style="margin-top:0.75rem;"
@@ -1068,7 +1104,12 @@ function switchTab(tabName) {
   switch (tabName) {
     case 'dashboard': renderDashboard(); break;
     case 'syllabus':  renderSyllabus();  break;
-    case 'practice':  renderPracticeBrowse(); break;
+    case 'practice':
+      // Don't call renderPracticeBrowse if a quiz or mock test is actively running
+      if (App.currentQuiz.questions.length === 0 && !MockTest.active) {
+        renderPracticeBrowse();
+      }
+      break;
     case 'study':     renderStudyBrowse();    break;
     case 'profile':   renderProfile();        break;
   }
@@ -1189,7 +1230,7 @@ function studyOpenTopic(topicId, topicName, chapterId, chapterName) {
     <div class="study-body">
       <div class="study-notes-block">
         <div class="study-section-label">📘 Study Notes</div>
-        <div class="study-notes-text">${content.notes.split('\n\n').map(p => '<p>' + p + '</p>').join('')}</div>
+        <div class="study-notes-text">${(content.notes || '').split('\n\n').filter(p => p.trim()).map(p => '<p>' + p + '</p>').join('') || '<p style="color:var(--text-muted)">Notes coming soon.</p>'}</div>
       </div>
 
       ${content.points?.length ? `
@@ -1971,9 +2012,17 @@ function openPremiumModal() {
     toast('🛡️ Admin account — full access already enabled!', 'success');
     return;
   }
-  show('#premium-modal');
+  const modal = document.getElementById('premium-modal');
+  if (!modal) return;
+  modal.classList.remove('hidden'); // .hidden has display:none !important — must remove first
+  modal.classList.add('active');
 }
-function closePremiumModal() { hide('#premium-modal'); }
+function closePremiumModal() {
+  const modal = document.getElementById('premium-modal');
+  if (!modal) return;
+  modal.classList.remove('active');
+  modal.classList.add('hidden');
+}
 
 function selectPlan(plan) {
   App.selectedPlan = plan;
@@ -1984,13 +2033,26 @@ function selectPlan(plan) {
 // ============================================================
 // RAZORPAY PAYMENT
 // ============================================================
+// ── TO ACTIVATE PAYMENTS: replace null with your real Razorpay key string ──
+// Example: const RAZORPAY_KEY = 'rzp_live_XXXXXXXXXXXX';
+const RAZORPAY_KEY = null;
+
 async function initiatePurchase() {
-  const plan = App.selectedPlan;
-  const prices = { monthly: 9900, yearly: 19900 };
+  const plan    = App.selectedPlan;
+  const prices  = { monthly: 9900, yearly: 19900 };
   const labels  = { monthly: '3-Month Plan', yearly: '1-Year Plan' };
   const amount  = prices[plan];
 
-  const RAZORPAY_KEY = 'rzp_test_YOUR_KEY_HERE'; // ← replace with real key
+  // ── COMING SOON: show a friendly modal until Razorpay key is active ──
+  if (!RAZORPAY_KEY) {
+    showPaymentComingSoon(plan, labels[plan], amount);
+    return;
+  }
+
+  if (typeof Razorpay === 'undefined') {
+    toast('Payment gateway not loaded. Please try again.', 'error');
+    return;
+  }
 
   const options = {
     key: RAZORPAY_KEY,
@@ -2010,13 +2072,66 @@ async function initiatePurchase() {
     modal: { ondismiss: () => toast('Payment cancelled.', 'error') }
   };
 
-  if (typeof Razorpay === 'undefined') {
-    toast('Payment gateway not loaded. Please try again.', 'error');
-    return;
-  }
-
   const rzp = new Razorpay(options);
   rzp.open();
+}
+
+// ── Payment Coming Soon modal ────────────────────────────────
+function showPaymentComingSoon(plan, label, amount) {
+  // Remove old if exists
+  document.getElementById('payment-soon-modal')?.remove();
+
+  const div = document.createElement('div');
+  div.id = 'payment-soon-modal';
+  div.style.cssText = `
+    position:fixed;inset:0;background:rgba(6,13,28,0.85);
+    backdrop-filter:blur(8px);z-index:500;
+    display:flex;align-items:flex-end;justify-content:center;`;
+  div.onclick = (e) => { if (e.target === div) div.remove(); };
+
+  div.innerHTML = `
+    <div style="background:var(--card-bg);border:1px solid var(--card-border);
+                border-radius:1.25rem 1.25rem 0 0;padding:2rem 1.5rem 3rem;
+                width:100%;max-width:480px;
+                box-shadow:0 -8px 40px rgba(0,0,0,0.5);
+                animation:slideUpModal 0.28s cubic-bezier(.4,0,.2,1);">
+      <div style="width:40px;height:4px;background:rgba(255,255,255,0.15);border-radius:99px;margin:0 auto 1.5rem;"></div>
+
+      <div style="text-align:center;font-size:3rem;margin-bottom:0.75rem;">🚀</div>
+      <h2 style="text-align:center;font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:0.5rem;">
+        Payments Launching Soon!
+      </h2>
+      <p style="text-align:center;font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:1.5rem;">
+        We're setting up secure payments via Razorpay.<br>
+        Your selected plan <strong style="color:var(--gold);">${label} — ₹${amount / 100}</strong> will be available very soon.
+      </p>
+
+      <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);
+                  border-radius:var(--radius-sm);padding:1rem;margin-bottom:1.5rem;">
+        <div style="font-size:0.78rem;color:var(--text-muted);text-align:center;margin-bottom:0.5rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">
+          What you'll get with Premium
+        </div>
+        <div style="display:grid;gap:0.4rem;font-size:0.82rem;">
+          <div style="display:flex;gap:0.6rem;align-items:center;"><span style="color:var(--success);">✓</span> Full NEA syllabus access</div>
+          <div style="display:flex;gap:0.6rem;align-items:center;"><span style="color:var(--success);">✓</span> 500+ MCQ practice questions</div>
+          <div style="display:flex;gap:0.6rem;align-items:center;"><span style="color:var(--success);">✓</span> Complete study notes per topic</div>
+          <div style="display:flex;gap:0.6rem;align-items:center;"><span style="color:var(--success);">✓</span> Progress tracking & daily streak</div>
+        </div>
+      </div>
+
+      <p style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-bottom:1.25rem;">
+        🔔 You'll be notified as soon as payments go live!
+      </p>
+
+      <button onclick="document.getElementById('payment-soon-modal').remove()"
+        style="width:100%;padding:0.875rem;background:linear-gradient(135deg,var(--gold-dim),var(--gold));
+               color:var(--navy-deepest);border:none;border-radius:var(--radius-sm);
+               font-size:0.95rem;font-weight:700;cursor:pointer;">
+        Got it — I'll check back soon!
+      </button>
+    </div>`;
+
+  document.body.appendChild(div);
 }
 
 async function handlePaymentSuccess(response, plan) {
@@ -2171,11 +2286,15 @@ function openTopicModal(topicId, topicName, chapterId, chapterName) {
       hasQuestions ? `${chapterQs.length}+ MCQs with explanations` : 'Questions coming soon';
 
   modal.classList.remove('hidden');
+  modal.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
 
 function closeTopicModal() {
-  document.getElementById('topic-action-modal').classList.add('hidden');
+  const modal = document.getElementById('topic-action-modal');
+  if (!modal) return;
+  modal.classList.remove('active');
+  modal.classList.add('hidden');
   document.body.style.overflow = '';
 }
 
@@ -2437,8 +2556,16 @@ function renderMockQuestion(idx) {
 
   // Update nav buttons
   document.getElementById('mock-prev-btn').disabled = idx === 0;
-  document.getElementById('mock-next-btn').textContent = idx === total - 1 ? 'Last ✓' : 'Next →';
-  document.getElementById('mock-next-btn').disabled = idx === total - 1;
+  const nextBtn = document.getElementById('mock-next-btn');
+  if (idx === total - 1) {
+    nextBtn.textContent = '✅ Submit';
+    nextBtn.onclick = submitMockTest;
+    nextBtn.disabled = false; // always enabled so user can submit from last question
+  } else {
+    nextBtn.textContent = 'Next →';
+    nextBtn.onclick = () => mockNav(1);
+    nextBtn.disabled = false;
+  }
 
   // Update grid button highlighting
   document.querySelectorAll('[id^="mock-grid-"]').forEach((btn, i) => {
@@ -2685,7 +2812,8 @@ window.resetQuiz         = resetQuiz;
 window.openPremiumModal  = openPremiumModal;
 window.closePremiumModal = closePremiumModal;
 window.selectPlan        = selectPlan;
-window.initiatePurchase  = initiatePurchase;
+window.initiatePurchase       = initiatePurchase;
+window.showPaymentComingSoon  = showPaymentComingSoon;
 window.toggleDarkMode    = toggleDarkMode;
 window.toggleStudyReminder = toggleStudyReminder;
 window.openReminderModal   = openReminderModal;
@@ -2716,9 +2844,4 @@ window.mockNav              = mockNav;
 window.mockJumpTo           = mockJumpTo;
 window.mockSelectAnswer        = mockSelectAnswer;
 window.setupAdminLongPress     = setupAdminLongPress;
-window.openReminderModal       = openReminderModal;
-window.closeReminderModal      = closeReminderModal;
-window.saveReminderFromModal   = saveReminderFromModal;
-window.disableReminderFromModal = disableReminderFromModal;
-window.toggleStudyReminder     = toggleStudyReminder;
 window.rmSetPeriod             = rmSetPeriod;

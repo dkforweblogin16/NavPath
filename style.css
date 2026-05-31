@@ -714,9 +714,6 @@ a { text-decoration: none; color: var(--gold); }
 }
 
 /* ── Checkmark overlay inside progress ring ── */
-.chapter-progress-ring {
-  position: relative;
-}
 .ring-check {
   position: absolute;
   inset: 0;
