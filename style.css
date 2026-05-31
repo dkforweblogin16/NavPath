@@ -669,61 +669,6 @@ a { text-decoration: none; color: var(--gold); }
 
 .chapter-item {
   border-bottom: 1px solid rgba(74, 111, 165, 0.1);
-  transition: background 0.3s ease;
-}
-
-/* ── 100% complete chapter — green tint ── */
-.chapter-item.chapter-complete {
-  background: rgba(34, 197, 94, 0.04);
-  border-bottom-color: rgba(34, 197, 94, 0.15);
-}
-.chapter-item.chapter-complete .chapter-header {
-  border-left: 3px solid var(--success);
-}
-.chapter-item.chapter-complete .chapter-meta h4 {
-  color: var(--success);
-}
-
-/* ── Currently active chapter (last opened topic) — blue tint ── */
-.chapter-item.chapter-active:not(.chapter-complete) {
-  background: rgba(59, 130, 246, 0.05);
-  border-bottom-color: rgba(59, 130, 246, 0.2);
-}
-.chapter-item.chapter-active:not(.chapter-complete) .chapter-header {
-  border-left: 3px solid var(--info);
-}
-
-/* ── Chapter done badge ── */
-.chapter-done-badge {
-  display: inline-block;
-  font-size: 0.62rem;
-  font-weight: 700;
-  background: rgba(34,197,94,0.15);
-  color: var(--success);
-  border: 1px solid rgba(34,197,94,0.3);
-  border-radius: 100px;
-  padding: 0.1rem 0.4rem;
-  margin-left: 0.4rem;
-  vertical-align: middle;
-  letter-spacing: 0.03em;
-}
-
-/* ── Green ring when chapter is 100% done ── */
-.ring-fill-complete {
-  stroke: var(--success) !important;
-}
-
-/* ── Checkmark overlay inside progress ring ── */
-.ring-check {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--success);
-  pointer-events: none;
 }
 
 .chapter-header {
@@ -832,37 +777,34 @@ a { text-decoration: none; color: var(--gold); }
   border-color: rgba(239, 68, 68, 0.4);
 }
 
-/* ── Currently active/reading topic — blue highlight ── */
-.topic-item.active-topic {
-  background: rgba(59, 130, 246, 0.08);
-  border-radius: var(--radius-sm);
-  border-left: 3px solid var(--info);
-  padding-left: calc(0.6rem - 3px);
-}
-.topic-item.active-topic .topic-name {
-  color: #93c5fd;
-  font-weight: 600;
-}
-.topic-item.active-topic .topic-check {
-  border-color: var(--info);
-}
-/* Active + completed together (studied AND done) */
-.topic-item.active-topic.completed {
-  background: rgba(34, 197, 94, 0.08);
-  border-left-color: var(--success);
-}
-
-/* ── Make topic-check clearly tappable ── */
-.topic-check:hover {
-  transform: scale(1.15);
-  box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
-}
-
 .lock-icon {
   font-size: 0.85rem;
   color: var(--danger);
   opacity: 0.7;
 }
+
+/* Chapter 100% complete — green */
+.chapter-item.chapter-complete .chapter-header {
+  border-left: 3px solid #22c55e;
+}
+.chapter-item.chapter-complete .chapter-meta h4 { color: #22c55e; }
+.chapter-item.chapter-complete .ring-fill { stroke: #22c55e; }
+
+/* Currently active chapter — blue */
+.chapter-item.chapter-active:not(.chapter-complete) .chapter-header {
+  border-left: 3px solid #3b82f6;
+}
+
+/* Currently reading topic — blue */
+.topic-item.active-topic {
+  background: rgba(59,130,246,0.08);
+  border-left: 3px solid #3b82f6;
+  padding-left: calc(0.75rem - 3px);
+}
+.topic-item.active-topic .topic-name { color: #93c5fd; font-weight: 600; }
+
+/* topic-check hover tap feedback */
+.topic-check:hover { transform: scale(1.15); }
 
 /* ============================================================
    Quiz Screen
