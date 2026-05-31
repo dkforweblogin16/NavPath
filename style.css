@@ -784,26 +784,18 @@ a { text-decoration: none; color: var(--gold); }
 }
 
 /* Chapter 100% complete — green */
-.chapter-item.chapter-complete .chapter-header {
-  border-left: 3px solid #22c55e;
-}
+.chapter-item.chapter-complete .chapter-header { border-left: 3px solid #22c55e; }
 .chapter-item.chapter-complete .chapter-meta h4 { color: #22c55e; }
 .chapter-item.chapter-complete .ring-fill { stroke: #22c55e; }
 
 /* Currently active chapter — blue */
-.chapter-item.chapter-active:not(.chapter-complete) .chapter-header {
-  border-left: 3px solid #3b82f6;
-}
+.chapter-item.chapter-active:not(.chapter-complete) .chapter-header { border-left: 3px solid #3b82f6; }
 
-/* Currently reading topic — blue */
-.topic-item.active-topic {
-  background: rgba(59,130,246,0.08);
-  border-left: 3px solid #3b82f6;
-  padding-left: calc(0.75rem - 3px);
-}
+/* Currently reading topic — blue highlight */
+.topic-item.active-topic { background: rgba(59,130,246,0.08); border-left: 3px solid #3b82f6; padding-left: calc(0.75rem - 3px); }
 .topic-item.active-topic .topic-name { color: #93c5fd; font-weight: 600; }
 
-/* topic-check hover tap feedback */
+/* Checkbox tap feedback */
 .topic-check:hover { transform: scale(1.15); }
 
 /* ============================================================

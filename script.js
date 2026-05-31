@@ -97,17 +97,18 @@ function toast(msg, type = '') {
 // SCREEN NAVIGATION
 // ============================================================
 function showScreen(id) {
-  // Deactivate all screens — position:absolute layers, only one shown at a time
   $$('.screen').forEach(s => {
     s.classList.remove('active');
-    s.scrollTop = 0; // reset scroll position of hidden screens
+    s.scrollTop = 0;
   });
   const s = document.getElementById(id);
   if (s) {
     s.classList.add('active');
-    s.scrollTop = 0; // always start at top when switching screens
+    s.scrollTop = 0;
     App.currentScreen = id;
   }
+  // Always reset body overflow — prevents modal lock persisting on auth screen
+  document.body.style.overflow = '';
 }
 
 // ============================================================
@@ -699,7 +700,6 @@ function renderChapters(paper) {
 
       const isComplete = cTotal > 0 && cDone === cTotal;
       const isActiveCh = chapter.id === _activeChapterId;
-
       html += `
         <div class="chapter-item ${isComplete ? 'chapter-complete' : ''} ${isActiveCh ? 'chapter-active' : ''}" id="chapter-${chapter.id}">
           <div class="chapter-header" onclick="toggleChapter('${chapter.id}')">
@@ -738,7 +738,6 @@ function renderTopics(chapter) {
     const isLocked = !accessible;
 
     const isActive = topic.id === _activeTopicId;
-
     html += `
       <div class="topic-item ${done ? 'completed' : ''} ${isLocked ? 'locked' : ''} ${isActive ? 'active-topic' : ''}"
            onclick="${isLocked ? 'openPremiumModal()' : `openTopicModal('${topic.id}','${topic.name.replace(/'/g,"\\'")}','${chapter.id}','${chapter.name.replace(/'/g,"\\'")}')` }">
@@ -975,12 +974,15 @@ function showQuizResults() {
   else if (pct >= 40) { grade='C';  emoji='📖'; msg='Needs improvement. Study first.';    gradeCls='grade-c'; }
   else                { grade='D';  emoji='⚓'; msg='Read Study notes, then retry.';      gradeCls='grade-d'; }
 
-  // Auto-mark topics complete if score >= 60%
+  // Auto-mark chapter topics complete if score >= 60%
   if (pct >= 60 && chapterId && App.syllabus) {
     for (const paper of App.syllabus.papers) {
       for (const subj of paper.subjects) {
         const ch = subj.chapters.find(c => c.id === chapterId);
-        if (ch) { ch.topics.forEach(t => { if (!App.progress[t.id]) saveTopicProgress(t.id, true); }); break; }
+        if (ch) {
+          ch.topics.forEach(t => { if (!App.progress[t.id]) saveTopicProgress(t.id, true); });
+          break;
+        }
       }
     }
   }
@@ -2171,9 +2173,6 @@ function openTopicModal(topicId, topicName, chapterId, chapterName) {
   document.getElementById('topic-modal-chapter').textContent = chapterName;
 
   const hasContent = App.content && App.content[topicId];
-
-  // FIX: safely get question count from the merged topics structure
-  // questions are indexed by chapterId in App.questions.topics
   const qBank = App.questions?.topics || App.questions?.questions || {};
   const chapterQs = qBank[chapterId] || [];
   const hasQuestions = chapterQs.length > 0;
@@ -2190,12 +2189,15 @@ function openTopicModal(topicId, topicName, chapterId, chapterName) {
       hasQuestions ? `${chapterQs.length}+ MCQs with explanations` : 'Questions coming soon';
 
   modal.classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
+  modal.classList.add('active');
+  // NOTE: do NOT lock document.body.style.overflow — it breaks login buttons on mobile
 }
 
 function closeTopicModal() {
-  document.getElementById('topic-action-modal').classList.add('hidden');
-  document.body.style.overflow = '';
+  const modal = document.getElementById('topic-action-modal');
+  if (!modal) return;
+  modal.classList.remove('active');
+  modal.classList.add('hidden');
 }
 
 // ── Study button handler (called from Syllabus topic modal)
@@ -2278,6 +2280,7 @@ function openMockTestModal() {
     renderMockTestModal(mockTests);
   } else {
     modal.classList.remove('hidden');
+    modal.classList.add('active');
   }
 }
 
@@ -2323,11 +2326,13 @@ function renderMockTestModal(mockTests) {
       </div>
     </div>
   `;
+  div.classList.add('active');
   document.body.appendChild(div);
 }
 
 function closeMockTestModal() {
-  document.getElementById('mock-test-modal')?.classList.add('hidden');
+  const m = document.getElementById('mock-test-modal');
+  if (m) { m.classList.remove('active'); m.classList.add('hidden'); }
 }
 
 function startMockTest(testId) {
