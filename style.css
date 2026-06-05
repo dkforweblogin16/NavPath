@@ -2283,3 +2283,35 @@ body.sidebar-open {
   opacity: 1;
   transform: scale(1.15);
 }
+
+/* SIDEBAR BASE STYLES */
+#sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 8, 15, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 300;
+  transition: opacity 0.3s ease;
+}
+
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 285px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--navy-mid) 0%, var(--navy-deep) 100%);
+  border-right: 1px solid var(--card-border);
+  z-index: 301;
+  transition: left 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 8px 0 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Spacing between hamburger and logo */
+.top-nav {
+  gap: 0.75rem;
+}
