@@ -1099,6 +1099,7 @@ function resetQuiz() {
 // TAB SWITCHING
 // ============================================================
 function switchTab(tabName) {
+  App.currentTab = tabName;
   $$('.tab-content').forEach(el => el.classList.remove('active-tab'));
   $$('.nav-item').forEach(el => el.classList.remove('active'));
 
@@ -2244,10 +2245,18 @@ function openTopicModal(topicId, topicName, chapterId, chapterName) {
   if (studyBtn)
     studyBtn.querySelector('.topic-action-sub').textContent =
       hasContent ? 'Read full notes & theory' : 'Notes coming soon';
-
-  if (practiceBtn)
+  if (practiceBtn) {
+    const trial = getTrialStatus();
+    const FREE_CHAPTER = getFreeChapterId();
+    const isFree = trial.isPremium || trial.isAdmin || (chapterId === FREE_CHAPTER);
     practiceBtn.querySelector('.topic-action-sub').textContent =
-      hasQuestions ? `${chapterQs.length}+ MCQs with explanations` : 'Questions coming soon';
+      !hasQuestions ? 'Questions coming soon'
+      : isFree      ? `${chapterQs.length}+ MCQs with explanations`
+      :               '🔒 Premium — Tap to unlock';
+    const arrow = practiceBtn.querySelector('.topic-action-arrow');
+    if (arrow) arrow.textContent = isFree ? '›' : '🔒';
+  }
+
 
   modal.classList.remove('hidden');
   modal.classList.add('active');
@@ -2285,19 +2294,40 @@ function handleTopicStudy() {
 function handleTopicPractice() {
   closeTopicModal();
   if (!_activeChapterId) return;
+  const trial = getTrialStatus();
+  if (!trial.isPremium && !trial.isAdmin) {
+    const FREE_CHAPTER = getFreeChapterId();
+    if (_activeChapterId !== FREE_CHAPTER) { openPremiumModal(); return; }
+  }
   startQuiz(_activeChapterId);
 }
 
 // ── Practice button from inside study screen
 function handleTopicPracticeFromStudy() {
   if (!_activeChapterId) { renderStudyBrowse(); return; }
+  const trial = getTrialStatus();
+  if (!trial.isPremium && !trial.isAdmin) {
+    const FREE_CHAPTER = getFreeChapterId();
+    if (_activeChapterId !== FREE_CHAPTER) { openPremiumModal(); return; }
+  }
   startQuiz(_activeChapterId);
 }
 
-// ── Chapter-level practice shortcut (📝 button on chapter header in Syllabus)
+// ── Chapter-level practice shortcut
 function startChapterPractice(chapterId, chapterName) {
   _activeChapterId = chapterId;
+  const trial = getTrialStatus();
+  if (!trial.isPremium && !trial.isAdmin) {
+    const FREE_CHAPTER = getFreeChapterId();
+    if (chapterId !== FREE_CHAPTER) { openPremiumModal(); return; }
+  }
   startQuiz(chapterId);
+}
+
+function getFreeChapterId() {
+  if (!App.syllabus || !App.syllabus.length) return null;
+  const firstPaper = App.syllabus[0];
+  return firstPaper?.chapters?.[0]?.id || null;
 }
 
 
