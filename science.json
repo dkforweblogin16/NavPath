@@ -4312,7 +4312,11 @@
         "explanation": "F = (9/5)C + 32. To go from Fahrenheit to Celsius: C = (5/9)(F - 32).",
         "difficulty": "easy"
       },
-          "Subtracting 273",
+          
+      {
+        "q": "To convert Celsius to Kelvin, you should:",
+        "options": [
+      "Subtracting 273",
           "Adding 273",
           "Multiplying by 273",
           "Dividing by 273"
