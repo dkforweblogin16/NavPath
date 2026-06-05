@@ -3,39 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#0a192f" />
-  <meta name="description" content="NavPath – Complete NEA Exam Prep app for Indian Navy aspirants. Syllabus tracker, Study notes, MCQ Practice and more." />
+  <meta name="theme-color" content="#03080f" />
+  <meta name="description" content="NavPath – Complete NEA Exam Prep app for Indian Navy aspirants." />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="NavPath" />
-
   <title>NavPath – NEA Exam Prep</title>
-
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/png" href="assets/icons/favicon.png" />
   <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
   <link rel="stylesheet" href="style.css" />
-
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
 
+<!-- Toast container -->
 <div id="toast-container" class="toast-container"></div>
 
+<!-- PWA Install Banner -->
 <div id="install-banner" class="hidden"
-     style="position:fixed;bottom:5rem;left:1rem;right:1rem;z-index:150;
-            background:var(--navy-mid);border:1px solid var(--gold);
-            border-radius:var(--radius);padding:0.875rem 1.25rem;
-            display:flex;align-items:center;justify-content:space-between;
-            box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+     style="position:fixed;bottom:5.5rem;left:1rem;right:1rem;z-index:150;
+            background:linear-gradient(135deg,var(--navy-mid),var(--navy-light));
+            border:1px solid var(--gold);border-radius:var(--radius);
+            padding:0.875rem 1.25rem;display:flex;align-items:center;
+            justify-content:space-between;box-shadow:0 8px 32px rgba(0,0,0,0.5);
+            backdrop-filter:var(--blur);">
   <div>
-    <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">📱 Install NavPath</div>
-    <div style="font-size:0.72rem;color:var(--text-muted);">Add to home screen for offline access</div>
+    <div style="font-size:0.85rem;font-weight:700;color:var(--text-primary);">📱 Install NavPath</div>
+    <div style="font-size:0.72rem;color:var(--text-muted);margin-top:0.1rem;">Add to home screen for offline access</div>
   </div>
   <div style="display:flex;gap:0.5rem;">
     <button class="btn btn-outline btn-sm" onclick="document.getElementById('install-banner').classList.add('hidden')">Later</button>
@@ -49,138 +43,189 @@
   <!-- SCREEN 1: AUTH                                           -->
   <!-- ======================================================== -->
   <div id="auth-screen" class="screen active">
-    <div style="position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0;">
-      <div style="position:absolute;width:2px;height:2px;background:#c9a84c;border-radius:50%;top:15%;left:20%;opacity:0.4;animation:pulse 3s infinite;"></div>
-      <div style="position:absolute;width:1px;height:1px;background:#7a9cc0;border-radius:50%;top:30%;left:70%;opacity:0.6;animation:pulse 2.5s infinite 0.5s;"></div>
-      <div style="position:absolute;width:2px;height:2px;background:#c9a84c;border-radius:50%;top:60%;left:10%;opacity:0.3;animation:pulse 4s infinite 1s;"></div>
-      <div style="position:absolute;width:1px;height:1px;background:#7a9cc0;border-radius:50%;top:80%;left:85%;opacity:0.5;animation:pulse 3.5s infinite 0.8s;"></div>
-      <div style="position:absolute;width:1px;height:1px;background:#c9a84c;border-radius:50%;top:45%;left:90%;opacity:0.4;animation:pulse 2.8s infinite 1.5s;"></div>
+
+    <!-- Background star particles -->
+    <div class="auth-bg-decoration" aria-hidden="true">
+      <div class="star" style="width:3px;height:3px;background:#d4a843;top:12%;left:18%;animation-delay:0s;animation-duration:3.2s;"></div>
+      <div class="star" style="width:2px;height:2px;background:#8aadcc;top:28%;left:72%;animation-delay:0.6s;animation-duration:2.8s;"></div>
+      <div class="star" style="width:3px;height:3px;background:#d4a843;top:58%;left:8%;animation-delay:1.1s;animation-duration:4s;"></div>
+      <div class="star" style="width:2px;height:2px;background:#8aadcc;top:78%;left:88%;animation-delay:0.9s;animation-duration:3.5s;"></div>
+      <div class="star" style="width:2px;height:2px;background:#d4a843;top:43%;left:92%;animation-delay:1.6s;animation-duration:2.9s;"></div>
+      <div class="star" style="width:2px;height:2px;background:#8aadcc;top:90%;left:30%;animation-delay:0.3s;animation-duration:3.8s;"></div>
     </div>
 
+    <!-- Logo -->
     <div class="auth-logo" style="position:relative;z-index:1;">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 55" fill="none" width="220" height="68">
-        <circle cx="28" cy="27" r="22" stroke="#c9a84c" stroke-width="2.5" fill="none"/>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 55" fill="none" width="220" height="68" role="img" aria-label="NavPath logo">
+        <circle cx="28" cy="27" r="22" stroke="#d4a843" stroke-width="2.5" fill="none"/>
         <circle cx="28" cy="27" r="14" stroke="#1e3a5f" stroke-width="1.5" fill="none"/>
-        <text x="28" y="13" text-anchor="middle" fill="#c9a84c" font-size="7" font-family="serif" font-weight="bold">N</text>
+        <text x="28" y="13" text-anchor="middle" fill="#d4a843" font-size="7" font-family="serif" font-weight="bold">N</text>
         <text x="28" y="45" text-anchor="middle" fill="#3a5f90" font-size="6" font-family="serif">S</text>
         <text x="46" y="30" text-anchor="middle" fill="#3a5f90" font-size="6" font-family="serif">E</text>
         <text x="10" y="30" text-anchor="middle" fill="#3a5f90" font-size="6" font-family="serif">W</text>
-        <polygon points="28,13 25.5,27 28,25 30.5,27" fill="#c9a84c"/>
+        <polygon points="28,13 25.5,27 28,25 30.5,27" fill="#d4a843"/>
         <polygon points="28,41 25.5,27 28,29 30.5,27" fill="#3a5f90"/>
-        <circle cx="28" cy="27" r="2.5" fill="#c9a84c"/>
+        <circle cx="28" cy="27" r="2.5" fill="#d4a843"/>
         <text x="60" y="23" fill="white" font-size="20" font-family="'Georgia', serif" font-weight="bold" letter-spacing="-0.5">Nav</text>
-        <text x="91" y="23" fill="#c9a84c" font-size="20" font-family="'Georgia', serif" font-weight="bold" letter-spacing="-0.5">Path</text>
+        <text x="91" y="23" fill="#d4a843" font-size="20" font-family="'Georgia', serif" font-weight="bold" letter-spacing="-0.5">Path</text>
         <text x="60" y="38" fill="#4a6fa5" font-size="8.5" font-family="sans-serif" letter-spacing="2.5">NEA EXAM PREP</text>
       </svg>
       <div class="auth-logo-tagline">Indian Navy Aspirant Platform</div>
     </div>
 
+    <!-- Auth Card -->
     <div class="auth-card" style="position:relative;z-index:1;">
-      <div class="auth-tabs">
-        <button class="auth-tab active" id="authtab-login" onclick="switchAuthTab('login')">Sign In</button>
-        <button class="auth-tab" id="authtab-signup" onclick="switchAuthTab('signup')">Create Account</button>
+
+      <!-- Tab switcher -->
+      <div class="auth-tabs" role="tablist" id="auth-tab-row">
+        <button class="auth-tab active" id="authtab-login"
+                role="tab" aria-selected="true"
+                onclick="switchAuthTab('login')">Sign In</button>
+        <button class="auth-tab" id="authtab-signup"
+                role="tab" aria-selected="false"
+                onclick="switchAuthTab('signup')">Create Account</button>
       </div>
 
+      <!-- ── LOGIN FORM ── -->
       <div id="login-form">
         <div class="form-group">
-          <label>Email Address</label>
-          <input type="email" id="login-email" placeholder="your@email.com" autocomplete="email" />
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email"
+                 placeholder="your@email.com"
+                 autocomplete="email"
+                 autocapitalize="none"
+                 inputmode="email"
+                 spellcheck="false" />
         </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
+        <div class="form-group has-icon">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password"
+                 placeholder="••••••••"
+                 autocomplete="current-password" />
+          <button type="button" class="input-icon-btn" id="login-pwd-toggle"
+                  aria-label="Show password">👁</button>
         </div>
-        <button class="btn btn-primary btn-block btn-lg" id="login-btn" onclick="handleLogin()">
+
+        <button type="button" class="btn btn-primary btn-block btn-lg"
+                id="login-btn"
+                onclick="handleLogin()">
           Sign In →
         </button>
-        <p style="text-align:center;margin-top:1rem;font-size:0.78rem;color:var(--text-muted);">
+
+        <p style="text-align:center;margin-top:1rem;font-size:0.8rem;color:var(--text-muted);">
           Don't have an account?
-          <a href="#" onclick="switchAuthTab('signup');return false;" style="color:var(--gold);">Create one free</a>
+          <a href="#" onclick="switchAuthTab('signup');return false;"
+             style="color:var(--gold);font-weight:600;">Create one free</a>
         </p>
       </div>
 
+      <!-- ── SIGNUP FORM ── -->
       <div id="signup-form" class="hidden">
         <div class="form-group">
-          <label>Full Name</label>
-          <input type="text" id="signup-name" placeholder="Rajesh Kumar" autocomplete="name" />
+          <label for="signup-name">Full Name</label>
+          <input type="text" id="signup-name"
+                 placeholder="Rajesh Kumar"
+                 autocomplete="name"
+                 autocapitalize="words" />
         </div>
         <div class="form-group">
-          <label>Email Address</label>
-          <input type="email" id="signup-email" placeholder="your@email.com" autocomplete="email" />
+          <label for="signup-email">Email Address</label>
+          <input type="email" id="signup-email"
+                 placeholder="your@email.com"
+                 autocomplete="email"
+                 autocapitalize="none"
+                 inputmode="email"
+                 spellcheck="false" />
         </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="signup-password" placeholder="Min. 6 characters" autocomplete="new-password" />
+        <div class="form-group has-icon">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password"
+                 placeholder="Min. 6 characters"
+                 autocomplete="new-password" />
+          <button type="button" class="input-icon-btn" id="signup-pwd-toggle"
+                  aria-label="Show password">👁</button>
         </div>
-        <button class="btn btn-gold btn-block btn-lg" id="signup-btn" onclick="handleSignup()">
+
+        <button type="button" class="btn btn-gold btn-block btn-lg"
+                id="signup-btn"
+                onclick="handleSignup()">
           Start Free Trial 🚀
         </button>
-        <p style="text-align:center;margin-top:0.75rem;font-size:0.72rem;color:var(--text-muted);">
+
+        <p style="text-align:center;margin-top:0.75rem;font-size:0.73rem;color:var(--text-muted);">
           3-day free trial • No credit card required
         </p>
-        <p style="text-align:center;margin-top:0.5rem;font-size:0.72rem;color:var(--text-muted);">
+        <p style="text-align:center;margin-top:0.5rem;font-size:0.75rem;color:var(--text-muted);">
           Already have an account?
-          <a href="#" onclick="switchAuthTab('login');return false;" style="color:var(--gold);">Sign in</a>
+          <a href="#" onclick="switchAuthTab('login');return false;"
+             style="color:var(--gold);font-weight:600;">Sign in</a>
         </p>
       </div>
-    </div>
 
+    </div><!-- /auth-card -->
+
+    <!-- Value props -->
     <div style="position:relative;z-index:1;text-align:center;margin-top:1.5rem;padding:0 1.5rem;">
-      <p style="font-size:0.75rem;color:var(--text-muted);line-height:1.7;">
+      <p style="font-size:0.76rem;color:var(--text-muted);line-height:1.9;">
         🔓 3-day free trial includes full syllabus access<br>
         ⭐ Premium from <strong style="color:var(--gold);">₹99</strong> only<br>
         📱 Installable PWA • Works offline
       </p>
     </div>
+
   </div>
   <!-- END AUTH SCREEN -->
 
-
-  <!-- ======================================================== -->
+<!-- ======================================================== -->
   <!-- SCREEN 2: MAIN APP                                       -->
   <!-- ======================================================== -->
   <div id="main-screen" class="screen">
 
-    <nav class="top-nav">
-      <div class="nav-logo">
-        <div class="nav-logo-icon">🧭</div>
+    <!-- Top Nav -->
+    <nav class="top-nav" role="banner">
+      <button class="nav-icon-btn" onclick="openSidebar()" aria-label="Open menu" title="Menu">☰</button>
+      <div class="nav-logo" title="Hold 2s for Admin (admin only)" style="cursor:pointer;" onclick="switchTab('dashboard')">
+        <div class="nav-logo-icon" aria-hidden="true">🧭</div>
         Nav<span>Path</span>
       </div>
       <div class="nav-actions">
         <div id="premium-badge" class="hidden"
              style="background:linear-gradient(135deg,var(--gold-dim),var(--gold));
-                    color:var(--navy-deepest);border-radius:100px;padding:0.25rem 0.75rem;
-                    font-size:0.72rem;font-weight:700;">
+                    color:var(--navy-deepest);border-radius:100px;padding:0.25rem 0.8rem;
+                    font-size:0.7rem;font-weight:800;letter-spacing:0.5px;">
           ⭐ PREMIUM
         </div>
-        <button class="nav-icon-btn" onclick="openPremiumModal()" title="Upgrade">💎</button>
-        <button class="nav-icon-btn" onclick="switchTab('profile')" title="Profile">👤</button>
+        <button class="nav-icon-btn" onclick="openPremiumModal()" title="Upgrade" aria-label="Upgrade to Premium">💎</button>
+        <button class="nav-icon-btn" onclick="switchTab('profile')" title="Profile" aria-label="View Profile">👤</button>
       </div>
     </nav>
 
     <!-- ─── DASHBOARD TAB ─── -->
-    <div id="tab-dashboard" class="tab-content active-tab">
+    <div id="tab-dashboard" class="tab-content active-tab" role="main">
       <div class="main-content">
+
         <div class="welcome-section">
-          <div class="welcome-greeting">GOOD DAY, SAILOR</div>
+          <div class="welcome-greeting" id="welcome-greeting">GOOD DAY, SAILOR</div>
           <h1 class="welcome-name" id="welcome-name">Welcome back</h1>
         </div>
 
+        <!-- Trial / Premium Banner -->
         <div class="trial-banner" id="trial-banner">
           <div class="trial-info">
             <h4>🕐 Free Trial Active</h4>
             <p id="trial-message">Days left in your free trial</p>
-            <button class="btn btn-gold btn-sm" style="margin-top:0.5rem;" onclick="openPremiumModal()">
+            <button type="button" class="btn btn-gold btn-sm" style="margin-top:0.5rem;" onclick="openPremiumModal()">
               Upgrade Now →
             </button>
           </div>
-          <div class="trial-countdown">
+          <div class="trial-countdown" aria-live="polite">
             <div class="days" id="trial-days">3</div>
             <div class="days-label">DAYS<br>LEFT</div>
           </div>
         </div>
 
-        <div class="stats-grid">
+        <!-- Stats Grid -->
+        <div class="stats-grid" role="region" aria-label="Study Progress Stats">
           <div class="stat-card gold">
             <div class="stat-value" id="stat-total">0</div>
             <div class="stat-label">Total Topics</div>
@@ -199,162 +244,148 @@
           </div>
         </div>
 
+        <!-- Overall Progress Bar -->
         <div class="card mb-2">
           <div class="card-body">
             <div class="flex items-center justify-between mb-1">
-              <span style="font-size:0.85rem;font-weight:600;">Overall Progress</span>
+              <span style="font-size:0.85rem;font-weight:700;">Overall Progress</span>
               <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--gold);" id="main-progress-pct">0%</span>
             </div>
-            <div class="progress-bar-wrap">
+            <div class="progress-bar-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="main-progress-aria">
               <div class="progress-bar" id="main-progress-bar" style="width:0%"></div>
             </div>
           </div>
         </div>
 
+        <!-- Streak -->
         <div class="flex items-center gap-1 mb-2">
-          <div class="streak-badge">🔥 <span id="streak-count">0</span> Day Streak</div>
+          <div class="streak-badge" aria-label="Day Streak">🔥 <span id="streak-count">0</span> Day Streak</div>
           <div style="font-size:0.75rem;color:var(--text-muted);">Keep it going!</div>
         </div>
 
+        <!-- Paper Progress Chart -->
         <div class="card mb-2">
           <div class="card-header">
-            <span style="font-size:0.9rem;font-weight:600;">Paper-wise Progress</span>
+            <span style="font-size:0.9rem;font-weight:700;">Paper-wise Progress</span>
           </div>
           <div class="card-body">
             <div class="chart-container">
-              <canvas id="progress-chart"></canvas>
+              <canvas id="progress-chart" role="img" aria-label="Paper-wise progress chart"></canvas>
             </div>
           </div>
         </div>
 
+        <!-- Quick Actions -->
         <div class="section-header mb-1">
           <h2 class="section-title">Quick Actions</h2>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.5rem;">
-          <button class="card" style="padding:1.25rem;text-align:center;cursor:pointer;border:none;background:var(--card-bg);" onclick="switchTab('syllabus')">
-            <div style="font-size:1.75rem;margin-bottom:0.5rem;">📚</div>
-            <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">Track Syllabus</div>
-            <div style="font-size:0.7rem;color:var(--text-muted);">Mark topics done</div>
+        <div class="quick-action-grid">
+          <button type="button" class="quick-action-card" onclick="switchTab('syllabus')" aria-label="Track Syllabus">
+            <span class="quick-action-emoji">📚</span>
+            <div class="quick-action-title">Track Syllabus</div>
+            <div class="quick-action-sub">Mark topics done</div>
           </button>
-          <button class="card" style="padding:1.25rem;text-align:center;cursor:pointer;border:none;background:var(--card-bg);" onclick="switchTab('practice')">
-            <div style="font-size:1.75rem;margin-bottom:0.5rem;">📝</div>
-            <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">Practice MCQs</div>
-            <div style="font-size:0.7rem;color:var(--text-muted);">Test yourself</div>
+          <button type="button" class="quick-action-card" onclick="switchTab('practice')" aria-label="Practice MCQs">
+            <span class="quick-action-emoji">📝</span>
+            <div class="quick-action-title">Practice MCQs</div>
+            <div class="quick-action-sub">Test yourself</div>
           </button>
-          <button class="card" style="padding:1.25rem;text-align:center;cursor:pointer;border:none;background:var(--card-bg);" onclick="switchTab('study')">
-            <div style="font-size:1.75rem;margin-bottom:0.5rem;">📖</div>
-            <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">Study Notes</div>
-            <div style="font-size:0.7rem;color:var(--text-muted);">Read & learn</div>
+          <button type="button" class="quick-action-card" onclick="switchTab('study')" aria-label="Study Notes">
+            <span class="quick-action-emoji">📖</span>
+            <div class="quick-action-title">Study Notes</div>
+            <div class="quick-action-sub">Read &amp; learn</div>
           </button>
-          <button class="card" style="padding:1.25rem;text-align:center;cursor:pointer;border:none;background:var(--card-bg);" onclick="openPremiumModal()">
-            <div style="font-size:1.75rem;margin-bottom:0.5rem;">⭐</div>
-            <div style="font-size:0.85rem;font-weight:600;color:var(--gold);">Go Premium</div>
-            <div style="font-size:0.7rem;color:var(--text-muted);">From ₹99</div>
+          <button type="button" class="quick-action-card" onclick="openPremiumModal()" aria-label="Go Premium" style="border-color:rgba(212,168,67,0.3);">
+            <span class="quick-action-emoji">⭐</span>
+            <div class="quick-action-title" style="color:var(--gold);">Go Premium</div>
+            <div class="quick-action-sub">From ₹99</div>
           </button>
         </div>
 
-        <div class="card" style="background:linear-gradient(135deg,rgba(42,82,152,0.2),rgba(5,15,28,0.8));">
+        <!-- NEA Exam Pattern -->
+        <div class="card" style="background:linear-gradient(135deg,rgba(30,75,154,0.2),rgba(3,8,15,0.85));">
           <div class="card-body">
-            <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
-              <span style="font-size:1.5rem;">⚓</span>
-              <h3 style="font-family:var(--font-body);font-size:0.95rem;">NEA Exam Pattern</h3>
+            <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.875rem;">
+              <span style="font-size:1.5rem;" aria-hidden="true">⚓</span>
+              <h3 style="font-family:var(--font-body);font-size:0.95rem;font-weight:700;">NEA Exam Pattern</h3>
             </div>
-            <div style="display:grid;gap:0.4rem;font-size:0.8rem;">
+            <div style="display:grid;gap:0.4rem;font-size:0.82rem;">
               <div style="display:flex;justify-content:space-between;padding:0.4rem 0;border-bottom:1px solid var(--card-border);">
                 <span style="color:var(--text-muted);">Paper I</span>
-                <span>English & GK – 100 marks</span>
+                <span style="font-weight:600;">English &amp; GK – 100 marks</span>
               </div>
               <div style="display:flex;justify-content:space-between;padding:0.4rem 0;border-bottom:1px solid var(--card-border);">
                 <span style="color:var(--text-muted);">Paper II</span>
-                <span>Mathematics – 100 marks</span>
+                <span style="font-weight:600;">Mathematics – 100 marks</span>
               </div>
               <div style="display:flex;justify-content:space-between;padding:0.4rem 0;">
                 <span style="color:var(--text-muted);">Paper III</span>
-                <span>General Science – 100 marks</span>
+                <span style="font-weight:600;">General Science – 100 marks</span>
               </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
     <!-- END DASHBOARD TAB -->
 
-
-    <!-- ─── SYLLABUS TAB ─── -->
-    <div id="tab-syllabus" class="tab-content">
+<!-- ─── SYLLABUS TAB ─── -->
+    <div id="tab-syllabus" class="tab-content" role="main">
       <div class="main-content">
         <div class="section-header mb-2">
           <h2 class="section-title">📚 NEA Syllabus</h2>
           <span style="font-size:0.75rem;color:var(--text-muted);">Tap topics to mark done ✓</span>
         </div>
-        <div id="syllabus-container">
+        <div id="syllabus-container" aria-live="polite">
           <div class="shimmer" style="height:80px;margin-bottom:1rem;"></div>
           <div class="shimmer" style="height:80px;margin-bottom:1rem;"></div>
           <div class="shimmer" style="height:80px;"></div>
         </div>
       </div>
     </div>
-    <!-- END SYLLABUS TAB -->
-
 
     <!-- ─── PRACTICE TAB ─── -->
-    <div id="tab-practice" class="tab-content">
+    <div id="tab-practice" class="tab-content" role="main">
       <div class="main-content">
-        <!-- Practice Browse View (subject → chapter → topic selection) -->
-        <div id="practice-browse-area">
-          <!-- Rendered by JS -->
-        </div>
-        <!-- Practice Quiz View -->
+        <div id="practice-browse-area"></div>
         <div id="quiz-question-area" class="hidden"></div>
         <div id="quiz-result-area" class="hidden"></div>
-        <!-- Mock Test View -->
         <div id="mock-test-area" class="hidden"></div>
       </div>
     </div>
-    <!-- END PRACTICE TAB -->
-
 
     <!-- ─── STUDY TAB ─── -->
-    <div id="tab-study" class="tab-content">
+    <div id="tab-study" class="tab-content" role="main">
       <div class="main-content">
-        <!-- Study Browse View (subject → chapter → topic selection) -->
-        <div id="study-browse-area">
-          <!-- Rendered by JS -->
-        </div>
-        <!-- Study Content View -->
+        <div id="study-browse-area"></div>
         <div id="study-content-area" class="hidden"></div>
       </div>
     </div>
-    <!-- END STUDY TAB -->
-
 
     <!-- ─── PROFILE TAB ─── -->
-    <div id="tab-profile" class="tab-content">
-      <!-- Rendered by JS -->
-    </div>
-    <!-- END PROFILE TAB -->
-
+    <div id="tab-profile" class="tab-content" role="main"></div>
 
     <!-- BOTTOM NAVIGATION -->
-    <nav class="bottom-nav">
-      <button class="nav-item active" id="nav-dashboard" onclick="switchTab('dashboard')">
-        <span class="nav-icon">🏠</span>
+    <nav class="bottom-nav" role="navigation" aria-label="Main Navigation">
+      <button type="button" class="nav-item active" id="nav-dashboard" onclick="switchTab('dashboard')" aria-label="Home">
+        <span class="nav-icon" aria-hidden="true">🏠</span>
         <span class="nav-label">Home</span>
       </button>
-      <button class="nav-item" id="nav-syllabus" onclick="switchTab('syllabus')">
-        <span class="nav-icon">📚</span>
+      <button type="button" class="nav-item" id="nav-syllabus" onclick="switchTab('syllabus')" aria-label="Syllabus">
+        <span class="nav-icon" aria-hidden="true">📚</span>
         <span class="nav-label">Syllabus</span>
       </button>
-      <button class="nav-item" id="nav-practice" onclick="switchTab('practice')">
-        <span class="nav-icon">📝</span>
+      <button type="button" class="nav-item" id="nav-practice" onclick="switchTab('practice')" aria-label="Practice">
+        <span class="nav-icon" aria-hidden="true">📝</span>
         <span class="nav-label">Practice</span>
       </button>
-      <button class="nav-item" id="nav-study" onclick="switchTab('study')">
-        <span class="nav-icon">📖</span>
+      <button type="button" class="nav-item" id="nav-study" onclick="switchTab('study')" aria-label="Study">
+        <span class="nav-icon" aria-hidden="true">📖</span>
         <span class="nav-label">Study</span>
       </button>
-      <button class="nav-item" id="nav-profile" onclick="switchTab('profile')">
-        <span class="nav-icon">👤</span>
+      <button type="button" class="nav-item" id="nav-profile" onclick="switchTab('profile')" aria-label="Profile">
+        <span class="nav-icon" aria-hidden="true">👤</span>
         <span class="nav-label">Profile</span>
       </button>
     </nav>
@@ -362,78 +393,340 @@
   </div>
   <!-- END MAIN SCREEN -->
 
-</div>
-<!-- END APP -->
+  <!-- ======================================================== -->
+  <!-- SIDEBAR DRAWER                                           -->
+  <!-- ======================================================== -->
+
+  <!-- Dark overlay behind sidebar -->
+  <div id="sidebar-overlay" onclick="closeSidebar()"
+       style="display:none;position:fixed;inset:0;background:rgba(3,8,15,0.75);
+              backdrop-filter:blur(4px);z-index:300;transition:opacity 0.3s ease;">
+  </div>
+
+  <!-- Sidebar panel -->
+  <div id="sidebar"
+       role="navigation" aria-label="App Sidebar"
+       style="position:fixed;top:0;left:-300px;width:285px;height:100%;
+              background:linear-gradient(180deg,var(--navy-mid) 0%,var(--navy-deep) 100%);
+              border-right:1px solid var(--card-border);
+              z-index:301;transition:left 0.32s cubic-bezier(0.4,0,0.2,1);
+              overflow-y:auto;display:flex;flex-direction:column;
+              box-shadow:8px 0 40px rgba(0,0,0,0.5);">
+
+    <!-- Gold top accent line -->
+    <div style="height:2px;background:linear-gradient(90deg,var(--gold),rgba(212,168,67,0.2));flex-shrink:0;"></div>
+
+    <!-- User Profile Section -->
+    <div id="sidebar-profile"
+         style="padding:1.5rem 1.25rem 1.25rem;border-bottom:1px solid var(--card-border);flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:0.875rem;">
+        <div style="width:48px;height:48px;background:linear-gradient(135deg,var(--navy-light),var(--navy-accent));
+                    border-radius:50%;display:flex;align-items:center;justify-content:center;
+                    font-size:1.4rem;border:2px solid var(--gold);flex-shrink:0;
+                    box-shadow:0 0 14px rgba(212,168,67,0.2);">👤</div>
+        <div style="flex:1;min-width:0;">
+          <div id="sidebar-username" style="font-weight:700;font-size:0.95rem;
+               color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+            NavPath User
+          </div>
+          <div id="sidebar-email" style="font-size:0.72rem;color:var(--text-muted);
+               white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:0.15rem;">
+            —
+          </div>
+          <div id="sidebar-status" style="margin-top:0.3rem;"></div>
+        </div>
+        <button onclick="closeSidebar()" aria-label="Close sidebar"
+                style="background:none;border:none;color:var(--text-muted);
+                       font-size:1.3rem;cursor:pointer;padding:0.25rem;flex-shrink:0;">✕</button>
+      </div>
+    </div>
+
+    <!-- Navigation Items -->
+    <div style="padding:0.75rem 0;flex:1;">
+
+      <!-- MAIN NAVIGATION group -->
+      <div style="padding:0.3rem 1.25rem 0.2rem;font-size:0.62rem;font-weight:700;
+                  letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;">
+        Navigation
+      </div>
+
+      <button type="button" class="sidebar-item" onclick="sidebarNav('dashboard')" id="sb-dashboard">
+        <span class="sidebar-item-icon">🏠</span>
+        <span class="sidebar-item-label">Home</span>
+      </button>
+      <button type="button" class="sidebar-item" onclick="sidebarNav('syllabus')" id="sb-syllabus">
+        <span class="sidebar-item-icon">📚</span>
+        <span class="sidebar-item-label">Syllabus Tracker</span>
+        <span class="sidebar-item-badge" id="sb-badge-syllabus"></span>
+      </button>
+      <button type="button" class="sidebar-item" onclick="sidebarNav('practice')" id="sb-practice">
+        <span class="sidebar-item-icon">📝</span>
+        <span class="sidebar-item-label">Practice MCQs</span>
+      </button>
+      <button type="button" class="sidebar-item" onclick="sidebarNav('study')" id="sb-study">
+        <span class="sidebar-item-icon">📖</span>
+        <span class="sidebar-item-label">Study Notes</span>
+      </button>
+      <button type="button" class="sidebar-item" onclick="sidebarNav('profile')" id="sb-profile">
+        <span class="sidebar-item-icon">👤</span>
+        <span class="sidebar-item-label">My Profile</span>
+      </button>
+
+      <div style="height:1px;background:var(--card-border);margin:0.6rem 1.25rem;"></div>
+
+      <!-- QUICK TOOLS group -->
+      <div style="padding:0.3rem 1.25rem 0.2rem;font-size:0.62rem;font-weight:700;
+                  letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;">
+        Quick Tools
+      </div>
+
+      <button type="button" class="sidebar-item" onclick="openPremiumModal();closeSidebar();">
+        <span class="sidebar-item-icon">⭐</span>
+        <span class="sidebar-item-label">Upgrade to Premium</span>
+        <span style="font-size:0.65rem;background:var(--gold);color:#030810;
+                     padding:0.1rem 0.45rem;border-radius:100px;font-weight:800;margin-left:auto;">
+          ₹99
+        </span>
+      </button>
+      <button type="button" class="sidebar-item" onclick="toggleStudyReminder();closeSidebar();">
+        <span class="sidebar-item-icon">🔔</span>
+        <span class="sidebar-item-label">Study Reminders</span>
+        <span id="sb-reminder-dot" style="display:none;width:8px;height:8px;background:var(--success);
+              border-radius:50%;margin-left:auto;box-shadow:0 0 6px var(--success);"></span>
+      </button>
+      <button type="button" class="sidebar-item" onclick="toggleDarkMode()">
+        <span class="sidebar-item-icon" id="sb-darkmode-icon">🌙</span>
+        <span class="sidebar-item-label">Dark / Light Mode</span>
+        <label class="toggle-switch" style="margin-left:auto;" onclick="event.stopPropagation()">
+          <input type="checkbox" id="sb-dark-toggle"
+                 onchange="toggleDarkMode()">
+          <span class="toggle-slider"></span>
+        </label>
+      </button>
+      <button type="button" class="sidebar-item" onclick="openSidebarMockTest()">
+        <span class="sidebar-item-icon">🧪</span>
+        <span class="sidebar-item-label">Mock Test</span>
+        <span style="font-size:0.7rem;color:var(--text-muted);margin-left:auto;">Full paper →</span>
+      </button>
+
+      <div style="height:1px;background:var(--card-border);margin:0.6rem 1.25rem;"></div>
+
+      <!-- SUPPORT group -->
+      <div style="padding:0.3rem 1.25rem 0.2rem;font-size:0.62rem;font-weight:700;
+                  letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;">
+        Help & Support
+      </div>
+      
+      <button type="button" class="sidebar-item" onclick="openSidebarSheet('about')">
+        <span class="sidebar-item-icon">ℹ️</span>
+        <span class="sidebar-item-label">About NavPath</span>
+      </button>
+      <button type="button" class="sidebar-item" onclick="openSidebarSheet('exam-pattern')">
+        <span class="sidebar-item-icon">📋</span>
+        <span class="sidebar-item-label">NEA Exam Pattern</span>
+      </button>
+      <button type="button" class="sidebar-item" onclick="openSidebarSheet('contact')">
+        <span class="sidebar-item-icon">💬</span>
+        <span class="sidebar-item-label">Contact & Support</span>
+      </button>
+      <button type="button" class="sidebar-item" onclick="openSidebarSheet('faq')">
+        <span class="sidebar-item-icon">❓</span>
+        <span class="sidebar-item-label">FAQ</span>
+      </button>
+      <button type="button" class="sidebar-item" onclick="openSidebarSheet('rate')">
+        <span class="sidebar-item-icon">⭐</span>
+        <span class="sidebar-item-label">Rate the App</span>
+      </button>
+    </div>
+
+    <!-- Logout at bottom -->
+    <div style="padding:0.75rem 0.875rem 1.5rem;border-top:1px solid var(--card-border);flex-shrink:0;">
+      <button type="button" class="btn btn-danger btn-block" onclick="handleLogout()"
+              style="font-size:0.875rem;">
+        🚪 Sign Out
+      </button>
+      <p style="text-align:center;font-size:0.65rem;color:var(--text-muted);margin-top:0.75rem;">
+        NavPath v1.0 · NEA Exam Prep<br>Made with ❤️ for Indian Navy Aspirants
+      </p>
+    </div>
+
+  </div>
+  <!-- END SIDEBAR -->
+
+  <!-- Sidebar Info Sheet (About / Contact / FAQ / Exam Pattern / Rate) -->
+  <div id="sidebar-sheet" class="modal-overlay hidden"
+       role="dialog" aria-modal="true"
+       onclick="if(event.target===this)closeSidebarSheet()">
+    <div class="modal-sheet">
+      <div class="modal-handle" aria-hidden="true"></div>
+      <div class="modal-body" id="sidebar-sheet-body"></div>
+    </div>
+  </div>
+
+</div><!-- END #app -->
 
 
 <!-- PREMIUM MODAL -->
-<div id="premium-modal" class="modal-overlay hidden" onclick="if(event.target===this)closePremiumModal()">
+<div id="premium-modal" class="modal-overlay hidden"
+     role="dialog" aria-modal="true" aria-label="Upgrade to Premium"
+     onclick="if(event.target===this)closePremiumModal()">
   <div class="modal-sheet">
-    <div class="modal-handle"></div>
+    <div class="modal-handle" aria-hidden="true"></div>
     <div class="modal-body">
-      <div class="premium-icon">⭐</div>
-      <h2 style="text-align:center;font-size:1.4rem;margin-bottom:0.4rem;">Unlock Full Access</h2>
+      <div class="premium-icon" aria-hidden="true">⭐</div>
+      <h2 style="text-align:center;font-size:1.4rem;margin-bottom:0.4rem;font-family:var(--font-display);">Unlock Full Access</h2>
       <p style="text-align:center;font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">
-        Complete NEA preparation – all topics, quizzes, formulas & more
+        Complete NEA preparation – all topics, quizzes, formulas &amp; more
       </p>
       <div style="background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius);padding:1rem;margin-bottom:1.25rem;">
         <div style="display:grid;gap:0.6rem;">
-          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;"><span style="color:var(--success);font-size:1rem;">✓</span> Full NEA syllabus access</div>
-          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;"><span style="color:var(--success);font-size:1rem;">✓</span> 500+ MCQ practice questions</div>
-          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;"><span style="color:var(--success);font-size:1rem;">✓</span> Full study notes per topic</div>
-          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;"><span style="color:var(--success);font-size:1rem;">✓</span> Progress tracking & daily streak</div>
-          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;"><span style="color:var(--success);font-size:1rem;">✓</span> Works offline (PWA)</div>
+          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;"><span style="color:var(--success);">✓</span> Full NEA syllabus access</div>
+          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;"><span style="color:var(--success);">✓</span> 500+ MCQ practice questions</div>
+          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;"><span style="color:var(--success);">✓</span> Full study notes per topic</div>
+          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;"><span style="color:var(--success);">✓</span> Progress tracking &amp; daily streak</div>
+          <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.85rem;"><span style="color:var(--success);">✓</span> Works offline (PWA)</div>
         </div>
       </div>
-      <div class="plan-cards">
-        <div class="plan-card" id="plan-monthly" onclick="selectPlan('monthly')">
+      <div class="plan-cards" role="radiogroup" aria-label="Select a plan">
+        <div class="plan-card" id="plan-monthly" onclick="selectPlan('monthly')" role="radio" aria-checked="false" tabindex="0">
           <div class="plan-left"><h4>3-Month Plan</h4><p>Perfect for focused preparation</p></div>
           <div class="plan-price"><div class="amount">₹99</div><span class="per">per 3 months</span></div>
         </div>
-        <div class="plan-card best-value selected" id="plan-yearly" onclick="selectPlan('yearly')">
+        <div class="plan-card best-value selected" id="plan-yearly" onclick="selectPlan('yearly')" role="radio" aria-checked="true" tabindex="0">
           <div class="plan-left"><h4>1-Year Plan</h4><p>Best for thorough preparation</p></div>
           <div class="plan-price"><div class="amount">₹199</div><span class="per">per year</span></div>
         </div>
       </div>
-      <button class="btn btn-gold btn-block btn-lg" onclick="initiatePurchase()" style="margin-bottom:0.75rem;">🔓 Unlock Premium Now</button>
-      <button class="btn btn-outline btn-block" onclick="closePremiumModal()">Maybe Later</button>
-      <p style="text-align:center;font-size:0.7rem;color:var(--text-muted);margin-top:0.75rem;">🔒 Secure payment via Razorpay • Instant activation</p>
+      <button type="button" class="btn btn-gold btn-block btn-lg" onclick="initiatePurchase()" style="margin-bottom:0.75rem;">🔓 Unlock Premium Now</button>
+      <button type="button" class="btn btn-outline btn-block" onclick="closePremiumModal()">Maybe Later</button>
+      <p style="text-align:center;font-size:0.7rem;color:var(--text-muted);margin-top:0.875rem;">🔒 Secure payment via Razorpay • Instant activation</p>
     </div>
   </div>
 </div>
 
-
-<!-- TOPIC ACTION MODAL (used from Syllabus only) -->
-<div id="topic-action-modal" class="modal-overlay hidden" onclick="if(event.target===this)closeTopicModal()">
+<!-- TOPIC ACTION MODAL -->
+<div id="topic-action-modal" class="modal-overlay hidden"
+     role="dialog" aria-modal="true" aria-label="Topic actions"
+     onclick="if(event.target===this)closeTopicModal()">
   <div class="modal-sheet topic-action-sheet">
-    <div class="modal-handle"></div>
+    <div class="modal-handle" aria-hidden="true"></div>
     <div class="modal-body" style="padding:1.5rem;">
       <div id="topic-modal-name" style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.25rem;text-align:center;"></div>
       <div id="topic-modal-chapter" style="font-size:0.75rem;color:var(--text-muted);text-align:center;margin-bottom:1.5rem;"></div>
-
-      <button id="topic-study-btn" class="topic-action-btn study-btn" onclick="handleTopicStudy()">
-        <span class="topic-action-icon">📖</span>
+      <button type="button" id="topic-study-btn" class="topic-action-btn study-btn" onclick="handleTopicStudy()">
+        <span class="topic-action-icon" aria-hidden="true">📖</span>
         <div>
           <div class="topic-action-label">Study</div>
           <div class="topic-action-sub">Read full notes &amp; theory</div>
         </div>
-        <span class="topic-action-arrow">›</span>
+        <span class="topic-action-arrow" aria-hidden="true">›</span>
       </button>
-
-      <button id="topic-practice-btn" class="topic-action-btn practice-btn" onclick="handleTopicPractice()">
-        <span class="topic-action-icon">📝</span>
+      <button type="button" id="topic-practice-btn" class="topic-action-btn practice-btn" onclick="handleTopicPractice()">
+        <span class="topic-action-icon" aria-hidden="true">📝</span>
         <div>
           <div class="topic-action-label">Practice</div>
           <div class="topic-action-sub">30+ MCQs with explanations</div>
         </div>
-        <span class="topic-action-arrow">›</span>
+        <span class="topic-action-arrow" aria-hidden="true">›</span>
       </button>
-
-      <button class="btn btn-outline btn-block" style="margin-top:1rem;font-size:0.85rem;" onclick="closeTopicModal()">Cancel</button>
+      <button type="button" class="btn btn-outline btn-block" style="margin-top:1rem;font-size:0.85rem;" onclick="closeTopicModal()">Cancel</button>
     </div>
   </div>
 </div>
 
+<!-- ============================================================
+     CRITICAL: switchAuthTab defined inline BEFORE firebase.js
+     and script.js so it is 100% available when buttons are clicked,
+     even if external scripts are slow or fail to load.
+     handleLogin / handleSignup call into script.js but are guarded —
+     if script.js hasn't loaded yet they show a clear error.
+     ============================================================ -->
+<script>
+(function() {
+  'use strict';
+
+  // switchAuthTab — uses classList.hidden to match style.css .hidden rule
+  window.switchAuthTab = function(tab) {
+    var loginForm  = document.getElementById('login-form');
+    var signupForm = document.getElementById('signup-form');
+    var loginTab   = document.getElementById('authtab-login');
+    var signupTab  = document.getElementById('authtab-signup');
+    if (!loginForm || !signupForm) return;
+
+    if (tab === 'login') {
+      loginForm.classList.remove('hidden');
+      signupForm.classList.add('hidden');
+      loginForm.style.display  = '';   // clear any inline style
+      signupForm.style.display = '';
+      if (loginTab)  { loginTab.classList.add('active');     loginTab.setAttribute('aria-selected','true'); }
+      if (signupTab) { signupTab.classList.remove('active'); signupTab.setAttribute('aria-selected','false'); }
+    } else {
+      signupForm.classList.remove('hidden');
+      loginForm.classList.add('hidden');
+      loginForm.style.display  = '';
+      signupForm.style.display = '';
+      if (signupTab) { signupTab.classList.add('active');   signupTab.setAttribute('aria-selected','true'); }
+      if (loginTab)  { loginTab.classList.remove('active'); loginTab.setAttribute('aria-selected','false'); }
+    }
+  };
+
+  // Password toggle
+  function setupPwdToggle(inputId, btnId) {
+    var input = document.getElementById(inputId);
+    var btn   = document.getElementById(btnId);
+    if (!input || !btn) return;
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      input.type = input.type === 'text' ? 'password' : 'text';
+      btn.textContent = input.type === 'password' ? '👁' : '🙈';
+    });
+  }
+
+  // Greeting
+  function setGreeting() {
+    var h = new Date().getHours();
+    var g = h < 12 ? 'GOOD MORNING, SAILOR'
+          : h < 17 ? 'GOOD AFTERNOON, SAILOR'
+          : 'GOOD EVENING, SAILOR';
+    var el = document.getElementById('welcome-greeting');
+    if (el) el.textContent = g;
+  }
+
+  // Enter key
+  document.addEventListener('keydown', function(e) {
+    if (e.key !== 'Enter') return;
+    var lf = document.getElementById('login-form');
+    var sf = document.getElementById('signup-form');
+    if (lf && !lf.classList.contains('hidden')) {
+      if (typeof window.handleLogin === 'function') window.handleLogin();
+    } else if (sf && !sf.classList.contains('hidden')) {
+      if (typeof window.handleSignup === 'function') window.handleSignup();
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    setupPwdToggle('login-password', 'login-pwd-toggle');
+    setupPwdToggle('signup-password', 'signup-pwd-toggle');
+    setGreeting();
+    // Set initial state — login visible, signup hidden
+    var lf = document.getElementById('login-form');
+    var sf = document.getElementById('signup-form');
+    if (lf) { lf.classList.remove('hidden'); lf.style.display = ''; }
+    if (sf) { sf.classList.add('hidden');    sf.style.display = ''; }
+  });
+
+})();
+</script>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<!-- App scripts -->
 <script src="firebase.js"></script>
 <script src="script.js"></script>
 
