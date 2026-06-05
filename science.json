@@ -2367,7 +2367,7 @@
           "At the same speed",
           "At speed dependent on mass"
         ],
-        wer": 0,
+       "answer": 0,
         "explanation": "v = √(GM/r); smaller r → larger v. Lower orbit satellites are faster.",
         "difficulty": "medium",
         "pyq": true
