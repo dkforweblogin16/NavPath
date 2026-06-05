@@ -1,7 +1,15 @@
 // ============================================================
 // NavPath – NEA Exam Prep App
-// script.js – FULLY DEBUGGED & FIXED (v2)
+// script.js – FULLY DEBUGGED & FIXED (v4)
 // ============================================================
+
+// GLOBAL ERROR TRAP — catches silent JS crashes that make buttons look dead
+window.addEventListener('error', function(e) {
+  console.error('[NavPath] Uncaught error:', e.message, 'at', e.filename, e.lineno);
+});
+window.addEventListener('unhandledrejection', function(e) {
+  console.error('[NavPath] Unhandled promise rejection:', e.reason);
+});
 //
 // BUGS FIXED (v1 — original):
 //  1. App object not exposed to window  → window.App = App
@@ -13,25 +21,32 @@
 //  6. Demo mode showScreen called before loadResources resolves → await fixed
 //  7. onAuthStateChanged triggers showScreen before renderDashboard finishes
 //     → awaits are correct, but screen flash fix added with loading state
-//  8. switchAuthTab ID collision: tab buttons have id="tab-login" / "tab-signup"
-//     which conflicts with switchAuthTab() calling $(`#tab-${tab}`) — this
-//     matched the TAB CONTENT divs too — FIXED by renaming tab button IDs
-//     to "authtab-login" / "authtab-signup" (matching fix in index.html)
+//  8. switchAuthTab ID collision: tab buttons had id="tab-login" / "tab-signup"
+//     which conflicted with switchAuthTab() → FIXED by renaming to "authtab-*"
 //
-// BUGS FIXED (v2 — this version):
-//  9. questions.json monolithic file replaced with 3 separate files:
-//     english.json + math.json + science.json
-//     loadResources() now fetches all 3 in parallel and merges topics/mockTests
-//     into App.questions so all downstream code works unchanged.
-// 10. Login/signup page not showing on load → initApp() and onAuthStateChanged
-//     logout branch now call switchAuthTab('login') after showScreen('auth-screen')
-//     so the login form is always visible by default.
-// 11. switchAuthTab() now supports BOTH old (tab-login) and new (authtab-login)
-//     button IDs so it works regardless of which index.html version is deployed.
-// 12. openTopicModal() crashed when App.questions.topics[chapterId] was undefined
-//     (happens for topics not yet loaded) — replaced with safe qBank lookup.
-// 13. auth/invalid-credential error code added (newer Firebase SDK v9+ compat).
-// 14. Demo mode loadResources() double-call removed — skips if already loaded.
+// BUGS FIXED (v2):
+//  9. questions.json monolithic file replaced with 3 separate files
+// 10. Login/signup page not showing on load → switchAuthTab('login') added
+// 11. switchAuthTab() now supports both old and new button IDs
+// 12. openTopicModal() crashed on undefined chapter topics
+// 13. auth/invalid-credential error code added (Firebase v9 compat)
+// 14. Demo mode loadResources() double-call removed
+//
+// BUGS FIXED (v3 — this version):
+// 15. switchTab() — tab scroll position never reset → scrollTop = 0 on switch
+// 16. toggleDarkMode() — set data-theme="" for dark (wrong), needed removeAttribute
+//     Also: double-fire bug — row onclick AND checkbox onchange both called it;
+//     fixed by adding event.stopPropagation() on the label wrapper
+// 17. DOMContentLoaded boot — dark mode init didn't call removeAttribute for dark
+// 18. handleLogin() — missing .loading CSS class, no double-click guard
+// 19. handleSignup() — same; also null-safe btn refs
+// 20. onAuthStateChanged logout branch — .loading class never cleared → stuck spinner
+// 21. _rmPeriod variable added — AM/PM detection via style-color comparison was broken
+//     on Android Chrome (normalises hex→rgb on element.style reads)
+// 22. saveReminderFromModal / openReminderModal / livePreview — all use _rmPeriod now
+// 23. progressbar aria-valuenow never updated → fixed for accessibility
+// 24. MockTest.active indentation bug (column 0) → fixed
+// 25. mockArea.innerHTML indentation bug → fixed
 //
 // ============================================================
 
@@ -115,13 +130,21 @@ function showScreen(id) {
 // FIREBASE INIT
 // ============================================================
 function initApp() {
-  App.firebase = window.initFirebase?.();
+  // CRITICAL: wrap initFirebase in try/catch — if firebase.js has wrong config,
+  // missing keys, or any JS error, this was previously a silent crash that made
+  // buttons appear dead. Now it gracefully falls back to demo mode.
+  try {
+    App.firebase = window.initFirebase?.();
+  } catch(e) {
+    console.warn('[NavPath] initFirebase threw an error:', e.message);
+    App.firebase = null;
+  }
 
   if (!App.firebase) {
     console.warn('[NavPath] Firebase not configured. Running in demo mode.');
     loadResources().then(() => {
       showScreen('auth-screen');
-      switchAuthTab('login'); // FIX: ensure login tab is shown by default
+      switchAuthTab('login');
     });
     return;
   }
@@ -148,12 +171,12 @@ function initApp() {
       App.user = null;
       App.userDoc = null;
       App.progress = {};
-      // Reset buttons so they're never stuck disabled after logout
-      const loginBtn = $('#login-btn');
+      // BUG FIX: Reset buttons fully — including .loading class which leaves an
+      // invisible spinner that blocks the button if login fails mid-cycle
+      const loginBtn  = $('#login-btn');
       const signupBtn = $('#signup-btn');
-      if (loginBtn) { loginBtn.textContent = 'Sign In →'; loginBtn.disabled = false; }
-      if (signupBtn) { signupBtn.textContent = 'Start Free Trial 🚀'; signupBtn.disabled = false; }
-      // Load resources BEFORE showing screen — prevents async blocking the auth UI
+      if (loginBtn)  { loginBtn.textContent = 'Sign In →'; loginBtn.disabled = false; loginBtn.classList.remove('loading'); }
+      if (signupBtn) { signupBtn.textContent = 'Start Free Trial 🚀'; signupBtn.disabled = false; signupBtn.classList.remove('loading'); }
       await loadResources();
       showScreen('auth-screen');
       switchAuthTab('login');
@@ -381,10 +404,13 @@ async function updateStreak() {
 // ============================================================
 // AUTH – SIGN UP
 // ============================================================
+// ============================================================
+// AUTH – SIGN UP
+// ============================================================
 async function handleSignup() {
-  const name = $('#signup-name').value.trim();
+  const name  = $('#signup-name').value.trim();
   const email = $('#signup-email').value.trim();
-  const pass = $('#signup-password').value;
+  const pass  = $('#signup-password').value;
 
   if (!name || !email || !pass) {
     toast('Please fill in all fields.', 'error');
@@ -396,20 +422,19 @@ async function handleSignup() {
   }
 
   const btn = $('#signup-btn');
-  if (btn) { btn.textContent = 'Creating account...'; btn.disabled = true; }
+  if (btn && btn.disabled) return;
+  if (btn) { btn.textContent = 'Creating account…'; btn.disabled = true; btn.classList.add('loading'); }
 
   // Demo mode
   if (!App.firebase) {
-    App.user = { uid: 'demo', email, displayName: name };
+    App.user    = { uid: 'demo', email, displayName: name };
     App.userDoc = { displayName: name, email, trialStartDate: { toDate: () => new Date() }, isPremium: false, streak: 1, planType: 'trial' };
-    // Only reload resources if not already loaded
     if (!App.syllabus || !App.questions) await loadResources();
     renderDashboard();
     showScreen('main-screen');
     switchTab('dashboard');
     toast('Welcome to NavPath! (Demo Mode)', 'success');
-    btn.textContent = 'Start Free Trial 🚀';
-    btn.disabled = false;
+    if (btn) { btn.textContent = 'Start Free Trial 🚀'; btn.disabled = false; btn.classList.remove('loading'); }
     return;
   }
 
@@ -418,27 +443,29 @@ async function handleSignup() {
     const cred = await auth.createUserWithEmailAndPassword(email, pass);
     await cred.user.updateProfile({ displayName: name });
     toast('Account created! Welcome aboard 🎉', 'success');
-    // FIX #2: Do NOT reset button here — onAuthStateChanged fires next
-    // and switches screen. If we reset, we risk a flash. The logout handler
-    // in onAuthStateChanged resets buttons when returning to auth screen.
+    // onAuthStateChanged handles screen switch
   } catch (e) {
-    // FIX #2: Always reset button on error so user isn't stuck
     let msg = 'Signup failed. Please try again.';
-    if (e.code === 'auth/email-already-in-use') msg = 'Email already registered. Please sign in.';
-    else if (e.code === 'auth/invalid-email') msg = 'Invalid email address.';
-    else if (e.code === 'auth/weak-password') msg = 'Password is too weak.';
+    if (e.code === 'auth/email-already-in-use')       msg = 'Email already registered. Please sign in.';
+    else if (e.code === 'auth/invalid-email')          msg = 'Invalid email address.';
+    else if (e.code === 'auth/weak-password')          msg = 'Password is too weak (min 6 chars).';
+    else if (e.code === 'auth/network-request-failed') msg = 'Network error. Check your connection.';
     toast(msg, 'error');
-    btn.textContent = 'Start Free Trial 🚀';
-    btn.disabled = false;
+    if (btn) { btn.textContent = 'Start Free Trial 🚀'; btn.disabled = false; btn.classList.remove('loading'); }
   }
 }
+window.handleSignup = handleSignup;
 
+
+// ============================================================
+// AUTH – LOGIN
+// ============================================================
 // ============================================================
 // AUTH – LOGIN
 // ============================================================
 async function handleLogin() {
   const email = $('#login-email').value.trim();
-  const pass = $('#login-password').value;
+  const pass  = $('#login-password').value;
 
   if (!email || !pass) {
     toast('Please enter email and password.', 'error');
@@ -446,43 +473,38 @@ async function handleLogin() {
   }
 
   const btn = $('#login-btn');
-  if (btn) { btn.textContent = 'Signing in...'; btn.disabled = true; }
+  if (btn && btn.disabled) return;
+  if (btn) { btn.textContent = 'Signing in…'; btn.disabled = true; btn.classList.add('loading'); }
 
   // Demo mode
   if (!App.firebase) {
-    App.user = { uid: 'demo', email, displayName: email.split('@')[0] };
+    App.user    = { uid: 'demo', email, displayName: email.split('@')[0] };
     App.userDoc = { displayName: email.split('@')[0], email, trialStartDate: { toDate: () => new Date() }, isPremium: false, streak: 3, planType: 'trial' };
-    // Only reload resources if not already loaded
     if (!App.syllabus || !App.questions) await loadResources();
     renderDashboard();
     showScreen('main-screen');
     switchTab('dashboard');
     toast('Logged in! (Demo Mode)', 'success');
-    btn.textContent = 'Sign In →';
-    btn.disabled = false;
+    if (btn) { btn.textContent = 'Sign In →'; btn.disabled = false; btn.classList.remove('loading'); }
     return;
   }
 
   try {
     await App.firebase.auth.signInWithEmailAndPassword(email, pass);
-    // FIX #2: onAuthStateChanged handles the screen switch.
-    // DO NOT reset button here — it causes a race condition flash.
-    // Button is reset by the onAuthStateChanged logout branch if sign-out happens.
+    // onAuthStateChanged handles screen switch
   } catch (e) {
-    // FIX #2: Always show specific, honest error and reset button
     let msg = 'Invalid email or password.';
-    if (e.code === 'auth/user-not-found')        msg = 'No account found with this email.';
-    else if (e.code === 'auth/wrong-password')   msg = 'Incorrect password.';
-    else if (e.code === 'auth/invalid-credential') msg = 'Invalid email or password.'; // newer Firebase SDK
-    else if (e.code === 'auth/invalid-email')    msg = 'Invalid email address.';
-    else if (e.code === 'auth/too-many-requests') msg = 'Too many attempts. Please try again later.';
+    if (e.code === 'auth/user-not-found')              msg = 'No account found with this email.';
+    else if (e.code === 'auth/wrong-password')         msg = 'Incorrect password.';
+    else if (e.code === 'auth/invalid-credential')     msg = 'Invalid email or password.';
+    else if (e.code === 'auth/invalid-email')          msg = 'Invalid email address.';
+    else if (e.code === 'auth/too-many-requests')      msg = 'Too many attempts. Please try again later.';
     else if (e.code === 'auth/network-request-failed') msg = 'Network error. Check your connection.';
     toast(msg, 'error');
-    // FIX #2: Reset button on error
-    btn.textContent = 'Sign In →';
-    btn.disabled = false;
+    if (btn) { btn.textContent = 'Sign In →'; btn.disabled = false; btn.classList.remove('loading'); }
   }
 }
+window.handleLogin = handleLogin;
 
 // ============================================================
 // AUTH – LOGOUT
@@ -590,6 +612,9 @@ function updateProgressStats() {
   const bar = $('#main-progress-bar');
   if (bar) bar.style.width = pct + '%';
   if ($('#main-progress-pct')) $('#main-progress-pct').textContent = pct + '%';
+  // BUG FIX: update ARIA valuenow for screen reader / accessibility
+  const ariaBar = $('#main-progress-aria');
+  if (ariaBar) ariaBar.setAttribute('aria-valuenow', pct);
 }
 
 // ============================================================
@@ -647,6 +672,7 @@ function renderProgressChart() {
     }
   });
 }
+
 
 // ============================================================
 // SYLLABUS SCREEN RENDER
@@ -1079,7 +1105,14 @@ function switchTab(tabName) {
   const content = document.getElementById(`tab-${tabName}`);
   const navItem = document.getElementById(`nav-${tabName}`);
 
-  content?.classList.add('active-tab');
+  if (content) {
+    content.classList.add('active-tab');
+    // BUG FIX: scroll to top on tab switch — prevents disorienting mid-scroll state
+    content.scrollTop = 0;
+    // BUG FIX: also scroll .main-content inside back to top
+    const mc = content.querySelector('.main-content');
+    if (mc) mc.scrollTop = 0;
+  }
   navItem?.classList.add('active');
 
   switch (tabName) {
@@ -1094,6 +1127,7 @@ function switchTab(tabName) {
 function updateNavHighlight(tab) {
   switchTab(tab);
 }
+
 
 // ============================================================
 // STUDY BROWSE — Independent subject → chapter → topic flow
@@ -1410,7 +1444,7 @@ function renderProfile() {
             <div class="settings-item-icon">🌙</div>
             <span>Dark Mode</span>
           </div>
-          <label class="toggle-switch">
+          <label class="toggle-switch" onclick="event.stopPropagation()">
             <input type="checkbox" id="dark-mode-toggle" ${App.darkMode ? 'checked' : ''} onchange="toggleDarkMode()">
             <span class="toggle-slider"></span>
           </label>
@@ -1491,7 +1525,7 @@ const StudyReminder = {
     return result === 'granted';
   },
 
-  // ── Quotes pool ─────────────────────────────────────────────
+// ── Quotes pool ─────────────────────────────────────────────
   _quotes: [
     { text: "Success is the sum of small efforts repeated day in and day out.", author: "Robert Collier", color: "#1a3a5c", accent: "#38bdf8" },
     { text: "The secret of getting ahead is getting started.", author: "Mark Twain", color: "#1a3320", accent: "#22c55e" },
@@ -1758,7 +1792,7 @@ const StudyReminder = {
         @keyframes reminderSlideDown{from{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:none}}
         @keyframes reminderFadeOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-100%)}}
         #study-reminder-banner .rb-quote-box{background:${quote.color};border-bottom:3px solid ${quote.accent};position:relative;overflow:hidden;}
-        #study-reminder-banner .rb-quote-box::before{content:'\275D';position:absolute;top:-10px;left:12px;font-size:5rem;color:${quote.accent};opacity:0.12;font-family:Georgia,serif;line-height:1;pointer-events:none;}
+        #study-reminder-banner .rb-quote-box::before{content:'\u275D';position:absolute;top:-10px;left:12px;font-size:5rem;color:${quote.accent};opacity:0.12;font-family:Georgia,serif;line-height:1;pointer-events:none;}
       </style>
       <div style="background:#0d1f35;border-bottom:1px solid rgba(201,168,76,0.3);padding:0.75rem 1rem 0;display:flex;align-items:center;justify-content:space-between;">
         <div style="display:flex;align-items:center;gap:0.5rem;">
@@ -1812,9 +1846,10 @@ function openReminderModal() {
   const hour   = s.hour   ?? 18;
   const minute = s.minute ?? 0;
 
-  // Convert 24hr to 12hr for display
-  const isPM    = hour >= 12;
-  const h12     = hour % 12 || 12;
+  // BUG FIX: set _rmPeriod from saved state so saveReminderFromModal reads correctly
+  const isPM = hour >= 12;
+  _rmPeriod  = isPM ? 'PM' : 'AM';
+  const h12  = hour % 12 || 12;
 
   // Build hour options 1-12
   const hourOpts = Array.from({length:12},(_,i)=>i+1).map(h =>
@@ -1893,8 +1928,8 @@ overlay.innerHTML = `
   const updatePreview = () => {
     const h   = parseInt(document.getElementById('rm-hour')?.value || 6);
     const m   = parseInt(document.getElementById('rm-minute')?.value || 0);
-    const pm  = document.getElementById('rm-pm')?.style.background === 'rgb(201, 168, 76)';
-    const h24 = pm ? (h===12?12:h+12) : (h===12?0:h);
+    // BUG FIX: use _rmPeriod, not style-color comparison
+    const h24 = _rmPeriod === 'PM' ? (h===12?12:h+12) : (h===12?0:h);
     const prev = document.getElementById('rm-preview');
     if (prev) prev.textContent = StudyReminder.formatTime(h24, m) + ' daily';
   };
@@ -1906,8 +1941,12 @@ overlay.innerHTML = `
   }
 }
 
+// AM/PM state — stored here to avoid fragile inline-style color comparison
+let _rmPeriod = 'AM';
+
 // AM/PM toggle helper
 function rmSetPeriod(period) {
+  _rmPeriod = period;
   const amBtn = document.getElementById('rm-am');
   const pmBtn = document.getElementById('rm-pm');
   if (!amBtn || !pmBtn) return;
@@ -1918,7 +1957,6 @@ function rmSetPeriod(period) {
     pmBtn.style.background = '#c9a84c'; pmBtn.style.color = '#0a1628';
     amBtn.style.background = 'transparent'; amBtn.style.color = '#6b92bc';
   }
-  // Update preview
   const h  = parseInt(document.getElementById('rm-hour')?.value || 6);
   const m  = parseInt(document.getElementById('rm-minute')?.value || 0);
   const h24 = period === 'PM' ? (h===12?12:h+12) : (h===12?0:h);
@@ -1932,23 +1970,24 @@ function closeReminderModal() {
 }
 
 async function saveReminderFromModal() {
-  const hSel  = document.getElementById('rm-hour');
-  const mSel  = document.getElementById('rm-minute');
-  const pmBtn = document.getElementById('rm-pm');
+  const hSel = document.getElementById('rm-hour');
+  const mSel = document.getElementById('rm-minute');
 
   if (!hSel || !mSel) { toast('Please select a time.', 'error'); return; }
 
   const h12  = parseInt(hSel.value);
   const m    = parseInt(mSel.value);
-  const isPM = pmBtn?.style.background === 'rgb(201, 168, 76)';
-  const h24  = isPM ? (h12 === 12 ? 12 : h12 + 12) : (h12 === 12 ? 0 : h12);
+  // BUG FIX: use _rmPeriod variable — style-color comparison was broken on some
+  // Android Chrome builds that normalise hex → rgb on element.style reads.
+  const h24  = _rmPeriod === 'PM' ? (h12 === 12 ? 12 : h12 + 12) : (h12 === 12 ? 0 : h12);
 
   const ok = await StudyReminder.enable(h24, m);
   if (ok) {
     toast(`✅ Reminder set for ${StudyReminder.formatTime(h24, m)} daily!`, 'success');
     closeReminderModal();
   } else {
-    document.getElementById('reminder-notif-warning').style.display = 'block';
+    const warn = document.getElementById('reminder-notif-warning');
+    if (warn) warn.style.display = 'block';
   }
 }
 
@@ -1972,11 +2011,21 @@ async function toggleStudyReminder() {
 
 // ============================================================
 // DARK / LIGHT MODE
+// BUG FIX: Previously set data-theme="" for dark mode, but the CSS
+// uses [data-theme="light"] — dark mode needs the attribute REMOVED.
+// Also syncs the profile toggle checkbox after state change.
 // ============================================================
 function toggleDarkMode() {
   App.darkMode = !App.darkMode;
-  document.documentElement.setAttribute('data-theme', App.darkMode ? '' : 'light');
+  if (App.darkMode) {
+    document.documentElement.removeAttribute('data-theme');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
   localStorage.setItem('navpath-dark', App.darkMode ? '1' : '0');
+  // Sync checkbox if the profile toggle is currently rendered
+  const toggle = document.getElementById('dark-mode-toggle');
+  if (toggle) toggle.checked = App.darkMode;
 }
 
 // ============================================================
@@ -2111,24 +2160,30 @@ function installApp() {
 // the selector is unambiguous.
 // ============================================================
 function switchAuthTab(tab) {
-  // Deactivate all auth tab buttons
-  $$('.auth-tab').forEach(t => t.classList.remove('active'));
+  $$('.auth-tab').forEach(t => {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+  });
 
-  // Support BOTH old IDs (tab-login/tab-signup) and new IDs (authtab-login/authtab-signup)
-  // This way the script works regardless of which index.html version is deployed
   const btn = $(`#authtab-${tab}`) || $(`#tab-${tab}`);
-  btn?.classList.add('active');
+  if (btn) { btn.classList.add('active'); btn.setAttribute('aria-selected', 'true'); }
+
+  const loginForm  = $('#login-form');
+  const signupForm = $('#signup-form');
+
+  // Use classList.hidden — matches style.css .hidden { display:none !important }
+  // Also clear any inline style.display that may have been set elsewhere
+  if (loginForm)  { loginForm.style.display  = ''; }
+  if (signupForm) { signupForm.style.display = ''; }
 
   if (tab === 'login') {
-    $('#signup-form')?.classList.add('hidden');
-    $('#login-form')?.classList.remove('hidden');
-    // Focus first input for better UX
-    setTimeout(() => $('#login-email')?.focus(), 50);
+    loginForm?.classList.remove('hidden');
+    signupForm?.classList.add('hidden');
+    setTimeout(() => $('#login-email')?.focus(), 60);
   } else {
-    $('#login-form')?.classList.add('hidden');
-    $('#signup-form')?.classList.remove('hidden');
-    // Focus first input for better UX
-    setTimeout(() => $('#signup-name')?.focus(), 50);
+    loginForm?.classList.add('hidden');
+    signupForm?.classList.remove('hidden');
+    setTimeout(() => $('#signup-name')?.focus(), 60);
   }
 }
 
@@ -2136,10 +2191,16 @@ function switchAuthTab(tab) {
 // BOOT
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
+  // BUG FIX: dark mode init — only apply 'light' if explicitly saved as '0'
+  // Dark mode is the default (no attribute needed). This prevents the flash
+  // where '' was written and [data-theme="light"] styles briefly applied.
   const savedDark = localStorage.getItem('navpath-dark');
   if (savedDark === '0') {
     App.darkMode = false;
     document.documentElement.setAttribute('data-theme', 'light');
+  } else {
+    App.darkMode = true;
+    document.documentElement.removeAttribute('data-theme');
   }
 
   registerServiceWorker();
@@ -2148,10 +2209,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
-      const loginForm = $('#login-form');
+      const loginForm  = $('#login-form');
       const signupForm = $('#signup-form');
-      if (loginForm && !loginForm.classList.contains('hidden')) handleLogin();
-      else if (signupForm && !signupForm.classList.contains('hidden')) handleSignup();
+      if (loginForm  && !loginForm.classList.contains('hidden'))  window.handleLogin();
+      else if (signupForm && !signupForm.classList.contains('hidden')) window.handleSignup();
     }
   });
 });
@@ -2360,7 +2421,7 @@ function startMockTest(testId) {
     return;
   }
 
-MockTest.active = true;
+  MockTest.active = true;
   MockTest.testConfig = testConfig;
   MockTest.questions = allQuestions;
   MockTest.answers = {};
@@ -2391,7 +2452,7 @@ function renderMockTestScreen() {
 
   const q = MockTest.questions;
   const total = q.length;
-mockArea.innerHTML = `
+  mockArea.innerHTML = `
     <div class="practice-container" id="mock-container">
       <div class="practice-top-bar" style="position:sticky;top:0;z-index:10;background:var(--navy-deep);padding:0.75rem 1rem;margin:-1rem -1rem 1rem -1rem;">
         <button class="practice-back-btn" onclick="confirmExitMockTest()">✕ Exit</button>
@@ -2693,8 +2754,9 @@ function setupAdminLongPress() {
 // FIX #5: renderQuestion and App were not exported to window,
 // breaking the inline override script in index.html
 // ============================================================
-window.handleSignup      = handleSignup;
-window.handleLogin       = handleLogin;
+// ============================================================
+// WINDOW EXPORTS — everything called from inline onclick / HTML
+// ============================================================
 window.handleLogout      = handleLogout;
 window.switchAuthTab     = switchAuthTab;
 window.switchTab         = switchTab;
@@ -2711,11 +2773,12 @@ window.closePremiumModal = closePremiumModal;
 window.selectPlan        = selectPlan;
 window.initiatePurchase  = initiatePurchase;
 window.toggleDarkMode    = toggleDarkMode;
-window.toggleStudyReminder = toggleStudyReminder;
-window.openReminderModal   = openReminderModal;
-window.closeReminderModal  = closeReminderModal;
-window.saveReminderFromModal  = saveReminderFromModal;
+window.toggleStudyReminder      = toggleStudyReminder;
+window.openReminderModal        = openReminderModal;
+window.closeReminderModal       = closeReminderModal;
+window.saveReminderFromModal    = saveReminderFromModal;
 window.disableReminderFromModal = disableReminderFromModal;
+window.rmSetPeriod              = rmSetPeriod;
 window.installApp        = installApp;
 window.openTopicModal    = openTopicModal;
 window.closeTopicModal   = closeTopicModal;
@@ -2738,11 +2801,366 @@ window.confirmExitMockTest  = confirmExitMockTest;
 window.exitMockTest         = exitMockTest;
 window.mockNav              = mockNav;
 window.mockJumpTo           = mockJumpTo;
-window.mockSelectAnswer        = mockSelectAnswer;
-window.setupAdminLongPress     = setupAdminLongPress;
-window.openReminderModal       = openReminderModal;
-window.closeReminderModal      = closeReminderModal;
-window.saveReminderFromModal   = saveReminderFromModal;
-window.disableReminderFromModal = disableReminderFromModal;
-window.toggleStudyReminder     = toggleStudyReminder;
-window.rmSetPeriod             = rmSetPeriod;
+window.mockSelectAnswer     = mockSelectAnswer;
+window.setupAdminLongPress  = setupAdminLongPress;
+
+// ============================================================
+// SIDEBAR — Full feature drawer
+// ============================================================
+
+function openSidebar() {
+  const sidebar  = document.getElementById('sidebar');
+  const overlay  = document.getElementById('sidebar-overlay');
+  if (!sidebar || !overlay) return;
+
+  // Populate user info
+  const name  = App.userDoc?.displayName || App.user?.displayName || 'NavPath User';
+  const email = App.user?.email || '—';
+  const trial = typeof getTrialStatus === 'function' ? getTrialStatus() : {};
+
+  const nameEl   = document.getElementById('sidebar-username');
+  const emailEl  = document.getElementById('sidebar-email');
+  const statusEl = document.getElementById('sidebar-status');
+
+  if (nameEl)   nameEl.textContent  = name;
+  if (emailEl)  emailEl.textContent = email;
+
+  if (statusEl) {
+    let badge = '';
+    if (trial.isAdmin)        badge = `<span class="sb-status-premium">🛡️ Admin</span>`;
+    else if (trial.isPremium) badge = `<span class="sb-status-premium">⭐ Premium</span>`;
+    else if (trial.active)    badge = `<span class="sb-status-trial">🟢 Trial – ${trial.daysLeft}d left</span>`;
+    else                      badge = `<span class="sb-status-expired">⚠️ Trial Expired</span>`;
+    statusEl.innerHTML = badge;
+  }
+
+  // Sync dark mode toggle
+  const darkToggle = document.getElementById('sb-dark-toggle');
+  if (darkToggle) darkToggle.checked = App.darkMode !== false;
+
+  // Sync reminder dot
+  const reminderDot = document.getElementById('sb-reminder-dot');
+  if (reminderDot && typeof StudyReminder !== 'undefined') {
+    reminderDot.style.display = StudyReminder.load().enabled ? 'block' : 'none';
+  }
+
+  // Highlight active tab
+  const tabs = ['dashboard','syllabus','practice','study','profile'];
+  tabs.forEach(t => {
+    const el = document.getElementById(`sb-${t}`);
+    if (el) el.classList.remove('active');
+  });
+  const activeEl = document.getElementById(`sb-${App.currentTab || 'dashboard'}`);
+  if (activeEl) activeEl.classList.add('active');
+
+  // Update progress badge on syllabus
+  const syllBadge = document.getElementById('sb-badge-syllabus');
+  if (syllBadge && App.syllabus) {
+    const total     = App.syllabus.reduce((s, p) => s + p.chapters.reduce((cs, c) => cs + c.topics.length, 0), 0);
+    const completed = Object.values(App.progress || {}).filter(Boolean).length;
+    const pct = total ? Math.round(completed / total * 100) : 0;
+    syllBadge.textContent = pct + '%';
+    syllBadge.style.display = 'inline';
+  }
+
+  // Open
+  sidebar.classList.add('open');
+  overlay.classList.add('open');
+  document.body.classList.add('sidebar-open');
+}
+
+function closeSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  if (sidebar) sidebar.classList.remove('open');
+  if (overlay) overlay.classList.remove('open');
+  document.body.classList.remove('sidebar-open');
+}
+
+// Navigate from sidebar and close it
+function sidebarNav(tab) {
+  closeSidebar();
+  setTimeout(() => switchTab(tab), 80);
+}
+
+// Quick access to mock test from sidebar
+function openSidebarMockTest() {
+  closeSidebar();
+  setTimeout(() => {
+    switchTab('practice');
+    if (typeof openMockTestModal === 'function') openMockTestModal();
+  }, 120);
+}
+
+// ============================================================
+// SIDEBAR INFO SHEETS — About / Exam Pattern / Contact / FAQ / Rate
+// ============================================================
+
+const SIDEBAR_SHEETS = {
+
+  about: {
+    title: 'About NavPath',
+    render: () => `
+      <div style="text-align:center;margin-bottom:1.5rem;">
+        <div style="font-size:3rem;margin-bottom:0.5rem;">🧭</div>
+        <h2 style="font-family:var(--font-display);font-size:1.3rem;">NavPath</h2>
+        <p style="font-size:0.8rem;color:var(--text-muted);">NEA Exam Prep Platform · v1.0</p>
+      </div>
+      <div class="sheet-section">
+        <h3>What is NavPath?</h3>
+        <p>NavPath is a dedicated exam preparation app for Indian Navy Entrance Assessment (NEA). It covers all three papers — English &amp; GK, Mathematics, and General Science — with syllabus tracking, MCQ practice, and study notes.</p>
+      </div>
+      <div class="sheet-section">
+        <h3>Features</h3>
+        <div class="sheet-row"><span class="sheet-row-label">📚 Syllabus Tracker</span><span class="sheet-row-value">Full NEA Coverage</span></div>
+        <div class="sheet-row"><span class="sheet-row-label">📝 MCQ Practice</span><span class="sheet-row-value">500+ Questions</span></div>
+        <div class="sheet-row"><span class="sheet-row-label">📖 Study Notes</span><span class="sheet-row-value">All Topics</span></div>
+        <div class="sheet-row"><span class="sheet-row-label">🧪 Mock Tests</span><span class="sheet-row-value">Full Length</span></div>
+        <div class="sheet-row"><span class="sheet-row-label">📱 Works Offline</span><span class="sheet-row-value">PWA Support</span></div>
+      </div>
+      <div class="sheet-section">
+        <h3>Built For</h3>
+        <p>Students preparing for Indian Navy recruitment exams — MR, AA, SSR, and other NEA-based entries.</p>
+      </div>
+    `
+  },
+
+  'exam-pattern': {
+    title: 'NEA Exam Pattern',
+    render: () => `
+      <h2 style="font-family:var(--font-display);font-size:1.2rem;margin-bottom:1.25rem;">📋 NEA Exam Pattern</h2>
+      <div class="sheet-section">
+        <h3>Paper I — English &amp; GK</h3>
+        <div class="sheet-row"><span class="sheet-row-label">Questions</span><span class="sheet-row-value">50 MCQs</span></div>
+        <div class="sheet-row"><span class="sheet-row-label">Marks</span><span class="sheet-row-value">100</span></div>
+        <div class="sheet-row"><span class="sheet-row-label">Duration</span><span class="sheet-row-value">30 min</span></div>
+        <div class="sheet-row"><span class="sheet-row-label">Marking</span><span class="sheet-row-value">+2 / –0.5</span></div>
+      </div>
+      <div class="sheet-section">
+        <h3>Paper II — Mathematics</h3>
+        <div class="sheet-row"><span class="sheet-row-label">Questions</span><span class="sheet-row-value">50 MCQs</span></div>
+        <div class="sheet-row"><span class="sheet-row-label">Marks</span><span class="sheet-row-value">100</span></div>
+        <div class="sheet-row"><span class="sheet-row-label">Duration</span><span class="sheet-row-value">30 min</span></div>
+        <div class="sheet-row"><span class="sheet-row-label">Marking</span><span class="sheet-row-value">+2 / –0.5</span></div>
+      </div>
+      <div class="sheet-section">
+        <h3>Paper III — General Science</h3>
+        <div class="sheet-row"><span class="sheet-row-label">Questions</span><span class="sheet-row-value">50 MCQs</span></div>
+        <div class="sheet-row"><span class="sheet-row-label">Marks</span><span class="sheet-row-value">100</span></div>
+        <div class="sheet-row"><span class="sheet-row-label">Duration</span><span class="sheet-row-value">30 min</span></div>
+        <div class="sheet-row"><span class="sheet-row-label">Marking</span><span class="sheet-row-value">+2 / –0.5</span></div>
+      </div>
+      <div style="background:rgba(212,168,67,0.07);border:1px solid rgba(212,168,67,0.2);
+                  border-radius:var(--radius);padding:0.875rem 1rem;">
+        <p style="font-size:0.82rem;color:var(--text-secondary);">
+          ⚠️ <strong style="color:var(--gold);">Negative Marking:</strong> 0.5 marks deducted per wrong answer. Avoid guessing — only attempt if confident.
+        </p>
+      </div>
+    `
+  },
+
+  contact: {
+    title: 'Contact & Support',
+    render: () => `
+      <h2 style="font-family:var(--font-display);font-size:1.2rem;margin-bottom:0.4rem;">💬 Contact & Support</h2>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1.25rem;">
+        We're here to help! Reach out through any of the channels below.
+      </p>
+      <a class="contact-btn" href="mailto:support@navpath.app">
+        <span class="contact-icon">📧</span>
+        <div>
+          <div class="contact-label">Email Support</div>
+          <div class="contact-sub">support@navpath.app</div>
+        </div>
+        <span style="margin-left:auto;color:var(--text-muted);">›</span>
+      </a>
+      <a class="contact-btn" href="https://t.me/navpathapp" target="_blank" rel="noopener">
+        <span class="contact-icon">📱</span>
+        <div>
+          <div class="contact-label">Telegram Community</div>
+          <div class="contact-sub">@navpathapp — Fast responses</div>
+        </div>
+        <span style="margin-left:auto;color:var(--text-muted);">›</span>
+      </a>
+      <a class="contact-btn" href="https://instagram.com/navpathapp" target="_blank" rel="noopener">
+        <span class="contact-icon">📸</span>
+        <div>
+          <div class="contact-label">Instagram</div>
+          <div class="contact-sub">@navpathapp — Updates &amp; tips</div>
+        </div>
+        <span style="margin-left:auto;color:var(--text-muted);">›</span>
+      </a>
+      <div style="margin-top:1.25rem;background:rgba(30,75,154,0.1);border:1px solid rgba(30,75,154,0.25);
+                  border-radius:var(--radius);padding:0.875rem 1rem;">
+        <p style="font-size:0.82rem;color:var(--text-secondary);">
+          📌 <strong>Response time:</strong> We typically reply within 24 hours on email and within a few hours on Telegram.
+        </p>
+      </div>
+    `
+  },
+
+  faq: {
+    title: 'FAQ',
+    render: () => `
+      <h2 style="font-family:var(--font-display);font-size:1.2rem;margin-bottom:1.25rem;">❓ Frequently Asked Questions</h2>
+      ${[
+        ['Is NavPath free to use?', 'Yes! NavPath offers a 3-day free trial with full access. After that, you can continue with a premium plan starting at just ₹99.'],
+        ['What is covered in the syllabus?', 'All three NEA papers are covered — English & GK (Paper I), Mathematics (Paper II), and General Science / Physics (Paper III).'],
+        ['Does it work offline?', 'Yes, NavPath is a PWA (Progressive Web App). Once installed on your home screen, it works without internet for most features.'],
+        ['How do I install the app?', 'Open navpath.netlify.app in your browser → tap the browser menu → "Add to Home Screen". It works like a native app.'],
+        ['What happens after my trial expires?', 'You can still view the syllabus but practice questions and study notes require a premium plan.'],
+        ['How is the mock test different from practice?', 'Mock tests simulate the real NEA exam — timed, full paper, with negative marking. Practice mode is topic-wise with no time limit.'],
+        ['Can I reset my progress?', 'Yes, go to Profile → and there will be a reset option. Note: this cannot be undone.'],
+      ].map(([q,a], i) => `
+        <div class="faq-item" id="faq-${i}">
+          <div class="faq-q" onclick="toggleFaq(${i})">
+            <span>${q}</span>
+            <span id="faq-arrow-${i}" style="transition:transform 0.2s;">▸</span>
+          </div>
+          <div class="faq-a">${a}</div>
+        </div>
+      `).join('')}
+    `
+  },
+
+  rate: {
+    title: 'Rate the App',
+    render: () => `
+      <div style="text-align:center;padding:1rem 0 0.5rem;">
+        <div style="font-size:3rem;margin-bottom:0.75rem;">⭐</div>
+        <h2 style="font-family:var(--font-display);font-size:1.2rem;margin-bottom:0.4rem;">Enjoying NavPath?</h2>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">
+          Your rating helps other Navy aspirants find this app!
+        </p>
+        <div class="star-rating" id="star-rating-row">
+          ${[1,2,3,4,5].map(n => `
+            <button class="star-btn" id="star-${n}"
+                    onclick="rateStar(${n})" aria-label="${n} star">⭐</button>
+          `).join('')}
+        </div>
+        <p id="rate-label" style="font-size:0.85rem;color:var(--text-muted);min-height:1.5rem;margin:0.5rem 0 1.25rem;"></p>
+        <button id="rate-submit-btn" class="btn btn-gold btn-block" onclick="submitRating()"
+                style="display:none;">Submit Rating 🚀</button>
+      </div>
+      <div style="margin-top:1.5rem;border-top:1px solid var(--card-border);padding-top:1.25rem;">
+        <p style="text-align:center;font-size:0.82rem;color:var(--text-muted);margin-bottom:1rem;">
+          Or share NavPath with a friend who's preparing:
+        </p>
+        <button class="btn btn-outline btn-block" onclick="shareApp()"
+                style="font-size:0.875rem;">🔗 Share NavPath</button>
+      </div>
+    `
+  }
+};
+
+function openSidebarSheet(type) {
+  closeSidebar();
+  const sheet = SIDEBAR_SHEETS[type];
+  if (!sheet) return;
+
+  const overlay  = document.getElementById('sidebar-sheet');
+  const body     = document.getElementById('sidebar-sheet-body');
+  if (!overlay || !body) return;
+
+  body.innerHTML = sheet.render();
+  overlay.classList.remove('hidden');
+  overlay.classList.add('active');
+}
+
+function closeSidebarSheet() {
+  const overlay = document.getElementById('sidebar-sheet');
+  if (!overlay) return;
+  overlay.classList.remove('active');
+  overlay.classList.add('hidden');
+}
+
+// FAQ accordion toggle
+function toggleFaq(index) {
+  const item  = document.getElementById(`faq-${index}`);
+  const arrow = document.getElementById(`faq-arrow-${index}`);
+  if (!item) return;
+  const isOpen = item.classList.toggle('open');
+  if (arrow) arrow.style.transform = isOpen ? 'rotate(90deg)' : '';
+}
+
+// Star rating
+let _selectedRating = 0;
+const RATE_LABELS = ['', 'Poor 😕', 'Okay 😐', 'Good 👍', 'Great 😊', 'Excellent! 🤩'];
+
+function rateStar(n) {
+  _selectedRating = n;
+  for (let i = 1; i <= 5; i++) {
+    const s = document.getElementById(`star-${i}`);
+    if (s) s.classList.toggle('lit', i <= n);
+  }
+  const lbl = document.getElementById('rate-label');
+  if (lbl) lbl.textContent = RATE_LABELS[n] || '';
+  const btn = document.getElementById('rate-submit-btn');
+  if (btn) btn.style.display = 'block';
+}
+
+function submitRating() {
+  if (!_selectedRating) return;
+  toast(`Thanks for rating us ${_selectedRating} ⭐!`, 'success');
+  closeSidebarSheet();
+  _selectedRating = 0;
+}
+
+// Share app
+function shareApp() {
+  const data = {
+    title: 'NavPath – NEA Exam Prep',
+    text: 'Prepare for Indian Navy NEA exam with NavPath – Syllabus tracker, MCQ practice & more!',
+    url: 'https://navpath.netlify.app'
+  };
+  if (navigator.share) {
+    navigator.share(data).catch(() => {});
+  } else {
+    navigator.clipboard?.writeText(data.url);
+    toast('Link copied to clipboard!', 'success');
+  }
+}
+
+// Swipe to open sidebar (touch devices)
+(function() {
+  let startX = 0;
+  let startY = 0;
+  document.addEventListener('touchstart', function(e) {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', function(e) {
+    const dx = e.changedTouches[0].clientX - startX;
+    const dy = Math.abs(e.changedTouches[0].clientY - startY);
+    // Swipe right from left edge (within 30px) to open
+    if (startX < 30 && dx > 60 && dy < 60) {
+      openSidebar();
+    }
+    // Swipe left while sidebar open to close
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar && sidebar.classList.contains('open') && dx < -60 && dy < 60) {
+      closeSidebar();
+    }
+  }, { passive: true });
+})();
+
+// Keyboard: Escape closes sidebar
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeSidebar();
+    closeSidebarSheet();
+  }
+});
+
+// Register sidebar exports on window
+window.openSidebar        = openSidebar;
+window.closeSidebar       = closeSidebar;
+window.sidebarNav         = sidebarNav;
+window.openSidebarMockTest = openSidebarMockTest;
+window.openSidebarSheet   = openSidebarSheet;
+window.closeSidebarSheet  = closeSidebarSheet;
+window.toggleFaq          = toggleFaq;
+window.rateStar           = rateStar;
+window.submitRating       = submitRating;
+window.shareApp           = shareApp;
